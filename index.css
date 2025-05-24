@@ -17,6 +17,9 @@ body {
 
 header {
     height: 80px;
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 }
 
