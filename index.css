@@ -16,8 +16,8 @@ body {
 }
 
 header {
-    background-color: rgb(35, 35, 35);
     height: 80px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 }
 
 main {
@@ -27,7 +27,7 @@ main {
 footer {
     padding: 0.5em;
     background-color: rgb(117, 117, 117);
-    color: rgb(212, 211, 211);
+    color: rgb(227, 227, 227);
     display: flex;
     align-items: center;
 }
