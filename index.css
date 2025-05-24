@@ -12,11 +12,12 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 header {
-    background-color: black;
-    height: 50px;
+    background-color: rgb(35, 35, 35);
+    height: 80px;
 }
 
 main {
@@ -24,6 +25,9 @@ main {
 }
 
 footer {
-    background-color: darkgray;
-    height: 60px;
+    padding: 0.5em;
+    background-color: rgb(117, 117, 117);
+    color: white;
+    display: flex;
+    align-items: center;
 }
