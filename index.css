@@ -5,3 +5,25 @@
     margin: 0;
     padding: 0;
 }
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: black;
+    height: 50px;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: darkgray;
+    height: 60px;
+}
