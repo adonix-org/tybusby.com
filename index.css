@@ -27,7 +27,7 @@ main {
 footer {
     padding: 0.5em;
     background-color: rgb(117, 117, 117);
-    color: white;
+    color: rgb(212, 211, 211);
     display: flex;
     align-items: center;
 }
