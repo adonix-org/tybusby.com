@@ -16,7 +16,6 @@ body {
 }
 
 header {
-    height: 80px;
     display: flex;
     align-items: center;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
@@ -32,4 +31,8 @@ footer {
     color: rgb(227, 227, 227);
     display: flex;
     align-items: center;
+}
+
+.avatar {
+    padding: 10px;
 }
