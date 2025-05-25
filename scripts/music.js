@@ -1,3 +1,7 @@
 import { Videos } from "./videos.js";
-const MUSIC_URLS = ["https://www.youtube-nocookie.com/embed/qr1AvisQcV8"];
-new Videos("music-video-grid", MUSIC_URLS);
+const URLS = [
+    "https://rumble.com/embed/v6qlj4j/?pub=4",
+    "https://www.youtube-nocookie.com/embed/iPucwp3uyCE",
+    "https://www.youtube.com/embed/KHR6HkHySWY",
+];
+new Videos("music-video-grid", URLS);
