@@ -1,10 +1,10 @@
-var Videos = /** @class */ (function () {
-    function Videos(grid, urls) {
+export class Videos {
+    constructor(grid, urls) {
         this.grid = grid;
         this.urls = urls;
-        var _grid = document.getElementById(grid);
-        urls.forEach(function (url) {
-            var iframe = document.createElement("iframe");
+        const _grid = document.getElementById(grid);
+        urls.forEach((url) => {
+            const iframe = document.createElement("iframe");
             iframe.src = url;
             iframe.allowFullscreen = true;
             iframe.allow =
@@ -14,6 +14,4 @@ var Videos = /** @class */ (function () {
             _grid.appendChild(iframe);
         });
     }
-    return Videos;
-}());
-export { Videos };
+}
