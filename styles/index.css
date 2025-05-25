@@ -14,9 +14,14 @@ body {
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
     user-select: none;
+    padding-top: 45px;
 }
 
 header {
+    position: fixed;
+    top: 0;
+    background-color: white;
+    width: 100%;
     display: flex;
     align-items: center;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
