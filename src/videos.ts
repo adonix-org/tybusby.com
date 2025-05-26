@@ -5,14 +5,28 @@ export class Videos {
     ) {
         const _grid = document.getElementById(grid) as HTMLDivElement;
         urls.forEach((url) => {
-            const iframe = document.createElement("iframe");
-            iframe.src = url;
-            iframe.allow =
-                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-            iframe.allowFullscreen = true;
-            iframe.referrerPolicy = "strict-origin-when-cross-origin";
-            iframe.title = "YouTube video player";
-            _grid.appendChild(iframe);
+            const gridCell = document.createElement("div");
+            gridCell.classList.add("grid-cell", "loading");
+            _grid.appendChild(gridCell);
+
+            requestAnimationFrame(() => {
+                const video = document.createElement("iframe");
+                video.src = url;
+                video.allow =
+                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                video.allowFullscreen = true;
+                video.referrerPolicy = "strict-origin-when-cross-origin";
+
+                gridCell.appendChild(video);
+
+                video.addEventListener(
+                    "load",
+                    () => {
+                        gridCell.classList.remove("loading");
+                    },
+                    true
+                );
+            });
         });
     }
 }

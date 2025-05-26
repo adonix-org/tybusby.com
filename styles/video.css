@@ -5,8 +5,19 @@
     padding: 1rem;
 }
 
-iframe {
-    width: 100%;
-    aspect-ratio: 16 / 9;
+.grid-cell {
+    aspect-ratio: 16/9;
     border: none;
+}
+
+.grid-cell.loading {
+    border: 1px solid;
+    border-color: darkgray;
+}
+
+.grid-cell > iframe {
+    border: none;
+    display: block;
+    height: 100%;
+    width: 100%;
 }
