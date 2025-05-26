@@ -1,0 +1,15 @@
+{
+    "name": "tybusby.com",
+    "version": "1.0.0",
+    "description": "Ty Busby Example Website",
+    "scripts": {
+        "build": "tsc"
+    },
+    "keywords": [],
+    "author": "Ty Busby",
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.3"
+    }
+}
