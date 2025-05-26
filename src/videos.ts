@@ -8,7 +8,7 @@ export class Videos {
             const iframe = document.createElement("iframe");
             iframe.src = url;
             iframe.allow =
-            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
             iframe.allowFullscreen = true;
             iframe.referrerPolicy = "strict-origin-when-cross-origin";
             iframe.title = "YouTube video player";
