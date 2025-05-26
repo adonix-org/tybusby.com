@@ -3,7 +3,7 @@ export class Videos {
         private readonly grid: string,
         private readonly urls: string[]
     ) {
-        const _grid = document.getElementById(grid) as HTMLDivElement;
+        const _grid = document.getElementById(grid) as HTMLElement;
         urls.forEach((url) => {
             const gridCell = document.createElement("div");
             gridCell.classList.add("grid-cell", "loading");
