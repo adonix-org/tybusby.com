@@ -5,12 +5,12 @@
     padding: 1rem;
 }
 
-.grid-cell {
+.video-frame {
     aspect-ratio: 16/9;
     border: none;
 }
 
-.grid-cell.loading {
+.video-frame.loading {
     border: 1px solid;
     border-color: darkgray;
     background-image: url("/img/play.png");
@@ -19,7 +19,7 @@
     background-repeat: no-repeat;
 }
 
-.grid-cell > iframe {
+.video-frame > iframe {
     border: none;
     display: block;
     height: 100%;
@@ -28,6 +28,6 @@
     /* transition: opacity 1s ease-in-out; */
 }
 
-.grid-cell > iframe.loaded {
+.video-frame > iframe.loaded {
     opacity: 1;
 }
