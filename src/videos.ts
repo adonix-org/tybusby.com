@@ -3,29 +3,45 @@ export class Videos {
         private readonly parentId: string,
         private readonly urls: string[]
     ) {
-        const parent = document.getElementById(parentId) as HTMLElement;
-        urls.forEach((url) => {
-            const videoFrame = document.createElement("div");
-            videoFrame.classList.add("video-frame", "loading");
-            parent.appendChild(videoFrame);
+        const container = document.getElementById(parentId);
+        if (!container) {
+            throw new Error(`Element with ID "${parentId}" not found.`);
+        }
 
-            const video = document.createElement("iframe");
-            video.src = url;
-            video.allow =
-                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-            video.allowFullscreen = true;
-            video.referrerPolicy = "strict-origin-when-cross-origin";
-
-            videoFrame.appendChild(video);
-
-            video.addEventListener(
-                "load",
-                () => {
-                    videoFrame.classList.remove("loading");
-                    video.classList.add("loaded");
-                },
-                true
-            );
+        this.urls.forEach((url) => {
+            container.appendChild(new Video(url).element);
         });
+    }
+}
+
+class Video {
+    public readonly element: HTMLDivElement;
+
+    constructor(private readonly url: string) {
+        this.element = this.createElement();
+    }
+
+    private createElement(): HTMLDivElement {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("video-frame", "loading");
+
+        const iframe = document.createElement("iframe");
+        iframe.src = this.url;
+        iframe.allow =
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+
+        iframe.addEventListener(
+            "load",
+            () => {
+                wrapper.classList.remove("loading");
+                iframe.classList.add("loaded");
+            },
+            true
+        );
+
+        wrapper.appendChild(iframe);
+        return wrapper;
     }
 }
