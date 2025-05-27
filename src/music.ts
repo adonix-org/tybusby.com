@@ -15,6 +15,7 @@ const URLS = [
     "https://www.youtube.com/embed/ggGzE5KfCio",
     "https://www.youtube.com/embed/rPOlakkBlj8",
     "https://www.youtube.com/embed/ivdh3zvoQGw",
+    "https://www.youtube.com/embed/PYD-DIggB2k",
 ];
 
 new Videos("music-video-grid", URLS);
