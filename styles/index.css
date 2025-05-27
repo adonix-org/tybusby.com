@@ -17,7 +17,6 @@ body {
 
 header {
     align-items: center;
-    background-color: white;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
     display: flex;
 }
@@ -37,5 +36,21 @@ footer {
 }
 
 .avatar {
-    padding: 10px;
+    padding: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: white;
+    }
+
+    header {
+        border-bottom: solid 3px rgb(42, 42, 42);
+    }
+
+    footer {
+        background-color: rgb(42, 42, 42);
+        border-top: 3px solid rgb(84, 84, 84);
+    }
 }
