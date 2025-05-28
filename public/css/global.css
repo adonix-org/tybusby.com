@@ -29,8 +29,8 @@ main {
 footer {
     align-items: center;
     border-top: 3px solid lightgray;
-    background-color: rgb(104, 104, 104);
-    color: rgb(227, 227, 227);
+    background-color: rgb(62 62 62);
+    color: rgb(178, 178, 178);
     display: flex;
     padding: 0.5em;
 }
@@ -50,7 +50,7 @@ footer {
     }
 
     footer {
-        background-color: rgb(42, 42, 42);
-        border-top: 3px solid rgb(84, 84, 84);
+        background-color: #121212;
+        border-top: solid 3px rgb(84, 84, 84);
     }
 }
