@@ -1,12 +1,18 @@
 {
     "name": "tybusby.com",
     "version": "1.0.0",
-    "description": "Ty Busby Example Website",
+    "description": "Ty Busby Personal Website",
     "scripts": {
         "build": "tsc"
     },
-    "keywords": [],
-    "author": "Ty Busby",
+    "keywords": [
+        "Ty Busby"
+    ],
+    "author": {
+        "name": "Ty Busby",
+        "email": "tybusby@gmail.com",
+        "url": "https://www.tybusby.com"
+    },
     "license": "Apache-2.0",
     "devDependencies": {
         "prettier": "^3.5.3",
