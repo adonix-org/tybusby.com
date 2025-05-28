@@ -11,12 +11,23 @@
 }
 
 .video-frame.loading {
+    animation: bg-video-loading 2s ease-in-out infinite;
     border: 1px solid;
     border-color: darkgray;
     background-image: url("/img/play.png");
     background-size: 20%;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+@keyframes bg-video-loading {
+    0%,
+    100% {
+        background-size: 20%;
+    }
+    50% {
+        background-size: 22%;
+    }
 }
 
 .video-frame > iframe {

@@ -1,27 +1,28 @@
 export class Videos {
-    constructor(
-        parentId: string,
-        private readonly urls: string[]
-    ) {
+    constructor(parentId: string, urls: string[]) {
         const container = document.getElementById(parentId);
         if (!container) {
             throw new Error(`Element with ID "${parentId}" not found.`);
         }
 
-        this.urls.forEach((url) => {
+        urls.forEach((url) => {
             container.appendChild(new Video(url).element);
         });
     }
 }
 
 class Video {
-    public readonly element: HTMLDivElement;
+    private readonly _element: HTMLElement;
 
     constructor(private readonly url: string) {
-        this.element = this.createElement();
+        this._element = this.createElement();
     }
 
-    private createElement(): HTMLDivElement {
+    public get element(): HTMLElement {
+        return this._element;
+    }
+
+    private createElement(): HTMLElement {
         const wrapper = document.createElement("div");
         wrapper.classList.add("video-frame", "loading");
 
