@@ -14,11 +14,10 @@
     animation: bg-video-loading 2s ease-in-out infinite;
     border: 1px solid;
     border-color: darkgray;
-    background-image: url("/img/play.png");
+    background-image: url("../img/play.png");
     background-size: 20%;
     background-position: center;
     background-repeat: no-repeat;
-    /* Try using scale on an img class instead of background-image */
 }
 
 @keyframes bg-video-loading {

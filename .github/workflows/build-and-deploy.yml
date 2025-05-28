@@ -46,22 +46,13 @@ jobs:
             - name: Compile TypeScript
               run: npm run build
 
-            - name: Deployment Folder
-              run: |
-                  mkdir deploy
-                  cp index.html deploy/
-                  cp CNAME deploy/
-                  cp -r img/ deploy/
-                  cp -r scripts/ deploy/
-                  cp -r styles/ deploy/
-
             - name: Setup Pages
               uses: actions/configure-pages@v5
 
             - name: Upload Artifact
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: "./deploy"
+                  path: "public"
 
             - name: Deploy to GitHub Pages
               id: deployment
