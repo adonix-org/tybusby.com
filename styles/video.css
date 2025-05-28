@@ -18,7 +18,7 @@
     background-size: 20%;
     background-position: center;
     background-repeat: no-repeat;
-    will-change: background-size;
+    /* Try using scale on an img class instead of background-image */
 }
 
 @keyframes bg-video-loading {

@@ -7,8 +7,13 @@
         "moduleResolution": "bundler",
         "outDir": "scripts",
         "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
         "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true
     },
     "include": ["src"]
