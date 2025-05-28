@@ -1,6 +1,6 @@
 export class Videos {
     constructor(
-        private readonly parentId: string,
+        parentId: string,
         private readonly urls: string[]
     ) {
         const container = document.getElementById(parentId);
