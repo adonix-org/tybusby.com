@@ -16,6 +16,7 @@
     --light-border-color: rgb(211, 211, 211);
     --light-footer-background-color: rgb(62 62 62);
     --light-footer-color: rgb(178, 178, 178);
+    --light-header-box-shadow: rgba(0, 0, 0, 0.8);
 }
 
 html,
@@ -29,7 +30,7 @@ body {
 
 header {
     align-items: center;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 12px var(--light-header-box-shadow);
     display: flex;
 }
 
