@@ -6,6 +6,16 @@
     padding: 0;
 }
 
+:root {
+    --dark-background-color: rgb(0, 0, 0);
+    --dark-border-color: rgb(34, 34, 34);
+    --dark-color: rgb(255, 255, 255);
+
+    --light-background-color: rgb(62 62 62);
+    --light-footer-color: rgb(178, 178, 178);
+    --light-border-color: rgb(211, 211, 211);
+}
+
 html,
 body {
     display: flex;
@@ -28,9 +38,9 @@ main {
 
 footer {
     align-items: center;
-    border-top: 3px solid lightgray;
-    background-color: rgb(62 62 62);
-    color: rgb(178, 178, 178);
+    border-top: 3px solid var(--light-border-color);
+    background-color: var(--light-background-color);
+    color: var(--light-footer-color);
     display: flex;
     padding: 0.5em;
 }
@@ -41,16 +51,16 @@ footer {
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #121212;
-        color: white;
+        background-color: var(--dark-background-color);
+        color: var(--dark-color);
     }
 
     header {
-        border-bottom: solid 3px rgb(42, 42, 42);
+        border-bottom: solid 3px var(--dark-border-color);
     }
 
     footer {
-        background-color: #121212;
-        border-top: solid 2px rgb(84, 84, 84);
+        background-color: var(--dark-background-color);
+        border-top: solid 3px var(--dark-border-color);
     }
 }
