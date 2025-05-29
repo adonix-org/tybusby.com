@@ -13,9 +13,9 @@
     --dark-color: rgb(255, 255, 255);
 
     /* light mode */
-    --light-background-color: rgb(62 62 62);
-    --light-footer-color: rgb(178, 178, 178);
     --light-border-color: rgb(211, 211, 211);
+    --light-footer-background-color: rgb(62 62 62);
+    --light-footer-color: rgb(178, 178, 178);
 }
 
 html,
@@ -41,7 +41,7 @@ main {
 footer {
     align-items: center;
     border-top: 3px solid var(--light-border-color);
-    background-color: var(--light-background-color);
+    background-color: var(--light-footer-background-color);
     color: var(--light-footer-color);
     display: flex;
     padding: 0.5em;
