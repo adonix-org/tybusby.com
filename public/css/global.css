@@ -7,10 +7,12 @@
 }
 
 :root {
+    /* dark mode */
     --dark-background-color: rgb(0, 0, 0);
     --dark-border-color: rgb(34, 34, 34);
     --dark-color: rgb(255, 255, 255);
 
+    /* light mode */
     --light-background-color: rgb(62 62 62);
     --light-footer-color: rgb(178, 178, 178);
     --light-border-color: rgb(211, 211, 211);
