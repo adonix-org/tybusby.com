@@ -1,4 +1,4 @@
-import { Videos } from "./videos.js";
+import { VideoGroup } from "./videos.js";
 
 const URLS = [
     "https://www.youtube.com/embed/vmDDOFXSgAs", // Dave Brubeck - Take Five
@@ -18,4 +18,11 @@ const URLS = [
     "https://www.youtube.com/embed/PYD-DIggB2k", // Simon and Garfunkle - April Come She Will
 ];
 
-new Videos("music-video-grid", URLS);
+new VideoGroup("music-video-grid", URLS)
+    .on("error", (error) => {
+        throw error;
+    })
+    .on("progress", (progress) => {
+        console.log(progress.percent);
+    })
+    .load();

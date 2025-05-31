@@ -1,20 +1,53 @@
-export class Videos {
-    constructor(parentId: string, urls: string[]) {
-        const container = document.getElementById(parentId);
-        if (!container) {
-            throw new Error(`Element with ID "${parentId}" not found.`);
-        }
+import { EventEmitter } from "./event.js";
 
-        urls.forEach((url) => {
-            container.appendChild(new Video(url).element);
+interface VideoEvents {
+    load: void;
+}
+
+interface VideoGroupEvents {
+    loading: void;
+    progress: { count: number; total: number; percent: number };
+    error: Error;
+    loaded: void;
+}
+
+export class VideoGroup extends EventEmitter<VideoGroupEvents> {
+    private readonly _parent: HTMLElement | null;
+    constructor(parentId: string, private readonly _urls: string[]) {
+        super();
+        this._parent = document.getElementById(parentId);
+        if (!this._parent) {
+            this.emit(
+                "error",
+                new Error(`Element with ID "${parentId}" not found.`)
+            );
+            return;
+        }
+    }
+
+    public load(): void {
+        this.emit("loading");
+        this.emit("progress", {
+            count: 0,
+            total: this._urls.length,
+            percent: 100.0,
         });
+        this._urls.forEach((url) => {
+            const video = new Video(url);
+            this._parent!.appendChild(video.element);
+            video.on("load", () => {
+                console.log(`${url} loaded.`);
+            });
+        });
+        this.emit("loaded");
     }
 }
 
-class Video {
+class Video extends EventEmitter<VideoEvents> {
     private readonly _element: HTMLElement;
 
     constructor(private readonly url: string) {
+        super();
         this._element = this.createElement();
     }
 
@@ -38,6 +71,7 @@ class Video {
             () => {
                 wrapper.classList.remove("loading");
                 iframe.classList.add("loaded");
+                this.emit("load");
             },
             true
         );
