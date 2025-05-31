@@ -3,7 +3,6 @@ import { EventEmitter } from "./event.js";
 interface VideoGroupEvents {
     loading: void;
     progress: VideoGroupProgress;
-    error: Error;
     loaded: void;
 }
 
@@ -18,16 +17,14 @@ interface VideoEvents {
 }
 
 export class VideoGroup extends EventEmitter<VideoGroupEvents> {
-    private readonly _parent: HTMLElement | null;
+    private readonly _parent: HTMLElement;
     constructor(parentId: string, private readonly _urls: string[]) {
         super();
-        this._parent = document.getElementById(parentId);
-        if (!this._parent) {
-            this.emit(
-                "error",
-                new Error(`Element with ID "${parentId}" not found.`)
-            );
+        const parent = document.getElementById(parentId);
+        if (!parent) {
+            throw new Error(`Element with ID "${parentId}" not found.`);
         }
+        this._parent = parent;
     }
 
     public load(): void {
@@ -36,7 +33,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         this.emit("progress", this.getProgress(0));
         this._urls.forEach((url) => {
             const video = new Video(url);
-            this._parent!.appendChild(video.element);
+            this._parent.appendChild(video.element);
             video.on("load", () => {
                 current += 1;
                 this.emit("progress", this.getProgress(current));

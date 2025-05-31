@@ -22,9 +22,6 @@ const URLS = [
 ];
 
 new VideoGroup("music-video-grid", URLS)
-    .on("error", (error) => {
-        throw error;
-    })
     .on("progress", (progress) => {
         console.log(progress.percent);
     })
