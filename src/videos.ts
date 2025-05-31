@@ -18,7 +18,7 @@ interface VideoEvents {
 
 export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     private readonly _parent: HTMLElement;
-    constructor(parentId: string, private readonly _urls: string[]) {
+    constructor(parentId: string, private readonly urls: string[]) {
         super();
         const parent = document.getElementById(parentId);
         if (!parent) {
@@ -31,7 +31,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         this.emit("loading");
         let current = 0;
         this.emit("progress", this.getProgress(0));
-        this._urls.forEach((url) => {
+        this.urls.forEach((url) => {
             const video = new Video(url);
             this._parent.appendChild(video.element);
             video.on("load", () => {
@@ -46,22 +46,22 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     private getProgress(currentCount: number): VideoGroupProgress {
         return {
             count: currentCount,
-            total: this._urls.length,
-            percent: Math.round((currentCount / this._urls.length) * 100.0),
+            total: this.urls.length,
+            percent: Math.round((currentCount / this.urls.length) * 100.0),
         };
     }
 }
 
 class Video extends EventEmitter<VideoEvents> {
-    private readonly _element: HTMLElement;
+    private readonly video: HTMLElement;
 
-    constructor(private readonly _url: string) {
+    constructor(private readonly url: string) {
         super();
-        this._element = this.createElement();
+        this.video = this.createElement();
     }
 
     public get element(): HTMLElement {
-        return this._element;
+        return this.video;
     }
 
     private createElement(): HTMLElement {
@@ -69,7 +69,7 @@ class Video extends EventEmitter<VideoEvents> {
         wrapper.classList.add("video-frame", "loading");
 
         const iframe = document.createElement("iframe");
-        iframe.src = this._url;
+        iframe.src = this.url;
         iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
@@ -80,7 +80,7 @@ class Video extends EventEmitter<VideoEvents> {
             () => {
                 wrapper.classList.remove("loading");
                 iframe.classList.add("loaded");
-                this.emit("load", this._url);
+                this.emit("load", this.url);
             },
             true
         );
