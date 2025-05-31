@@ -17,14 +17,14 @@ interface VideoEvents {
 }
 
 export class VideoGroup extends EventEmitter<VideoGroupEvents> {
-    private readonly _parent: HTMLElement;
+    private readonly parent: HTMLElement;
     constructor(parentId: string, private readonly urls: string[]) {
         super();
-        const parent = document.getElementById(parentId);
-        if (!parent) {
+        const element = document.getElementById(parentId);
+        if (!element) {
             throw new Error(`Element with ID "${parentId}" not found.`);
         }
-        this._parent = parent;
+        this.parent = element;
     }
 
     public load(): void {
@@ -33,11 +33,10 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         this.emit("progress", this.getProgress(0));
         this.urls.forEach((url) => {
             const video = new Video(url);
-            this._parent.appendChild(video.element);
+            this.parent.appendChild(video.element);
             video.on("load", () => {
                 current += 1;
                 this.emit("progress", this.getProgress(current));
-                console.log(`${url} loaded.`);
             });
         });
         this.emit("loaded");
@@ -73,7 +72,7 @@ class Video extends EventEmitter<VideoEvents> {
         iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
-        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        iframe.referrerPolicy = "no-referrer";
 
         iframe.addEventListener(
             "load",
