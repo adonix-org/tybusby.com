@@ -1,9 +1,5 @@
 import { EventEmitter } from "./event.js";
 
-interface VideoEvents {
-    load: void;
-}
-
 interface VideoGroupEvents {
     loading: void;
     progress: VideoGroupProgress;
@@ -17,6 +13,10 @@ interface VideoGroupProgress {
     percent: number;
 }
 
+interface VideoEvents {
+    load: string;
+}
+
 export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     private readonly _parent: HTMLElement | null;
     constructor(parentId: string, private readonly _urls: string[]) {
@@ -27,7 +27,6 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
                 "error",
                 new Error(`Element with ID "${parentId}" not found.`)
             );
-            return;
         }
     }
 
@@ -59,7 +58,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
 class Video extends EventEmitter<VideoEvents> {
     private readonly _element: HTMLElement;
 
-    constructor(private readonly url: string) {
+    constructor(private readonly _url: string) {
         super();
         this._element = this.createElement();
     }
@@ -73,7 +72,7 @@ class Video extends EventEmitter<VideoEvents> {
         wrapper.classList.add("video-frame", "loading");
 
         const iframe = document.createElement("iframe");
-        iframe.src = this.url;
+        iframe.src = this._url;
         iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
@@ -84,7 +83,7 @@ class Video extends EventEmitter<VideoEvents> {
             () => {
                 wrapper.classList.remove("loading");
                 iframe.classList.add("loaded");
-                this.emit("load");
+                this.emit("load", this._url);
             },
             true
         );
