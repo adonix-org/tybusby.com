@@ -19,7 +19,7 @@
     --light-header-box-shadow: rgba(0, 0, 0, 0.8);
 
     /* progress bar */
-    --progress-bar-color: rgb(255 0 51);
+    --progress-color: rgb(255 0 51);
 }
 
 html,
@@ -54,13 +54,13 @@ footer {
     padding: 15px 0px 10px 20px;
 }
 
-.progress {
-    height: 2px;
+.progress-bar {
+    height: 3px;
     background-color: var(--light-footer-color);
 }
 
-.progress-bar {
-    background-color: var(--progress-bar-color);
+.progress {
+    background-color: var(--progress-color);
     height: 100%;
     width: 0%;
 }
@@ -84,7 +84,7 @@ footer {
         background-color: var(--dark-background-color);
     }
 
-    .progress {
+    .progress-bar {
         background-color: var(--dark-border-color);
     }
 }
