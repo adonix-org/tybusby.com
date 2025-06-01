@@ -25,7 +25,7 @@ const p = document.getElementById("progress");
 new VideoGroup("music-video-grid", URLS)
     .on("progress", (progress) => {
         p!.style.width = `${progress.percent}%`;
-        console.log(p, progress.percent);
+        console.log(p, p!.style.width);
     })
     .on("loaded", () => {
         console.log("Loaded...");

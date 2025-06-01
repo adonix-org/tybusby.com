@@ -58,9 +58,9 @@ footer {
 }
 
 .progress {
-    background-color: rgb(255, 40, 40);
+    background-color: rgb(255 0 51);
     height: 100%;
-    width: 50%;
+    width: 0%;
 }
 
 @media (prefers-color-scheme: dark) {
