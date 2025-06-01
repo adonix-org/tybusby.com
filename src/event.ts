@@ -1,5 +1,4 @@
 type EventsMap = Record<string, any>;
-
 type EventArg<K, T> = T extends void ? [event: K] : [event: K, data: T];
 type Listener<T> = T extends void ? () => void : (data: T) => void;
 
