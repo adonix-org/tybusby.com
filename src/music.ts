@@ -21,8 +21,20 @@ const URLS = [
     `${YT_BASE_URL}/DeumyOzKqgI`, // Adele - Skyfall
 ];
 
+const p = document.getElementById("progress");
 new VideoGroup("music-video-grid", URLS)
     .on("progress", (progress) => {
-        console.log(progress.percent);
+        p!.style.width = `${progress.percent}%`;
+        console.log(p, progress.percent);
+    })
+    .on("loaded", () => {
+        console.log("Loaded...");
+        p!.style.width = `100%`;
+        setTimeout(() => {
+            p!.style.width = `0%`;
+        }, 500);
+    })
+    .on("loading", () => {
+        console.log("Loading...");
     })
     .load();

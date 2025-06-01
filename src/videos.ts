@@ -37,9 +37,11 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
             video.on("load", () => {
                 current += 1;
                 this.emit("progress", this.getProgress(current));
+                if (current === this.urls.length) {
+                    this.emit("loaded");
+                }
             });
         });
-        this.emit("loaded");
     }
 
     private getProgress(currentCount: number): VideoGroupProgress {

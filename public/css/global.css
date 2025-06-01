@@ -41,7 +41,6 @@ main {
 
 footer {
     align-items: center;
-    border-top: 3px solid var(--light-border-color);
     background-color: var(--light-footer-background-color);
     color: var(--light-footer-color);
     display: flex;
@@ -50,6 +49,18 @@ footer {
 
 .avatar {
     padding: 15px 0px 10px 20px;
+}
+
+.progress-container {
+    height: 10px;
+    width: 100%;
+    background-color: white;
+}
+
+.progress {
+    background-color: rgb(255, 40, 40);
+    height: 100%;
+    width: 50%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -65,6 +76,5 @@ footer {
 
     footer {
         background-color: var(--dark-background-color);
-        border-top: solid 3px var(--dark-border-color);
     }
 }
