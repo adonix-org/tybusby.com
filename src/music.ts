@@ -21,7 +21,7 @@ const URLS = [
     `${YT_BASE_URL}/DeumyOzKqgI`, // Adele - Skyfall
 ];
 
-const p = document.getElementById("progress");
+const p = document.getElementById("progress-bar");
 new VideoGroup("music-video-grid", URLS)
     .on("progress", (progress) => {
         p!.style.width = `${progress.percent}%`;

@@ -17,6 +17,9 @@
     --light-footer-background-color: rgb(62 62 62);
     --light-footer-color: rgb(178, 178, 178);
     --light-header-box-shadow: rgba(0, 0, 0, 0.8);
+
+    /* progress bar */
+    --progress-bar-color: rgb(255 0 51);
 }
 
 html,
@@ -40,27 +43,30 @@ main {
 }
 
 footer {
-    align-items: center;
+    display: flex;
+    flex-direction: column;
     background-color: var(--light-footer-background-color);
     color: var(--light-footer-color);
     display: flex;
-    padding: 0.5em;
 }
 
 .avatar {
     padding: 15px 0px 10px 20px;
 }
 
-.progress-container {
-    height: 3px;
-    width: 100%;
-    background-color: white;
+.progress {
+    height: 2px;
+    background-color: var(--light-footer-color);
 }
 
-.progress {
-    background-color: rgb(255 0 51);
+.progress-bar {
+    background-color: var(--progress-bar-color);
     height: 100%;
     width: 0%;
+}
+
+.copyright {
+    padding: 8px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -76,5 +82,9 @@ footer {
 
     footer {
         background-color: var(--dark-background-color);
+    }
+
+    .progress {
+        background-color: var(--dark-border-color);
     }
 }
