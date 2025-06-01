@@ -4,8 +4,8 @@ const YT_BASE_URL = "https://www.youtube-nocookie.com/embed";
 
 const URLS = [
     `${YT_BASE_URL}/vmDDOFXSgAs`, // Dave Brubeck - Take Five
-    `${YT_BASE_URL}/xTgKRCXybSM`, // A Perfect Circle - Judith
     `${YT_BASE_URL}/ag6KMH0UlVM`, // Sting - I Burn For You
+    `${YT_BASE_URL}/xTgKRCXybSM`, // A Perfect Circle - Judith
     `${YT_BASE_URL}/KHR6HkHySWY`, // Ray Charles - It's Not Easy Being Green
     `${YT_BASE_URL}/cRyKCJUXehM`, // Colin Hay - Land Down Under
     `${YT_BASE_URL}/-xKM3mGt2pE`, // A-Ha - Take On Me (Unplugged)
