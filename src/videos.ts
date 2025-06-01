@@ -72,7 +72,7 @@ class Video extends EventEmitter<VideoEvents> {
         iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
-        iframe.referrerPolicy = "no-referrer";
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
 
         iframe.addEventListener(
             "load",
