@@ -21,17 +21,22 @@ const URLS = [
     `${YT_BASE_URL}/DeumyOzKqgI`, // Adele - Skyfall
 ];
 
+// TODO: Clean up progress
 const p = document.getElementById("progress");
+if (!p) {
+    throw new Error(`Element with ID "progress" not found.`);
+}
+
 new VideoGroup("music-video-grid", URLS)
     .on("progress", (progress) => {
-        p!.style.width = `${progress.percent}%`;
-        console.log(p, p!.style.width);
+        p.style.width = `${progress.percent}%`;
+        console.log(p, p.style.width);
     })
     .on("loaded", () => {
         console.log("Loaded...");
-        p!.style.width = `100%`;
+        p.style.width = `100%`;
         setTimeout(() => {
-            p!.style.width = `0%`;
+            p.style.width = `0%`;
         }, 500);
     })
     .on("loading", () => {
