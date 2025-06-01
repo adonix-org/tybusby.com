@@ -46,7 +46,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         return {
             count: currentCount,
             total: this.urls.length,
-            percent: Math.round((currentCount / this.urls.length) * 100.0),
+            percent: Math.round((currentCount / this.urls.length) * 100),
         };
     }
 }
