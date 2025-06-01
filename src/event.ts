@@ -1,15 +1,16 @@
 type EventsMap = Record<string, any>;
 
 type EventArg<K, T> = T extends void ? [event: K] : [event: K, data: T];
+type Listener<T> = T extends void ? () => void : (data: T) => void;
 
 export class EventEmitter<TEvents extends EventsMap> {
     private listeners: {
-        [K in keyof TEvents]?: Array<(data: TEvents[K]) => void>;
+        [K in keyof TEvents]?: Array<Listener<TEvents[K]>>;
     } = {};
 
     public on<K extends keyof TEvents>(
         event: K,
-        listener: (data: TEvents[K]) => void
+        listener: Listener<TEvents[K]>
     ): this {
         (this.listeners[event] ||= []).push(listener);
         return this;
@@ -17,7 +18,7 @@ export class EventEmitter<TEvents extends EventsMap> {
 
     public off<K extends keyof TEvents>(
         event: K,
-        listener: (data: TEvents[K]) => void
+        listener: Listener<TEvents[K]>
     ): this {
         this.listeners[event] = this.listeners[event]?.filter(
             (l) => l !== listener
