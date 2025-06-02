@@ -75,8 +75,10 @@ class Video extends EventEmitter<VideoEvents> {
     private createElement(): HTMLElement {
         const wrapper = document.createElement("div");
         wrapper.classList.add("video-frame");
+        wrapper.tabIndex = -1;
 
         const iframe = document.createElement("iframe");
+        iframe.tabIndex = 0;
         iframe.src = this.url;
         iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
