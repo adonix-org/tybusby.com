@@ -33,15 +33,15 @@ export class Progress {
 
     public complete(ms: number = 500): void {
         const delay = Math.max(0, ms);
-        this.setPercent(100);
-        setTimeout(() => this.setPercent(0), delay);
+        this.value = 100;
+        setTimeout(() => (this.value = 0), delay);
     }
 
-    public set(data: ProgressData): void {
-        this.setPercent(data.percent);
+    public set data(data: ProgressData) {
+        this.value = data.percent;
     }
 
-    public setPercent(percent: number) {
+    public set value(percent: number) {
         percent = Math.max(0, Math.min(100, percent));
         this.progress.style.width = `${percent}%`;
     }
