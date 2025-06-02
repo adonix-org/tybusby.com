@@ -43,19 +43,20 @@ export class Progress {
         setTimeout(() => (this.percent = 0), delay);
     }
 
-    public set data(data: ProgressData) {
-        this.percent = data.percent;
-    }
-
     public set percent(percent: number) {
-        percent = Math.max(0, Math.min(100, percent));
-        this.progress.style.width = `${percent}%`;
+        this.progress.style.width = `${Math.max(0, Math.min(100, percent))}%`;
     }
 
-    public static calculate(count: number, total: number): ProgressData {
+    public get percent(): number {
+        const width = this.progress.style.width;
+        const value = width ? parseFloat(width) : 0;
+        return Math.min(100, Math.max(0, value));
+    }
+
+    public static calculate(current: number, total: number): ProgressData {
         if (total === 0) return { count: 0, total: 0, percent: 0 };
 
-        count = Math.min(count, total);
+        const count = Math.min(current, total);
         return {
             count,
             total,
