@@ -33,6 +33,6 @@ new VideoGroup("music-video-grid", URLS)
     })
     .on("loaded", () => {
         progress.complete();
-        console.log("Loaded...");
+        console.log("Loaded.");
     })
     .load();

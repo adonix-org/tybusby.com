@@ -27,6 +27,9 @@ export class Progress {
     }
 
     public static getProgress(current: number, total: number): ProgressData {
+        if (current > total) {
+            current = total;
+        }
         return total === 0
             ? { count: 0, total: 0, percent: 0 }
             : {
