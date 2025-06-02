@@ -32,9 +32,10 @@ export class Progress {
     }
 
     /**
-     * The activity for this progress bar has finished.
-     * @param holdMs - The number of milliseconds the progress
-     * will be shown as full before resetting to zero.
+     * The activity for this progress bar finished.
+     *
+     * @param holdMs - number of milliseconds the progress
+     * will be shown at 100% before resetting to zero.
      */
     public complete(holdMs: number = 500): void {
         const delay = Math.max(0, holdMs);
