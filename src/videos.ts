@@ -1,15 +1,10 @@
 import { EventEmitter } from "./event.js";
+import { Progress, ProgressData } from "./progress.js";
 
 interface VideoGroupEvents {
     loading: void;
-    progress: VideoGroupProgress;
+    progress: ProgressData;
     loaded: void;
-}
-
-interface VideoGroupProgress {
-    count: number;
-    total: number;
-    percent: number;
 }
 
 interface VideoEvents {
@@ -30,26 +25,21 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     public load(): void {
         this.emit("loading");
         let current = 0;
-        this.emit("progress", this.getProgress(0));
+        this.emit("progress", Progress.getProgress(current, this.urls.length));
         this.urls.forEach((url) => {
             const video = new Video(url);
             this.parent.appendChild(video.element);
             video.on("load", () => {
                 current += 1;
-                this.emit("progress", this.getProgress(current));
+                this.emit(
+                    "progress",
+                    Progress.getProgress(current, this.urls.length)
+                );
                 if (current === this.urls.length) {
                     this.emit("loaded");
                 }
             });
         });
-    }
-
-    private getProgress(currentCount: number): VideoGroupProgress {
-        return {
-            count: currentCount,
-            total: this.urls.length,
-            percent: Math.round((currentCount / this.urls.length) * 100),
-        };
     }
 }
 

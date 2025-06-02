@@ -1,3 +1,4 @@
+import { Progress } from "./progress.js";
 import { VideoGroup } from "./videos.js";
 
 const YT_BASE_URL = "https://www.youtube-nocookie.com/embed";
@@ -21,25 +22,17 @@ const URLS = [
     `${YT_BASE_URL}/DeumyOzKqgI`, // Adele - Skyfall
 ];
 
-// TODO: Clean up progress
-const p = document.getElementById("progress");
-if (!p) {
-    throw new Error(`Element with ID "progress" not found.`);
-}
+const progress = new Progress();
 
 new VideoGroup("music-video-grid", URLS)
-    .on("progress", (progress) => {
-        p.style.width = `${progress.percent}%`;
-        console.log(p, p.style.width);
-    })
-    .on("loaded", () => {
-        console.log("Loaded...");
-        p.style.width = `100%`;
-        setTimeout(() => {
-            p.style.width = `0%`;
-        }, 500);
+    .on("progress", (data) => {
+        progress.setProgress(data);
     })
     .on("loading", () => {
         console.log("Loading...");
+    })
+    .on("loaded", () => {
+        progress.complete();
+        console.log("Loaded...");
     })
     .load();
