@@ -42,7 +42,7 @@ const progress = new Progress();
 
 new VideoGroup("music-video-grid", URLS)
     .on("progress", (data) => {
-        progress.setProgress(data);
+        progress.set(data);
     })
     .on("loading", () => {
         console.log("Loading...");

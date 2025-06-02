@@ -24,7 +24,7 @@ interface VideoGroupEvents {
 }
 
 interface VideoEvents {
-    load: string;
+    loaded: string;
 }
 
 export class VideoGroup extends EventEmitter<VideoGroupEvents> {
@@ -40,18 +40,18 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
 
     public load(): void {
         this.emit("loading");
+
         let current = 0;
-        this.emit("progress", Progress.getProgress(current, this.urls.length));
+        const total = this.urls.length;
+
+        this.emit("progress", Progress.calculate(current, total));
         this.urls.forEach((url) => {
             const video = new Video(url);
             this.parent.appendChild(video.element);
-            video.on("load", () => {
+            video.on("loaded", () => {
                 current += 1;
-                this.emit(
-                    "progress",
-                    Progress.getProgress(current, this.urls.length)
-                );
-                if (current === this.urls.length) {
+                this.emit("progress", Progress.calculate(current, total));
+                if (current === total) {
                     this.emit("loaded");
                 }
             });
@@ -73,7 +73,7 @@ class Video extends EventEmitter<VideoEvents> {
 
     private createElement(): HTMLElement {
         const wrapper = document.createElement("div");
-        wrapper.classList.add("video-frame", "loading");
+        wrapper.classList.add("video-frame");
 
         const iframe = document.createElement("iframe");
         iframe.src = this.url;
@@ -85,9 +85,9 @@ class Video extends EventEmitter<VideoEvents> {
         iframe.addEventListener(
             "load",
             () => {
-                wrapper.classList.remove("loading");
+                wrapper.classList.add("loaded");
                 iframe.classList.add("loaded");
-                this.emit("load", this.url);
+                this.emit("loaded", this.url);
             },
             true
         );

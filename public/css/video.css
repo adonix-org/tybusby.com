@@ -6,18 +6,19 @@
 }
 
 .video-frame {
-    aspect-ratio: 16/9;
-    border: none;
-}
-
-.video-frame.loading {
     animation: bg-video-loading 2s ease-in-out infinite;
+    aspect-ratio: 16/9;
     border: 1px solid;
     border-color: darkgray;
     background-image: url("../img/play.png");
     background-size: 20%;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.video-frame.loaded {
+    animation: none;
+    border: none;
 }
 
 @keyframes bg-video-loading {
@@ -36,7 +37,6 @@
     height: 100%;
     width: 100%;
     opacity: 0;
-    /* transition: opacity 1s ease-in-out; */
 }
 
 .video-frame > iframe.loaded {

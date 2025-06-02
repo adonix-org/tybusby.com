@@ -31,18 +31,22 @@ export class Progress {
         this.progress = element;
     }
 
-    public complete(): void {
-        this.progress.style.width = `100%`;
-        setTimeout(() => {
-            this.progress.style.width = `0%`;
-        }, 500);
+    public complete(ms: number = 500): void {
+        const delay = Math.max(0, ms);
+        this.setPercent(100);
+        setTimeout(() => this.setPercent(0), delay);
     }
 
-    public setProgress(data: ProgressData): void {
-        this.progress.style.width = `${data.percent}%`;
+    public set(data: ProgressData): void {
+        this.setPercent(data.percent);
     }
 
-    public static getProgress(current: number, total: number): ProgressData {
+    public setPercent(percent: number) {
+        percent = Math.max(0, Math.min(100, percent));
+        this.progress.style.width = `${percent}%`;
+    }
+
+    public static calculate(current: number, total: number): ProgressData {
         if (current > total) {
             current = total;
         }
