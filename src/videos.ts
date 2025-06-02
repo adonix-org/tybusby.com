@@ -75,7 +75,6 @@ class Video extends EventEmitter<VideoEvents> {
     private createElement(): HTMLElement {
         const wrapper = document.createElement("div");
         wrapper.classList.add("video-frame");
-        wrapper.tabIndex = -1;
 
         const iframe = document.createElement("iframe");
         iframe.src = this.url;
