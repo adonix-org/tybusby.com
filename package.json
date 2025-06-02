@@ -2,6 +2,7 @@
     "name": "tybusby.com",
     "version": "1.0.0",
     "description": "Ty Busby Personal Website",
+    "type": "module",
     "scripts": {
         "build": "tsc"
     },

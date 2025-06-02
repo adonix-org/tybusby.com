@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "target": "ES6",
+        "target": "ES2020",
         "moduleDetection": "auto",
-        "module": "ES6",
+        "module": "esnext",
         "rootDir": "src",
         "moduleResolution": "bundler",
         "outDir": "public/js",
