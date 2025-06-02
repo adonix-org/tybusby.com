@@ -29,6 +29,7 @@ interface VideoEvents {
 
 export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     private readonly parent: HTMLElement;
+
     constructor(parentId: string, private readonly urls: string[]) {
         super();
         const element = document.getElementById(parentId);
