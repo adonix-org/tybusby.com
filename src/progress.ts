@@ -21,14 +21,15 @@ export interface ProgressData {
 }
 
 export class Progress {
-    private progress: HTMLElement;
+    private _element: HTMLElement;
+    private _percent: number = 0;
 
     constructor(id: string = "progress") {
         const element = document.getElementById(id);
         if (!element) {
-            throw new Error(`Element with ID "${id}" not found.`);
+            throw new Error(`Progress element with ID "${id}" not found.`);
         }
-        this.progress = element;
+        this._element = element;
     }
 
     /**
@@ -44,13 +45,12 @@ export class Progress {
     }
 
     public set percent(percent: number) {
-        this.progress.style.width = `${Math.max(0, Math.min(100, percent))}%`;
+        this._percent = Math.max(0, Math.min(100, percent));
+        this._element.style.width = `${this._percent}%`;
     }
 
     public get percent(): number {
-        const width = this.progress.style.width;
-        const value = width ? parseFloat(width) : 0;
-        return Math.min(100, Math.max(0, value));
+        return this._percent;
     }
 
     public static calculate(current: number, total: number): ProgressData {
