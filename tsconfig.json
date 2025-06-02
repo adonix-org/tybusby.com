@@ -5,6 +5,7 @@
         "module": "esnext",
         "rootDir": "src",
         "moduleResolution": "bundler",
+        "lib": ["DOM", "ES2020"],
         "outDir": "public/js",
         "esModuleInterop": true,
         "strict": true,
