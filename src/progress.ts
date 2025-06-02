@@ -51,10 +51,10 @@ export class Progress {
         this.progress.style.width = `${percent}%`;
     }
 
-    public static calculate(current: number, total: number): ProgressData {
+    public static calculate(count: number, total: number): ProgressData {
         if (total === 0) return { count: 0, total: 0, percent: 0 };
 
-        const count = Math.min(current, total);
+        count = Math.min(count, total);
         return {
             count,
             total,
