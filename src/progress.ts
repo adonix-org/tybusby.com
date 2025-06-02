@@ -31,31 +31,34 @@ export class Progress {
         this.progress = element;
     }
 
-    public complete(ms: number = 500): void {
-        const delay = Math.max(0, ms);
-        this.value = 100;
-        setTimeout(() => (this.value = 0), delay);
+    /**
+     * The activity for this progress bar has finished.
+     * @param holdMs - The number of milliseconds the progress
+     * will be shown as full before resetting to zero.
+     */
+    public complete(holdMs: number = 500): void {
+        const delay = Math.max(0, holdMs);
+        this.percent = 100;
+        setTimeout(() => (this.percent = 0), delay);
     }
 
     public set data(data: ProgressData) {
-        this.value = data.percent;
+        this.percent = data.percent;
     }
 
-    public set value(percent: number) {
+    public set percent(percent: number) {
         percent = Math.max(0, Math.min(100, percent));
         this.progress.style.width = `${percent}%`;
     }
 
     public static calculate(current: number, total: number): ProgressData {
-        if (current > total) {
-            current = total;
-        }
-        return total === 0
-            ? { count: 0, total: 0, percent: 0 }
-            : {
-                  count: current,
-                  total: total,
-                  percent: Math.round((current / total) * 100),
-              };
+        if (total === 0) return { count: 0, total: 0, percent: 0 };
+
+        const count = Math.min(current, total);
+        return {
+            count,
+            total,
+            percent: Math.round((count / total) * 100),
+        };
     }
 }
