@@ -39,18 +39,21 @@ export class Progress {
      * will be shown at 100% before resetting to zero.
      */
     public complete(holdMs: number = 500): void {
-        const delay = Math.max(0, holdMs);
         this.percent = 100;
-        setTimeout(() => (this.percent = 0), delay);
+        setTimeout(() => (this.percent = 0), Math.max(0, holdMs));
     }
 
     public set percent(percent: number) {
         this._percent = Math.max(0, Math.min(100, percent));
-        this._element.style.width = `${this._percent}%`;
+        this.refresh();
     }
 
     public get percent(): number {
         return this._percent;
+    }
+
+    private refresh(): void {
+        this._element.style.width = `${this._percent}%`;
     }
 
     public static calculate(current: number, total: number): ProgressData {
