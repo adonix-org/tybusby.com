@@ -25,7 +25,6 @@ const URLS = [
     `${YT_BASE_URL}/KHR6HkHySWY`, // Ray Charles - It's Not Easy Being Green
     `${YT_BASE_URL}/xTgKRCXybSM`, // A Perfect Circle - Judith
     `${YT_BASE_URL}/cRyKCJUXehM`, // Colin Hay - Land Down Under
-    `${YT_BASE_URL}/-xKM3mGt2pE`, // A-Ha - Take On Me (Unplugged)
     `${YT_BASE_URL}/4N82TLB03Vk`, // David Gilmour - Fender Guitar 50th Anniversary
     `${YT_BASE_URL}/wwXeSk2Helo`, // Doris Day - Autumn Leaves
     `${YT_BASE_URL}/8uxt-FnNy2I`, // Coldplay - Don't Panic
