@@ -41,6 +41,18 @@ export class EventEmitter<TEvents extends EventsMap> {
         return this;
     }
 
+    public once<K extends keyof TEvents>(
+        event: K,
+        listener: Listener<TEvents[K]>
+    ): this {
+        const wrapper: Listener<TEvents[K]> = ((...args: any[]) => {
+            this.off(event, wrapper);
+            (listener as any)(...args);
+        }) as Listener<TEvents[K]>;
+
+        return this.on(event, wrapper);
+    }
+
     protected emit<K extends keyof TEvents>(
         ...args: EventArg<K, TEvents[K]>
     ): void {

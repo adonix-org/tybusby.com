@@ -39,7 +39,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         this.parent = element;
     }
 
-    public load(): void {
+    public load(): this {
         this.emit("loading");
 
         let current = 0;
@@ -57,6 +57,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
                 }
             });
         });
+        return this;
     }
 }
 

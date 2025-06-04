@@ -45,10 +45,10 @@ new VideoGroup("music-video-grid", URLS)
         progress.percent = data.percent;
         console.log(progress.percent);
     })
-    .on("loading", () => {
+    .once("loading", () => {
         console.log("Loading...");
     })
-    .on("loaded", () => {
+    .once("loaded", function () {
         progress.complete();
         console.log("Loaded.");
     })
