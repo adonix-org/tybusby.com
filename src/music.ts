@@ -30,6 +30,7 @@ const URLS = [
     `${YT_BASE_URL}/8uxt-FnNy2I`, // Coldplay - Don't Panic
     `${YT_BASE_URL}/Rc7_lCfbQP0`, // Bobby Darin - Beyond The Sea
     `${YT_BASE_URL}/2SF1iLXSQto`, // Tom Petty - It's Good To Be King
+    `${YT_BASE_URL}/Fb77jRwSky8`, // Frou Frou - Flicks
     `${YT_BASE_URL}/ggGzE5KfCio`, // Ray Charles - Georgia On My Mind
     `${YT_BASE_URL}/rPOlakkBlj8`, // Ella Fitzgerald - Misty
     `${YT_BASE_URL}/ivdh3zvoQGw`, // Bjork - Heirloom
