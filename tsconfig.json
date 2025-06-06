@@ -4,7 +4,7 @@
         "outDir": "public/js",
         "target": "ES2020",
         "module": "esnext",
-        "moduleResolution": "bundler",
+        "moduleResolution": "node",
         "moduleDetection": "auto",
         "lib": ["DOM", "ES2020"],
         "esModuleInterop": true,

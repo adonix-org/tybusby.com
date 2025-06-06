@@ -4,7 +4,8 @@
     "description": "Ty Busby Personal Website",
     "type": "module",
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "start": "ts-node --esm ./src/weather/weather.ts"
     },
     "keywords": [
         "ty busby",
@@ -17,6 +18,7 @@
     },
     "license": "Apache-2.0",
     "devDependencies": {
+        "ts-node": "^10.9.2",
         "typescript": "^5.8.3"
     }
 }
