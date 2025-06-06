@@ -30,4 +30,8 @@ const response = await fetch(
 if (response.ok) {
     const observation: Observation = await response.json();
     console.log(observation);
+    const presentWeather = observation.properties.presentWeather;
+    presentWeather.forEach((value) => {
+        console.log(value.weather);
+    });
 }

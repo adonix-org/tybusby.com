@@ -36,6 +36,7 @@ interface Properties {
     timestamp: Date;
     rawMessage: string;
     textDescription: string;
+    presentWeather: MetarPhenomenon[];
     icon: string;
     temperature: QuantitativeValue;
     dewpoint: QuantitativeValue;
@@ -63,6 +64,39 @@ interface QuantitativeValue {
 }
 
 type QualityControl = "Z" | "C" | "S" | "V" | "X" | "Q" | "G" | "B" | "T";
+
+interface MetarPhenomenon {
+    intensity: string | null;
+    modifier: string | null;
+    rawString: string;
+    weather: WeatherPhenomenon;
+    inVicinity?: boolean;
+}
+
+type WeatherPhenomenon =
+    | "fog_mist"
+    | "dust_storm"
+    | "dust"
+    | "drizzle"
+    | "funnel_cloud"
+    | "fog"
+    | "smoke"
+    | "hail"
+    | "snow_pellets"
+    | "haze"
+    | "ice_crystals"
+    | "ice_pellets"
+    | "dust_whirls"
+    | "spray"
+    | "rain"
+    | "sand"
+    | "snow_grains"
+    | "snow"
+    | "squalls"
+    | "sand_storm"
+    | "thunderstorms"
+    | "unknown"
+    | "volcanic_ash";
 
 interface CloudLayer {
     base: QuantitativeValue;
