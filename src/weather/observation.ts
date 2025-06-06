@@ -63,8 +63,6 @@ interface QuantitativeValue {
     qualityControl?: QualityControl;
 }
 
-type QualityControl = "Z" | "C" | "S" | "V" | "X" | "Q" | "G" | "B" | "T";
-
 interface MetarPhenomenon {
     intensity: string | null;
     modifier: string | null;
@@ -72,6 +70,13 @@ interface MetarPhenomenon {
     weather: WeatherPhenomenon;
     inVicinity?: boolean;
 }
+
+interface CloudLayer {
+    base: QuantitativeValue;
+    amount: string;
+}
+
+type QualityControl = "Z" | "C" | "S" | "V" | "X" | "Q" | "G" | "B" | "T";
 
 type WeatherPhenomenon =
     | "fog_mist"
@@ -97,8 +102,3 @@ type WeatherPhenomenon =
     | "thunderstorms"
     | "unknown"
     | "volcanic_ash";
-
-interface CloudLayer {
-    base: QuantitativeValue;
-    amount: string;
-}
