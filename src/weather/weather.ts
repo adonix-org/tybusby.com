@@ -6,6 +6,7 @@ const response = await fetch(
         method: "GET",
         headers: {
             "User-Agent": "www.tybusby.com (tybusby@gmail.com)",
+            Accept: "application/geo+json",
         },
     }
 );
