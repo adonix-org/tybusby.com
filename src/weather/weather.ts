@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
+import { EventEmitter } from "../event.js";
+import { NationalWeatherService } from "./nws.js";
 import { Observation } from "./observation.js";
 
-const response = await fetch(
-    // Newport News, VA KPHF
-    "https://api.weather.gov/stations/KELM/observations/latest",
-    {
-        method: "GET",
-        headers: {
-            "User-Agent": "www.tybusby.com (tybusby@gmail.com)",
-            Accept: "application/geo+json",
-        },
-    }
-);
-
-if (response.ok) {
-    const observation: Observation = await response.json();
-    console.log(observation);
-    const presentWeather = observation.properties.presentWeather;
-    presentWeather.forEach((value) => {
-        console.log(value.weather);
-    });
+interface ObserverEvents {
+    loaded: Observation;
+    error: Error;
 }
+
+class Observer extends EventEmitter<ObserverEvents> {
+    constructor(private station: String) {
+        super();
+        NationalWeatherService.fetch<Observation>(
+            `/stations/${this.station}/observations/latest`
+        ).then((value) => {
+            console.log(value);
+        });
+    }
+}
+
+new Observer("KELM");
