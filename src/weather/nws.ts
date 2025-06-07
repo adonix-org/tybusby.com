@@ -15,7 +15,7 @@
  */
 
 export abstract class NationalWeatherService<T> {
-    private static readonly API_URL: string = "https://api.weather.gov";
+    private static readonly API_URL = "https://api.weather.gov";
     private static readonly HEADERS = {
         "User-Agent": "www.tybusby.com (tybusby@gmail.com)",
         Accept: "application/geo+json",
