@@ -14,6 +14,10 @@ export class NationalWeatherService {
                 headers: this.HEADERS,
             }
         );
-        return response.json();
+        const data = await response.json();
+        if (!response.ok) {
+            throw data;
+        }
+        return data as T;
     }
 }
