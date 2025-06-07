@@ -25,7 +25,7 @@ export class NationalWeatherService {
 
     public static async fetch<T>(provider: NWSResource): Promise<T> {
         const response = await fetch(
-            `${NationalWeatherService.API_URL}${provider.getResource()}`,
+            `${NationalWeatherService.API_URL}${provider.resource}`,
             {
                 headers: NationalWeatherService.HEADERS,
             }
@@ -39,5 +39,5 @@ export class NationalWeatherService {
 }
 
 export interface NWSResource {
-    getResource(): string;
+    get resource(): string;
 }

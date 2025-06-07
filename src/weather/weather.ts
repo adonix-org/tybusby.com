@@ -35,7 +35,7 @@ class Observer extends EventEmitter<ObserverEvents> implements NWSResource {
             });
     }
 
-    public getResource(): string {
+    public get resource(): string {
         return `/stations/${this.station}/observations/latest`;
     }
 }
