@@ -21,7 +21,7 @@ export class ObservationService extends NationalWeatherService<Observation> {
         super();
     }
 
-    public get resource(): string {
+    protected get resource(): string {
         return `/stations/${this.station}/observations/latest`;
     }
 }

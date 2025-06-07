@@ -16,7 +16,7 @@
 
 import { ObservationService } from "./observation.js";
 
-const stations = ["KELM", "KPHFP"];
+const stations = ["KELM", "KPHF"];
 
 stations.forEach((station) => {
     new ObservationService(station)

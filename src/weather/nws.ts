@@ -35,5 +35,5 @@ export abstract class NationalWeatherService<T> {
         return data as T;
     }
 
-    public abstract get resource(): string;
+    protected abstract get resource(): string;
 }
