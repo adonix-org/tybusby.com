@@ -47,3 +47,11 @@ new Observer("KELM")
     .on("error", (error) => {
         console.log(error);
     });
+
+new Observer("KPHF")
+    .once("success", (observation) => {
+        console.log(observation);
+    })
+    .on("error", (error) => {
+        console.log(error);
+    });
