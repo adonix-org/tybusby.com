@@ -27,7 +27,7 @@ export class NationalWeatherService {
         const response = await fetch(
             `${NationalWeatherService.API_URL}${provider.getResource()}`,
             {
-                headers: this.HEADERS,
+                headers: NationalWeatherService.HEADERS,
             }
         );
         const data = await response.json();
