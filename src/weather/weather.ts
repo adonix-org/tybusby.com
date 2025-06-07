@@ -16,9 +16,15 @@
 
 import { ObservationService } from "./observation.js";
 
-try {
-    console.log(await new ObservationService("KELM").fetch());
-    console.log(await new ObservationService("KPHF").fetch());
-} catch (error) {
-    console.error(error);
-}
+const stations = ["KELM", "KPHFP"];
+
+stations.forEach((station) => {
+    new ObservationService(station)
+        .fetch()
+        .then((observation) => {
+            console.log(observation);
+        })
+        .catch((reason) => {
+            console.error(reason);
+        });
+});
