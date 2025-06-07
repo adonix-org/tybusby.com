@@ -16,5 +16,9 @@
 
 import { ObservationService } from "./observation.js";
 
-console.log(await new ObservationService("KELM").fetch());
-console.log(await new ObservationService("KPHF").fetch());
+try {
+    console.log(await new ObservationService("KELM").fetch());
+    console.log(await new ObservationService("KPHF").fetch());
+} catch (error) {
+    console.error(error);
+}
