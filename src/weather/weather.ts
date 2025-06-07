@@ -27,17 +27,21 @@ class Observer extends EventEmitter<ObserverEvents> {
     constructor(private readonly station: string) {
         super();
         NationalWeatherService.fetch<Observation>(
-            `/stations/${this.station}/observations/lates`
+            `/stations/${this.station}/observations/latester`
         )
             .then((observation) => {
                 this.emit("success", observation);
             })
             .catch((error) => {
-                console.log(error);
+                this.emit("error", error);
             });
     }
 }
 
-new Observer("KELM").once("success", (observation) => {
-    console.log(observation);
-});
+new Observer("KELM")
+    .once("success", (observation) => {
+        console.log(observation);
+    })
+    .on("error", (error) => {
+        console.log(error);
+    });
