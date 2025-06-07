@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-export interface NWSResource {
-    getResource(): string;
-}
-
 export class NationalWeatherService {
     private static readonly API_URL: string = "https://api.weather.gov";
     private static readonly HEADERS: {
@@ -40,4 +36,8 @@ export class NationalWeatherService {
         }
         return data as T;
     }
+}
+
+export interface NWSResource {
+    getResource(): string;
 }
