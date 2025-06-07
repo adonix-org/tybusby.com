@@ -26,7 +26,7 @@ export class ObservationService extends NationalWeatherService<Observation> {
     }
 }
 
-export interface Observation {
+interface Observation {
     id: string;
     type: string;
     geometry: Geometry;
