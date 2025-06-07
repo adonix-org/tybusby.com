@@ -7,9 +7,9 @@ export class NationalWeatherService {
 
     constructor() {}
 
-    public static async fetch<T>(path: string): Promise<T> {
+    public static async fetch<T>(resource: string): Promise<T> {
         const response = await fetch(
-            `${NationalWeatherService.API_URL}${path}`,
+            `${NationalWeatherService.API_URL}${resource}`,
             {
                 headers: this.HEADERS,
             }
