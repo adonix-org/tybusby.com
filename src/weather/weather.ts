@@ -19,12 +19,12 @@ import { NationalWeatherService } from "./nws.js";
 import { Observation } from "./observation.js";
 
 interface ObserverEvents {
-    loaded: Observation;
+    success: Observation;
     error: Error;
 }
 
 class Observer extends EventEmitter<ObserverEvents> {
-    constructor(private station: String) {
+    constructor(private readonly station: string) {
         super();
         NationalWeatherService.fetch<Observation>(
             `/stations/${this.station}/observations/latest`
