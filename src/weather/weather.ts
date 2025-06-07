@@ -28,8 +28,8 @@ class Observer extends EventEmitter<ObserverEvents> {
         super();
         NationalWeatherService.fetch<Observation>(
             `/stations/${this.station}/observations/latest`
-        ).then((value) => {
-            console.log(value);
+        ).then((observation) => {
+            console.log(observation);
         });
     }
 }
