@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Observation } from "./observation";
+import { Observation } from "./observation.js";
 
 const response = await fetch(
     // Newport News, VA KPHF
