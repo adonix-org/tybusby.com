@@ -27,7 +27,7 @@ class Observer extends EventEmitter<ObserverEvents> {
     constructor(private readonly station: string) {
         super();
         NationalWeatherService.fetch<Observation>(
-            `/stations/${this.station}/observations/latester`
+            `/stations/${this.station}/observations/latest`
         )
             .then((observation) => {
                 this.emit("success", observation);
