@@ -17,6 +17,7 @@
 import { Observation } from "./observation";
 
 const response = await fetch(
+    // Newport News, VA KPHF
     "https://api.weather.gov/stations/KELM/observations/latest",
     {
         method: "GET",
