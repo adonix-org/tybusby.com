@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+import { NationalWeatherService } from "./nws.js";
+
+export class ObservationService extends NationalWeatherService<Observation> {
+    constructor(private readonly station: string) {
+        super();
+    }
+
+    public get resource(): string {
+        return `/stations/${this.station}/observations/latest`;
+    }
+}
+
 export interface Observation {
     id: string;
     type: string;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export class NationalWeatherService {
+export abstract class NationalWeatherService<T> {
     private static readonly API_URL: string = "https://api.weather.gov";
     private static readonly HEADERS: {
         "User-Agent": "www.tybusby.com (tybusby@gmail.com)";
@@ -23,9 +23,9 @@ export class NationalWeatherService {
 
     constructor() {}
 
-    public static async fetch<T>(provider: NWSResource): Promise<T> {
+    public async fetch(): Promise<T> {
         const response = await fetch(
-            `${NationalWeatherService.API_URL}${provider.resource}`,
+            `${NationalWeatherService.API_URL}${this.resource}`,
             {
                 headers: NationalWeatherService.HEADERS,
             }
@@ -36,8 +36,6 @@ export class NationalWeatherService {
         }
         return data as T;
     }
-}
 
-export interface NWSResource {
-    get resource(): string;
+    public abstract get resource(): string;
 }

@@ -14,44 +14,7 @@
  * limitations under the License.
  */
 
-import { EventEmitter } from "../event.js";
-import { NationalWeatherService, NWSResource } from "./nws.js";
-import { Observation } from "./observation.js";
+import { ObservationService } from "./observation.js";
 
-interface ObserverEvents {
-    success: Observation;
-    error: Error;
-}
-
-class Observer extends EventEmitter<ObserverEvents> implements NWSResource {
-    constructor(private readonly station: string) {
-        super();
-        NationalWeatherService.fetch<Observation>(this)
-            .then((observation) => {
-                this.emit("success", observation);
-            })
-            .catch((error) => {
-                this.emit("error", error);
-            });
-    }
-
-    public get resource(): string {
-        return `/stations/${this.station}/observations/latest`;
-    }
-}
-
-new Observer("KELM")
-    .once("success", (observation) => {
-        console.log(observation);
-    })
-    .on("error", (error) => {
-        console.log(error);
-    });
-
-new Observer("KPHF")
-    .once("success", (observation) => {
-        console.log(observation);
-    })
-    .on("error", (error) => {
-        console.log(error);
-    });
+console.log(await new ObservationService("KELM").fetch());
+console.log(await new ObservationService("KPHF").fetch());
