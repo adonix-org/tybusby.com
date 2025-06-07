@@ -15,7 +15,7 @@
  */
 
 import { EventEmitter } from "../event.js";
-import { NationalWeatherService } from "./nws.js";
+import { NationalWeatherService, NWSResource } from "./nws.js";
 import { Observation } from "./observation.js";
 
 interface ObserverEvents {
@@ -23,18 +23,20 @@ interface ObserverEvents {
     error: Error;
 }
 
-class Observer extends EventEmitter<ObserverEvents> {
+class Observer extends EventEmitter<ObserverEvents> implements NWSResource {
     constructor(private readonly station: string) {
         super();
-        NationalWeatherService.fetch<Observation>(
-            `/stations/${this.station}/observations/latest`
-        )
+        NationalWeatherService.fetch<Observation>(this)
             .then((observation) => {
                 this.emit("success", observation);
             })
             .catch((error) => {
                 this.emit("error", error);
             });
+    }
+
+    public getResource(): string {
+        return `/stations/${this.station}/observations/latest`;
     }
 }
 
