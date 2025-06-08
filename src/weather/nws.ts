@@ -21,7 +21,7 @@ export abstract class NationalWeatherService<T> {
         Accept: "application/geo+json",
     };
 
-    public async fetch(): Promise<T> {
+    public async get(): Promise<T> {
         const response = await fetch(
             `${NationalWeatherService.API_URL}${this.resource}`,
             {
