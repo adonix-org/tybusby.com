@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { ObservationService } from "./observation.js";
+import { ObservationLatest } from "./observation.js";
 
 const stations = ["KELM", "KPHF"];
 
 stations.forEach((station) => {
-    new ObservationService(station)
+    new ObservationLatest(station)
         .fetch()
         .then((observation) => {
             console.log(observation);

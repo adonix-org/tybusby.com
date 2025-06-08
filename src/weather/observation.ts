@@ -16,7 +16,7 @@
 
 import { NationalWeatherService } from "./nws.js";
 
-export class ObservationService extends NationalWeatherService<Observation> {
+export class ObservationLatest extends NationalWeatherService<Observation> {
     constructor(private readonly station: string) {
         super();
     }
