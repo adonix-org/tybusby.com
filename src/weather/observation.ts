@@ -26,6 +26,21 @@ export class ObservationLatest extends NationalWeatherService<Observation> {
     }
 }
 
+export class Observations extends NationalWeatherService<ObservationCollection> {
+    constructor(private readonly station: string) {
+        super();
+    }
+
+    protected get resource(): string {
+        return `/stations/${this.station}/observations`;
+    }
+}
+
+interface ObservationCollection {
+    type: string;
+    features: Observation[];
+}
+
 interface Observation {
     id: string;
     type: string;
