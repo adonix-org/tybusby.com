@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ObservationLatest } from "./observation.js";
+import { ObservationLatest } from "./observations.js";
 
 const stations = ["KELM", "KPHF"];
 
