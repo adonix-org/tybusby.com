@@ -27,12 +27,12 @@ export class ObservationLatest extends NationalWeatherService<Observation> {
 }
 
 export class Observations extends NationalWeatherService<ObservationCollection> {
-    constructor(private readonly station: string) {
+    constructor(private readonly station: string, private readonly limit = 1) {
         super();
     }
 
     protected get resource(): string {
-        return `/stations/${this.station}/observations`;
+        return `/stations/${this.station}/observations?limit=${this.limit}`;
     }
 }
 
