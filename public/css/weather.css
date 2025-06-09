@@ -26,23 +26,28 @@
 
 .station-name {
     font-size: 14pt;
+    width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .latest-weather {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 1rem;
+}
+
+.cell-1 {
     display: flex;
-    padding-bottom: 0.5rem;
+    gap: 1rem;
 }
 
 .observation-overview {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    padding-left: 1rem;
-}
-
-.observation-spacer {
-    flex: 0 1 100px;
-    min-width: 0;
 }
 
 .observation-details {
@@ -50,7 +55,6 @@
     grid-template-columns: auto 1fr;
     column-gap: 1.5rem;
     white-space: nowrap;
-    padding-left: 1rem;
 }
 
 .static-detail-text {
