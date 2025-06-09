@@ -1,7 +1,6 @@
 .weather-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
     padding: 1rem;
 }
 
@@ -25,15 +24,15 @@
 }
 
 .latest-weather {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    grid-auto-rows: 1fr;
-    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.cell-1 {
+.observation-group {
     display: flex;
     gap: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
 }
 
 .observation-overview {
@@ -42,7 +41,14 @@
     gap: 0.25rem;
 }
 
+.observation-spacer {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 100px;
+}
+
 .observation-details {
+    height: 134px;
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 1.5rem;
@@ -56,7 +62,10 @@
 
 .text-description {
     color: rgb(94, 94, 94);
-    font-size: 23pt;
+    font-size: 18pt;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .current-temps {
