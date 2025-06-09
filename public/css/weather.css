@@ -25,6 +25,43 @@
 }
 
 .station-name {
-    font-weight: bold;
+    font-size: 14pt;
+}
+
+.latest-weather {
+    display: flex;
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+}
+
+.conditions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.text-description {
     color: rgb(94, 94, 94);
+    font-size: 23pt;
+}
+
+.current-temps {
+    display: flex;
+    flex-direction: column;
+}
+
+.current-temp-f {
+    font-size: 45pt;
+    font-weight: bold;
+    line-height: 0.9;
+}
+
+.current-temp-c {
+    font-size: 20pt;
+}
+
+.forecast {
+    border-top: 1px solid lightgray;
+    font-size: 12pt;
+    padding-top: 0.5rem;
 }
