@@ -15,7 +15,7 @@
  */
 
 import { NationalWeatherService } from "./nws.js";
-import { Geometry, QuantitativeValue } from "./types";
+import { Geometry, QuantitativeValue } from "./common.js";
 
 abstract class BaseGridpointForecast<T> extends NationalWeatherService<T> {
     constructor(

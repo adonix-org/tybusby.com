@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { DailyForecast } from "./forecast.js";
+import { HourlyForecast } from "./forecast.js";
 
-new DailyForecast()
+new HourlyForecast()
     .get()
     .then((forecast) => {
         console.log(forecast);

@@ -15,7 +15,7 @@
  */
 
 import { NationalWeatherService } from "./nws.js";
-import { Geometry, QuantitativeValue } from "./types.js";
+import { Geometry, QuantitativeValue } from "./common.js";
 
 export class LatestObservation extends NationalWeatherService<Observation> {
     constructor(private readonly station: string) {
