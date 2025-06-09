@@ -15,7 +15,8 @@
  */
 
 import { NationalWeatherService } from "./nws.js";
-import { Geometry, QuantitativeValue } from "./common.js";
+import { QuantitativeValue } from "./common.js";
+import { Polygon } from "geojson";
 
 abstract class BaseGridpointForecast<T> extends NationalWeatherService<T> {
     constructor(
@@ -50,7 +51,7 @@ type GridpointHourlyForecast = Forecast<GridpointHourlyForecastPeriod>;
 
 interface Forecast<P extends ForecastPeriod> {
     type: string;
-    geometry: Geometry;
+    geometry: Polygon;
     properties: GridpointForecast<P>;
 }
 

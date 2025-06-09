@@ -15,7 +15,8 @@
  */
 
 import { NationalWeatherService } from "./nws.js";
-import { Geometry, QuantitativeValue } from "./common.js";
+import { QuantitativeValue } from "./common.js";
+import { Point } from "geojson";
 
 export class LatestObservation extends NationalWeatherService<Observation> {
     constructor(private readonly station: string) {
@@ -45,7 +46,7 @@ interface ObservationCollection {
 interface Observation {
     id: string;
     type: string;
-    geometry: Geometry;
+    geometry: Point;
     properties: ObservationProperties;
 }
 

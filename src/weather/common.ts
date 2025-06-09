@@ -1,8 +1,3 @@
-export interface Geometry {
-    type: string;
-    coordinates: number[] | Array<Array<number[]>>;
-}
-
 export interface QuantitativeValue {
     unitCode: string;
     value: number | null;
