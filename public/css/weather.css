@@ -51,14 +51,14 @@
     white-space: nowrap;
 }
 
-.static-detail-text {
-    font-weight: 500;
-    color: rgb(77, 77, 77);
-}
-
 .text-description {
     color: rgb(94, 94, 94);
     font-size: 16pt;
+}
+
+.static-detail-text {
+    font-weight: 500;
+    color: rgb(94, 94, 94);
 }
 
 .current-temps {
