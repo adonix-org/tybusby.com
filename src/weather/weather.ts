@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-import { HourlyForecast } from "./forecast.js";
+import { DailyForecast } from "./forecast.js";
 
-new HourlyForecast().get().then((forecast) => {
-    forecast.properties.periods.forEach((period) => {
-        console.log(period.dewpoint);
-        console.log(period.relativeHumidity);
-    });
+new DailyForecast().get().then((forecast) => {
+    console.log(forecast.properties.updateTime);
 });

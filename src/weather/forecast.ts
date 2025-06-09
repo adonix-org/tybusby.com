@@ -45,7 +45,7 @@ export class HourlyForecast extends BaseGridpointForecast<GridpointHourlyForecas
     }
 }
 
-type GridpointDailyForecast = Forecast<GridpointDailyhForecastPeriod>;
+type GridpointDailyForecast = Forecast<GridpointDailyForecastPeriod>;
 type GridpointHourlyForecast = Forecast<GridpointHourlyForecastPeriod>;
 
 interface Forecast<P extends ForecastPeriod> {
@@ -80,7 +80,7 @@ interface ForecastPeriod {
     probabilityOfPrecipitation: QuantitativeValue;
 }
 
-interface GridpointDailyhForecastPeriod extends ForecastPeriod {}
+interface GridpointDailyForecastPeriod extends ForecastPeriod {}
 
 interface GridpointHourlyForecastPeriod extends ForecastPeriod {
     dewpoint: QuantitativeValue;
