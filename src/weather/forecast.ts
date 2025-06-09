@@ -14,32 +14,68 @@
  * limitations under the License.
  */
 
+import { NationalWeatherService } from "./nws";
 import { Geometry, QuantitativeValue } from "./types";
 
-export interface Forecast {
-    type: string;
-    geometry: Geometry;
-    properties: ForecastProperties;
+export class DailyForecaster extends NationalWeatherService<DailyForecast> {
+    constructor(
+        private readonly gridId: string = "BGM",
+        private readonly gridX: number = 34,
+        private readonly gridY: number = 56
+    ) {
+        super();
+    }
+
+    protected get resource(): string {
+        return `/gridpoints/${this.gridId}/${this.gridX},${this.gridY}/forecast`;
+    }
 }
 
-export interface ForecastProperties {
+export class HourlyForecaster extends NationalWeatherService<HourlyForecast> {
+    constructor(
+        private readonly gridId: string = "BGM",
+        private readonly gridX: number = 34,
+        private readonly gridY: number = 56
+    ) {
+        super();
+    }
+
+    protected get resource(): string {
+        return `/gridpoints/${this.gridId}/${this.gridX},${this.gridY}/forecast/hourly`;
+    }
+}
+
+type Period = Gridpoint12hForecastPeriod | GridpointHourlyForecastPeriod;
+
+interface DailyForecast {
+    type: string;
+    geometry: Geometry;
+    properties: GridpointForecast<Gridpoint12hForecastPeriod>;
+}
+
+interface HourlyForecast {
+    type: string;
+    geometry: Geometry;
+    properties: GridpointForecast<GridpointHourlyForecastPeriod>;
+}
+
+interface GridpointForecast<P extends Period> {
     units: string;
     forecastGenerator: string;
     generatedAt: Date;
     updateTime: Date;
     validTimes: string;
     elevation: QuantitativeValue;
-    periods: Period[];
+    periods: P[];
 }
 
-export interface Period {
+interface Gridpoint12hForecastPeriod {
     number: number;
     name: string;
     startTime: Date;
     endTime: Date;
     isDaytime: boolean;
     temperature: number;
-    temperatureUnit: string;
     temperatureTrend: string;
     probabilityOfPrecipitation: QuantitativeValue;
     windSpeed: string;
@@ -47,4 +83,9 @@ export interface Period {
     icon: string;
     shortForecast: string;
     detailedForecast: string;
+}
+
+interface GridpointHourlyForecastPeriod extends Gridpoint12hForecastPeriod {
+    dewpoint: QuantitativeValue;
+    relativeHumidity: QuantitativeValue;
 }
