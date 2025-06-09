@@ -15,6 +15,7 @@
  */
 
 import { NationalWeatherService } from "./nws.js";
+import { Geometry, QuantitativeValue } from "./types.js";
 
 export class LatestObservation extends NationalWeatherService<Observation> {
     constructor(private readonly station: string) {
@@ -45,15 +46,10 @@ interface Observation {
     id: string;
     type: string;
     geometry: Geometry;
-    properties: Properties;
+    properties: ObservationProperties;
 }
 
-interface Geometry {
-    type: string;
-    coordinates: number[];
-}
-
-interface Properties {
+interface ObservationProperties {
     id: string;
     type: string;
     elevation: QuantitativeValue;
@@ -84,12 +80,6 @@ interface Properties {
     cloudLayers: CloudLayer[];
 }
 
-interface QuantitativeValue {
-    unitCode: string;
-    value: number | null;
-    qualityControl?: QualityControl;
-}
-
 interface MetarPhenomenon {
     intensity: string | null;
     modifier: string | null;
@@ -102,8 +92,6 @@ interface CloudLayer {
     base: QuantitativeValue;
     amount: string;
 }
-
-type QualityControl = "Z" | "C" | "S" | "V" | "X" | "Q" | "G" | "B" | "T";
 
 type WeatherPhenomenon =
     | "fog_mist"

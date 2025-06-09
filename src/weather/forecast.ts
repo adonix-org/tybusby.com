@@ -13,3 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { Geometry, QuantitativeValue } from "./types";
+
+export interface Forecast {
+    type: string;
+    geometry: Geometry;
+    properties: ForecastProperties;
+}
+
+export interface ForecastProperties {
+    units: string;
+    forecastGenerator: string;
+    generatedAt: Date;
+    updateTime: Date;
+    validTimes: string;
+    elevation: QuantitativeValue;
+    periods: Period[];
+}
+
+export interface Period {
+    number: number;
+    name: string;
+    startTime: Date;
+    endTime: Date;
+    isDaytime: boolean;
+    temperature: number;
+    temperatureUnit: string;
+    temperatureTrend: string;
+    probabilityOfPrecipitation: QuantitativeValue;
+    windSpeed: string;
+    windDirection: string;
+    icon: string;
+    shortForecast: string;
+    detailedForecast: string;
+}
