@@ -17,5 +17,5 @@
 import { LatestObservation } from "./observation.js";
 
 new LatestObservation().get().then((observation) => {
-    console.log(observation.geometry.coordinates);
+    console.log(observation);
 });
