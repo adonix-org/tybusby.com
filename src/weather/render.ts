@@ -25,5 +25,6 @@ export class WeatherRenderer {
             throw new Error(`Element with ID "${parentId}" not found.`);
         }
         this.parent = element;
+        console.log(this.parent, latest);
     }
 }
