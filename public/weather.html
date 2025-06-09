@@ -11,6 +11,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/weather.css" />
 
     <!-- Scripts -->
     <script type="module" src="js/weather/weather.js" defer></script>
@@ -24,7 +25,19 @@
         </div>
     </header>
     <main>
-        <div id="weather-grid" class="weather-grid"></div>
+        <div id="weather-grid" class="weather-grid">
+            <div class="weather" id="kelm">
+
+                <div class="station">
+                    <div class="station-name">Elmira/Corning Regional Airport (KELM)</div>
+                </div>
+
+                <div>
+                    <img src="https://api.weather.gov/icons/land/day/ovc?size=large" width="200px">
+                </div>
+                <div class="forecast">Forecast</div>
+            </div>
+        </div>
     </main>
     <footer>
         <div id="copyright" class="copyright"></div>

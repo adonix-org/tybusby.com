@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-export interface QuantitativeValue {
-    unitCode: string;
-    value: number | null;
-    qualityControl?: QualityControl;
-}
+import { LatestObservation } from "./observation";
 
-type QualityControl = "Z" | "C" | "S" | "V" | "X" | "Q" | "G" | "B" | "T";
+export class WeatherRenderer {
+    private readonly parent: HTMLElement;
+
+    constructor(parentId: string, latest: LatestObservation) {
+        const element = document.getElementById(parentId);
+        if (!element) {
+            throw new Error(`Element with ID "${parentId}" not found.`);
+        }
+        this.parent = element;
+    }
+}
