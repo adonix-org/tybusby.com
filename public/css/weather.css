@@ -62,7 +62,7 @@
 
 .text-description {
     color: rgb(94, 94, 94);
-    font-size: 18pt;
+    font-size: 16pt;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
