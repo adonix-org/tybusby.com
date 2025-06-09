@@ -6,7 +6,6 @@
 }
 
 .weather {
-    min-width: max-content;
     border: 1px solid lightgray;
     display: flex;
     flex-direction: column;
@@ -17,19 +16,12 @@
 
 .station {
     background-color: rgb(228, 228, 228);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     padding: 1rem;
     border-radius: 10px;
 }
 
 .station-name {
     font-size: 14pt;
-    width: fit-content;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .latest-weather {
