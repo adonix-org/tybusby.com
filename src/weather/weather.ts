@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-import { HourlyForecast } from "./forecast.js";
+import { LatestObservation } from "./observation.js";
 
-new HourlyForecast()
-    .get()
-    .then((forecast) => {
-        console.log(forecast);
-    })
-    .catch((reason) => {
-        console.error(reason);
-    });
+new LatestObservation().get().then((observation) => {
+    console.log(observation.geometry.coordinates);
+});

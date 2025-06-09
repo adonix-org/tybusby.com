@@ -18,8 +18,10 @@ import { NationalWeatherService } from "./nws.js";
 import { QuantitativeValue } from "./common.js";
 import { Point } from "geojson";
 
+const DEFAULT_STATION = "KELM";
+
 export class LatestObservation extends NationalWeatherService<Observation> {
-    constructor(private readonly station: string) {
+    constructor(private readonly station: string = DEFAULT_STATION) {
         super();
     }
 
@@ -29,7 +31,10 @@ export class LatestObservation extends NationalWeatherService<Observation> {
 }
 
 export class Observations extends NationalWeatherService<ObservationCollection> {
-    constructor(private readonly station: string, private readonly limit = 1) {
+    constructor(
+        private readonly station: string = DEFAULT_STATION,
+        private readonly limit = 1
+    ) {
         super();
     }
 
