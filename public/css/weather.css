@@ -34,10 +34,27 @@
     padding-bottom: 0.5rem;
 }
 
-.conditions {
+.observation-overview {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+.observation-spacer {
+    flex: 0 1 100px;
+    min-width: 0;
+}
+
+.observation-details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1.5rem;
+    white-space: nowrap;
+}
+
+.static-detail-text {
+    font-weight: 500;
+    color: rgb(77, 77, 77);
 }
 
 .text-description {
