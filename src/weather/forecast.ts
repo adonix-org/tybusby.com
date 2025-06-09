@@ -14,52 +14,47 @@
  * limitations under the License.
  */
 
-import { NationalWeatherService } from "./nws";
+import { NationalWeatherService } from "./nws.js";
 import { Geometry, QuantitativeValue } from "./types";
 
-export class DailyForecaster extends NationalWeatherService<DailyForecast> {
+abstract class BaseGridpointForecast<T> extends NationalWeatherService<T> {
     constructor(
-        private readonly gridId: string = "BGM",
-        private readonly gridX: number = 34,
-        private readonly gridY: number = 56
+        protected readonly gridId: string = "BGM",
+        protected readonly gridX: number = 34,
+        protected readonly gridY: number = 56
     ) {
         super();
     }
 
-    protected get resource(): string {
-        return `/gridpoints/${this.gridId}/${this.gridX},${this.gridY}/forecast`;
-    }
-}
-
-export class HourlyForecaster extends NationalWeatherService<HourlyForecast> {
-    constructor(
-        private readonly gridId: string = "BGM",
-        private readonly gridX: number = 34,
-        private readonly gridY: number = 56
-    ) {
-        super();
-    }
+    protected abstract get endpoint(): string;
 
     protected get resource(): string {
-        return `/gridpoints/${this.gridId}/${this.gridX},${this.gridY}/forecast/hourly`;
+        return `/gridpoints/${this.gridId}/${this.gridX},${this.gridY}/${this.endpoint}`;
     }
 }
 
-type Period = Gridpoint12hForecastPeriod | GridpointHourlyForecastPeriod;
-
-interface DailyForecast {
-    type: string;
-    geometry: Geometry;
-    properties: GridpointForecast<Gridpoint12hForecastPeriod>;
+export class DailyForecast extends BaseGridpointForecast<GridpointDailyForecast> {
+    protected get endpoint(): string {
+        return "forecast";
+    }
 }
 
-interface HourlyForecast {
-    type: string;
-    geometry: Geometry;
-    properties: GridpointForecast<GridpointHourlyForecastPeriod>;
+export class HourlyForecast extends BaseGridpointForecast<GridpointHourlyForecast> {
+    protected get endpoint(): string {
+        return "forecast/hourly";
+    }
 }
 
-interface GridpointForecast<P extends Period> {
+type GridpointDailyForecast = Forecast<GridpointDailyhForecastPeriod>;
+type GridpointHourlyForecast = Forecast<GridpointHourlyForecastPeriod>;
+
+interface Forecast<P extends ForecastPeriod> {
+    type: string;
+    geometry: Geometry;
+    properties: GridpointForecast<P>;
+}
+
+interface GridpointForecast<P extends ForecastPeriod> {
     units: string;
     forecastGenerator: string;
     generatedAt: Date;
@@ -69,7 +64,7 @@ interface GridpointForecast<P extends Period> {
     periods: P[];
 }
 
-interface Gridpoint12hForecastPeriod {
+interface ForecastPeriod {
     number: number;
     name: string;
     startTime: Date;
@@ -77,15 +72,17 @@ interface Gridpoint12hForecastPeriod {
     isDaytime: boolean;
     temperature: number;
     temperatureTrend: string;
-    probabilityOfPrecipitation: QuantitativeValue;
     windSpeed: string;
     windDirection: string;
     icon: string;
     shortForecast: string;
     detailedForecast: string;
+    probabilityOfPrecipitation: QuantitativeValue;
 }
 
-interface GridpointHourlyForecastPeriod extends Gridpoint12hForecastPeriod {
+interface GridpointDailyhForecastPeriod extends ForecastPeriod {}
+
+interface GridpointHourlyForecastPeriod extends ForecastPeriod {
     dewpoint: QuantitativeValue;
     relativeHumidity: QuantitativeValue;
 }

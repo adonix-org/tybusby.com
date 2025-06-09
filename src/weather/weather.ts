@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-import { LatestObservation } from "./observations.js";
+import { HourlyForecast } from "./forecast.js";
 
-const stations = ["KELM", "KPHF"];
-
-stations.forEach((station) => {
-    new LatestObservation(station)
-        .get()
-        .then((observation) => {
-            console.log(observation);
-        })
-        .catch((reason) => {
-            console.error(reason);
-        });
+new HourlyForecast().get().then((forecast) => {
+    forecast.properties.periods.forEach((period) => {
+        console.log(period.dewpoint);
+        console.log(period.relativeHumidity);
+    });
 });
