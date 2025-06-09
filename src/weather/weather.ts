@@ -16,6 +16,11 @@
 
 import { DailyForecast } from "./forecast.js";
 
-new DailyForecast().get().then((forecast) => {
-    console.log(forecast.properties.updateTime);
-});
+new DailyForecast()
+    .get()
+    .then((forecast) => {
+        console.log(forecast);
+    })
+    .catch((reason) => {
+        console.error(reason);
+    });

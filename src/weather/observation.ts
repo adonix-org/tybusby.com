@@ -56,7 +56,7 @@ interface ObservationProperties {
     station: string;
     stationID: string;
     stationName: string;
-    timestamp: Date;
+    timestamp: string;
     rawMessage: string;
     textDescription: string;
     presentWeather: MetarPhenomenon[];

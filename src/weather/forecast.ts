@@ -57,8 +57,8 @@ interface Forecast<P extends ForecastPeriod> {
 interface GridpointForecast<P extends ForecastPeriod> {
     units: string;
     forecastGenerator: string;
-    generatedAt: Date;
-    updateTime: Date;
+    generatedAt: string;
+    updateTime: string;
     validTimes: string;
     elevation: QuantitativeValue;
     periods: P[];
@@ -67,8 +67,8 @@ interface GridpointForecast<P extends ForecastPeriod> {
 interface ForecastPeriod {
     number: number;
     name: string;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
     isDaytime: boolean;
     temperature: number;
     temperatureTrend: string;
