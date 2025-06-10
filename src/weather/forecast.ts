@@ -17,20 +17,18 @@
 import { NationalWeatherService } from "./nws.js";
 import { QuantitativeValue } from "./common.js";
 import { Polygon } from "geojson";
+import { GeoJsonPoint } from "./points.js";
 
 abstract class BaseGridpointForecast<T> extends NationalWeatherService<T> {
-    constructor(
-        protected readonly gridId: string = "BGM",
-        protected readonly gridX: number = 34,
-        protected readonly gridY: number = 56
-    ) {
+    constructor(private readonly point: GeoJsonPoint) {
         super();
     }
 
     protected abstract get endpoint(): string;
 
     protected get resource(): string {
-        return `/gridpoints/${this.gridId}/${this.gridX},${this.gridY}/${this.endpoint}`;
+        const { gridID, gridX, gridY } = this.point.properties;
+        return `/gridpoints/${gridID}/${gridX},${gridY}/${this.endpoint}`;
     }
 }
 
