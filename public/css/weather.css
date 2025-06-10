@@ -1,7 +1,7 @@
 .weather-grid {
     display: grid;
     grid-template-columns: 1fr;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .weather {
@@ -10,12 +10,12 @@
     flex-direction: column;
     gap: 1rem;
     border-radius: 5px;
-    padding: 0.75rem;
+    padding: 0.5rem;
 }
 
 .station {
     background-color: rgb(228, 228, 228);
-    padding: 1rem;
+    padding: 0.75rem;
     border-radius: 5px;
 }
 
