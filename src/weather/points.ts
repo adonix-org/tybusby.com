@@ -1,6 +1,6 @@
 import { Point } from "geojson";
-import { QuantitativeValue } from "./common";
-import { NationalWeatherService } from "./nws";
+import { QuantitativeValue } from "./common.js";
+import { NationalWeatherService } from "./nws.js";
 
 export class Points extends NationalWeatherService<GeoJsonPoint> {
     constructor(
@@ -22,8 +22,8 @@ export interface GeoJsonPoint {
 }
 
 interface PointProperties {
-    id: string;
-    type: string;
+    "@id": string;
+    "@type": string;
     cwa: string;
     forecastOffice: string;
     gridID: string;

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { LatestObservation } from "./observation.js";
+// import { LatestObservation } from "./observation.js";
+import { Points } from "./points.js";
 
-new LatestObservation().get().then((observation) => {
-    console.log(observation);
+new Points().get().then((points) => {
+    console.log(points.properties.timeZone);
 });
