@@ -4,8 +4,8 @@ import { NationalWeatherService } from "./nws.js";
 
 export class Points extends NationalWeatherService<Gridpoint> {
     constructor(
-        private readonly latitude: number = 42.176212,
-        private readonly longitude: number = -76.835879
+        private readonly latitude: number,
+        private readonly longitude: number
     ) {
         super();
     }

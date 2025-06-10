@@ -14,21 +14,64 @@
  * limitations under the License.
  */
 
-// import { LatestObservation } from "./observation.js";
-import { DailyForecast } from "./forecast.js";
-import { LatestObservation } from "./observation.js";
-import { Points } from "./points.js";
-import { Stations } from "./stations.js";
+import { DailyForecast, GridpointDailyForecast } from "./forecast.js";
+import { LatestObservation, Observation } from "./observation.js";
+import { Gridpoint, Points } from "./points.js";
+import { Station, StationCollection, Stations } from "./stations.js";
 
-const point = await new Points().get();
-const stations = await new Stations(point).get();
+class Weather {
+    private point: Gridpoint | undefined;
+    private stations: StationCollection | undefined;
+    private station: Station | undefined;
+    private current: Observation | undefined;
+    private forecast: GridpointDailyForecast | undefined;
 
-const station = stations.features.at(0);
-if (station !== undefined) {
-    console.log(station.properties.name);
-    console.log(
-        await new LatestObservation(station.properties.stationIdentifier).get()
-    );
+    public static async create(
+        latitude?: number,
+        longitude?: number
+    ): Promise<Weather> {
+        const instance = new Weather(latitude, longitude);
+        await instance.update();
+        return instance;
+    }
+
+    private constructor(
+        private readonly latitude: number = 42.176212,
+        private readonly longitude: number = -76.835879
+    ) {}
+
+    public getStation() {
+        return this.station;
+    }
+
+    public getCurrent() {
+        return this.current;
+    }
+
+    public getForecast() {
+        return this.forecast;
+    }
+
+    public async update(): Promise<boolean> {
+        try {
+            this.point = await new Points(this.latitude, this.longitude).get();
+            this.stations = await new Stations(this.point).get();
+
+            const station = this.stations.features.at(0);
+            if (station) {
+                this.station = station;
+                this.current = await new LatestObservation(
+                    this.station.properties.stationIdentifier
+                ).get();
+            }
+            this.forecast = await new DailyForecast(this.point).get();
+            return true;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
 }
 
-console.log(await new DailyForecast(point).get());
+const weather = await Weather.create();
+console.log(weather.getCurrent());

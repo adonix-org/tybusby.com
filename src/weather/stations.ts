@@ -32,19 +32,19 @@ export class Stations extends NationalWeatherService<StationCollection> {
 
 export interface StationCollection {
     type: string;
-    features: Feature[];
+    features: Station[];
     observationStations: string[];
     pagination: Pagination;
 }
 
-interface Feature {
+export interface Station {
     id: string;
     type: string;
     geometry: Point;
-    properties: Properties;
+    properties: StationProperties;
 }
 
-interface Properties {
+interface StationProperties {
     id: string;
     type: string;
     elevation: QuantitativeValue;
