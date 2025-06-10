@@ -38,7 +38,8 @@
 }
 
 .observation-group > img {
-    box-shadow: 0 0 12px darkgray;
+    box-shadow: 0 0 12px rgb(158, 158, 158);
+    border: solid 1px white;
     border-radius: 5px;
 }
 
