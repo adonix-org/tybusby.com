@@ -40,6 +40,10 @@ class Weather {
         private readonly longitude: number = -76.835879
     ) {}
 
+    public getPoint() {
+        return this.point;
+    }
+
     public getStations() {
         return this.stations;
     }
@@ -72,6 +76,15 @@ class Weather {
 }
 
 try {
+    // Waynesboro, VA
+    const weather = await Weather.create(38.076271, -78.91258);
+    console.log(weather.getStation()?.properties);
+} catch (err) {
+    console.error(err);
+}
+
+try {
+    // Default - Horseheads, NY
     const weather = await Weather.create();
     console.log(weather.getStation()?.properties);
 } catch (err) {
