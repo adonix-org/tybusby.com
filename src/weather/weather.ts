@@ -20,11 +20,11 @@ import { Gridpoint, Points } from "./points.js";
 import { Station, StationCollection, Stations } from "./stations.js";
 
 class Weather {
-    private point?: Gridpoint;
-    private stations?: StationCollection;
-    private station?: Station;
-    private current?: Observation;
-    private forecast?: GridpointDailyForecast;
+    private _point?: Gridpoint;
+    private _stations?: StationCollection;
+    private _station?: Station;
+    private _current?: Observation;
+    private _forecast?: GridpointDailyForecast;
 
     public static async create(
         latitude?: number,
@@ -40,45 +40,45 @@ class Weather {
         private readonly longitude: number = -76.835879
     ) {}
 
-    public getPoint() {
-        return this.point;
+    public get point() {
+        return this._point;
     }
 
-    public getStations() {
-        return this.stations;
+    public get stations() {
+        return this._stations;
     }
 
-    public getStation() {
-        return this.station;
+    public get station() {
+        return this._station;
     }
 
-    public getCurrent() {
-        return this.current;
+    public get current() {
+        return this._current;
     }
 
-    public getForecast() {
-        return this.forecast;
+    public get forecast() {
+        return this._forecast;
     }
 
     public async update(): Promise<void> {
-        this.point = await new Points(this.latitude, this.longitude).get();
-        this.stations = await new Stations(this.point).get();
+        this._point = await new Points(this.latitude, this.longitude).get();
+        this._stations = await new Stations(this._point).get();
 
-        const station = this.stations.features.at(0);
+        const [station] = this._stations.features;
         if (station) {
-            this.station = station;
-            this.current = await new LatestObservation(
-                this.station.properties.stationIdentifier
+            this._station = station;
+            this._current = await new LatestObservation(
+                this._station.properties.stationIdentifier
             ).get();
         }
-        this.forecast = await new DailyForecast(this.point).get();
+        this._forecast = await new DailyForecast(this._point).get();
     }
 }
 
 try {
     // Waynesboro, VA
     const weather = await Weather.create(38.076271, -78.91258);
-    console.log(weather.getStation()?.properties);
+    console.log(weather.station?.properties);
 } catch (err) {
     console.error(err);
 }
@@ -86,7 +86,7 @@ try {
 try {
     // Default - Horseheads, NY
     const weather = await Weather.create();
-    console.log(weather.getStation()?.properties);
+    console.log(weather.station?.properties);
 } catch (err) {
     console.error(err);
 }
