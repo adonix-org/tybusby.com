@@ -2,7 +2,7 @@ import { Point } from "geojson";
 import { QuantitativeValue } from "./common.js";
 import { NationalWeatherService } from "./nws.js";
 
-export class Points extends NationalWeatherService<GeoJsonPoint> {
+export class Points extends NationalWeatherService<Gridpoint> {
     constructor(
         private readonly latitude: number = 42.176212,
         private readonly longitude: number = -76.835879
@@ -14,19 +14,19 @@ export class Points extends NationalWeatherService<GeoJsonPoint> {
     }
 }
 
-export interface GeoJsonPoint {
+export interface Gridpoint {
     id: string;
     type: string;
     geometry: Point;
-    properties: PointProperties;
+    properties: GridpointProperties;
 }
 
-interface PointProperties {
+interface GridpointProperties {
     "@id": string;
     "@type": string;
     cwa: string;
     forecastOffice: string;
-    gridID: string;
+    gridId: string;
     gridX: number;
     gridY: number;
     forecast: string;

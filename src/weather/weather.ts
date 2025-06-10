@@ -15,8 +15,20 @@
  */
 
 // import { LatestObservation } from "./observation.js";
+import { DailyForecast } from "./forecast.js";
+import { LatestObservation } from "./observation.js";
 import { Points } from "./points.js";
+import { Stations } from "./stations.js";
 
-new Points().get().then((points) => {
-    console.log(points.properties.relativeLocation);
-});
+const point = await new Points().get();
+const stations = await new Stations(point).get();
+
+const station = stations.features.at(0);
+if (station !== undefined) {
+    console.log(station.properties.name);
+    console.log(
+        await new LatestObservation(station.properties.stationIdentifier).get()
+    );
+}
+
+console.log(await new DailyForecast(point).get());

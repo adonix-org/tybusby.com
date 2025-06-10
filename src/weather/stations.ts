@@ -14,18 +14,50 @@
  * limitations under the License.
  */
 
-// Elmira/Corning Regional Airport
-const KELM = {
-    stationId: "KELM",
-    gridId: "BGM",
-    gridX: 34,
-    gridY: 56,
-};
+import { Point } from "geojson";
+import { QuantitativeValue } from "./common.js";
+import { NationalWeatherService } from "./nws.js";
+import { Gridpoint } from "./points.js";
 
-// Waynesboro, VA
-const KW13 = {
-    stationId: "KW13",
-    gridId: "LWX",
-    gridX: 35,
-    gridY: 26,
-};
+export class Stations extends NationalWeatherService<StationCollection> {
+    constructor(private readonly point: Gridpoint, private readonly limit = 1) {
+        super();
+    }
+
+    protected get resource(): string {
+        const { gridId, gridX, gridY } = this.point.properties;
+        return `/gridpoints/${gridId}/${gridX},${gridY}/stations?limit=${this.limit}`;
+    }
+}
+
+export interface StationCollection {
+    type: string;
+    features: Feature[];
+    observationStations: string[];
+    pagination: Pagination;
+}
+
+interface Feature {
+    id: string;
+    type: string;
+    geometry: Point;
+    properties: Properties;
+}
+
+interface Properties {
+    id: string;
+    type: string;
+    elevation: QuantitativeValue;
+    stationIdentifier: string;
+    name: string;
+    timeZone: string;
+    distance: QuantitativeValue;
+    bearing: QuantitativeValue;
+    forecast: string;
+    county: string;
+    fireWeatherZone: string;
+}
+
+interface Pagination {
+    next: string;
+}
