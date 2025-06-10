@@ -18,5 +18,5 @@
 import { Points } from "./points.js";
 
 new Points().get().then((points) => {
-    console.log(points.properties.timeZone);
+    console.log(points.properties.relativeLocation);
 });
