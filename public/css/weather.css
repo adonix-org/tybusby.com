@@ -17,6 +17,8 @@
     background-color: rgb(228, 228, 228);
     padding: 0.75rem;
     border-radius: 5px;
+    border: solid 1px white;
+    box-shadow: 0 0 12px rgb(158, 158, 158);
 }
 
 .station-name {
