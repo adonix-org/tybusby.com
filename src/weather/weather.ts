@@ -20,11 +20,11 @@ import { Gridpoint, Points } from "./points.js";
 import { Station, StationCollection, Stations } from "./stations.js";
 
 class Weather {
-    private point: Gridpoint | undefined;
-    private stations: StationCollection | undefined;
-    private station: Station | undefined;
-    private current: Observation | undefined;
-    private forecast: GridpointDailyForecast | undefined;
+    private point?: Gridpoint;
+    private stations?: StationCollection;
+    private station?: Station;
+    private current?: Observation;
+    private forecast?: GridpointDailyForecast;
 
     public static async create(
         latitude?: number,
@@ -39,6 +39,10 @@ class Weather {
         private readonly latitude: number = 42.176212,
         private readonly longitude: number = -76.835879
     ) {}
+
+    public getStations() {
+        return this.stations;
+    }
 
     public getStation() {
         return this.station;
@@ -69,7 +73,7 @@ class Weather {
 
 try {
     const weather = await Weather.create();
-    console.log(weather.getCurrent());
+    console.log(weather.getStation()?.properties);
 } catch (err) {
     console.error(err);
 }
