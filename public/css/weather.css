@@ -19,6 +19,7 @@
     border-radius: 5px;
     border: solid 1px white;
     box-shadow: 0 0 12px rgb(158, 158, 158);
+    margin-bottom: 0.25rem;
 }
 
 .station-name {
