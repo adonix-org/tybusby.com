@@ -30,11 +30,16 @@
 
 .observation-group {
     display: flex;
+    flex: 1 1 fit-content;
     gap: 1rem;
+    max-width: 450px;
     padding-right: 1rem;
     padding-bottom: 1rem;
-    flex: 1 1 fit-content;
-    max-width: 450px;
+}
+
+.observation-group > img {
+    box-shadow: 0 0 12px darkgray;
+    border-radius: 5px;
 }
 
 .observation-overview {
