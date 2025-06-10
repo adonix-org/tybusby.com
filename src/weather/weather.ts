@@ -52,26 +52,24 @@ class Weather {
         return this.forecast;
     }
 
-    public async update(): Promise<boolean> {
-        try {
-            this.point = await new Points(this.latitude, this.longitude).get();
-            this.stations = await new Stations(this.point).get();
+    public async update(): Promise<void> {
+        this.point = await new Points(this.latitude, this.longitude).get();
+        this.stations = await new Stations(this.point).get();
 
-            const station = this.stations.features.at(0);
-            if (station) {
-                this.station = station;
-                this.current = await new LatestObservation(
-                    this.station.properties.stationIdentifier
-                ).get();
-            }
-            this.forecast = await new DailyForecast(this.point).get();
-            return true;
-        } catch (err) {
-            console.error(err);
-            throw err;
+        const station = this.stations.features.at(0);
+        if (station) {
+            this.station = station;
+            this.current = await new LatestObservation(
+                this.station.properties.stationIdentifier
+            ).get();
         }
+        this.forecast = await new DailyForecast(this.point).get();
     }
 }
 
-const weather = await Weather.create();
-console.log(weather.getCurrent());
+try {
+    const weather = await Weather.create();
+    console.log(weather.getCurrent());
+} catch (err) {
+    console.error(err);
+}

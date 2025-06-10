@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { NWSError } from "./error.js";
+
 export abstract class NationalWeatherService<T> {
     private static readonly API_URL = "https://api.weather.gov";
     private static readonly HEADERS = {
@@ -22,15 +24,13 @@ export abstract class NationalWeatherService<T> {
     };
 
     public async get(): Promise<T> {
-        const response = await fetch(
-            `${NationalWeatherService.API_URL}${this.resource}`,
-            {
-                headers: NationalWeatherService.HEADERS,
-            }
-        );
+        const url = `${NationalWeatherService.API_URL}${this.resource}`;
+        const response = await fetch(url, {
+            headers: NationalWeatherService.HEADERS,
+        });
         const data = await response.json();
         if (!response.ok) {
-            throw data;
+            throw new NWSError(data, response.status, url);
         }
         return data as T;
     }
