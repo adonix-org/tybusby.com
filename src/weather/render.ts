@@ -49,7 +49,7 @@ export class WeatherRenderer {
         const current = this.weather.current?.properties;
         this.setValue(".text-description", current?.textDescription);
 
-        const temp = Units.getValue(current?.temperature);
+        const temp = Units.to_value(current?.temperature);
         if (temp) {
             this.setValue(".current-temp-f", `${Units.to_f(temp)}°F`);
             this.setValue(".current-temp-c", `${Math.round(temp)}°C`);

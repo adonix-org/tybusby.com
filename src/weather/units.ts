@@ -17,7 +17,7 @@
 import { QuantitativeValue } from "./common";
 
 export class Units {
-    public static getValue(
+    public static to_value(
         quant: QuantitativeValue | undefined
     ): number | undefined {
         if (quant && quant.value) {
