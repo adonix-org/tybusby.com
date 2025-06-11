@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import { LatestObservation } from "./observation";
+import { WeatherLocation } from "./weather";
 
 export class WeatherRenderer {
     private readonly parent: HTMLElement;
 
-    constructor(parentId: string, latest: LatestObservation) {
+    constructor(parentId: string, weather: WeatherLocation) {
         const element = document.getElementById(parentId);
         if (!element) {
             throw new Error(`Element with ID "${parentId}" not found.`);
         }
         this.parent = element;
-        console.log(this.parent, latest);
+        console.log(this.parent, weather);
     }
 }

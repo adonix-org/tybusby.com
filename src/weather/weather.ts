@@ -19,7 +19,7 @@ import { LatestObservation, Observation } from "./observation.js";
 import { Gridpoint, Points } from "./points.js";
 import { Station, StationCollection, Stations } from "./stations.js";
 
-class Weather {
+export class WeatherLocation {
     private _point?: Gridpoint;
     private _stations?: StationCollection;
     private _station?: Station;
@@ -29,8 +29,8 @@ class Weather {
     public static async create(
         latitude?: number,
         longitude?: number
-    ): Promise<Weather> {
-        const instance = new Weather(latitude, longitude);
+    ): Promise<WeatherLocation> {
+        const instance = new WeatherLocation(latitude, longitude);
         await instance.update();
         return instance;
     }
@@ -77,7 +77,7 @@ class Weather {
 
 try {
     // Waynesboro, VA
-    const weather = await Weather.create(38.076271, -78.91258);
+    const weather = await WeatherLocation.create(38.076271, -78.91258);
     console.log(weather.station?.properties);
 } catch (err) {
     console.error(err);
@@ -85,7 +85,7 @@ try {
 
 try {
     // Default - Horseheads, NY
-    const weather = await Weather.create();
+    const weather = await WeatherLocation.create();
     console.log(weather.station?.properties);
 } catch (err) {
     console.error(err);
