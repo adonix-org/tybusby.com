@@ -49,20 +49,20 @@ export class WeatherRenderer {
         const current = this.weather.current?.properties;
         this.setValue(".text-description", current?.textDescription);
 
-        const temp = Units.to_value(current?.temperature);
+        const temp = Units.to_number(current?.temperature);
         if (temp) {
             this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`);
             this.setValue(".current-temp-c", `${Math.round(temp)}°C`);
         }
         this.setIcon(".current-icon", "large", current?.icon);
 
-        const humidity = Units.to_value(current?.relativeHumidity);
+        const humidity = Units.to_number(current?.relativeHumidity);
         if (humidity) {
             this.setValue(".humidity", `${Math.round(humidity)}%`);
         }
 
-        const windSpeed = Units.to_value(current?.windSpeed);
-        const windDirection = Units.to_value(current?.windDirection);
+        const windSpeed = Units.to_number(current?.windSpeed);
+        const windDirection = Units.to_number(current?.windDirection);
         if (windSpeed) {
             this.setValue(
                 ".wind-speed",
@@ -76,7 +76,7 @@ export class WeatherRenderer {
             this.setValue(".wind-speed", "Calm");
         }
 
-        const dewpoint = Units.to_value(current?.dewpoint);
+        const dewpoint = Units.to_number(current?.dewpoint);
         if (dewpoint) {
             this.setValue(
                 ".dewpoint",
@@ -86,7 +86,7 @@ export class WeatherRenderer {
             );
         }
 
-        const visibility = Units.to_value(current?.visibility);
+        const visibility = Units.to_number(current?.visibility);
         if (visibility) {
             this.setValue(
                 ".visibility",
