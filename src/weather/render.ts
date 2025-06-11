@@ -19,7 +19,7 @@ import { Units } from "./units.js";
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
-    private readonly clone: DocumentFragment;
+    private readonly element: DocumentFragment;
 
     constructor(parentId: string, private readonly weather: WeatherLocation) {
         const parent = document.getElementById(parentId);
@@ -34,9 +34,9 @@ export class WeatherRenderer {
                 `Template with ID "${WeatherRenderer.TEMPLATE_ID}" not found.`
             );
         }
-        this.clone = template.content.cloneNode(true) as DocumentFragment;
+        this.element = template.content.cloneNode(true) as DocumentFragment;
         this.render();
-        parent.appendChild(this.clone);
+        parent.appendChild(this.element);
     }
 
     private render(): void {
@@ -128,10 +128,10 @@ export class WeatherRenderer {
         value: number | string | undefined | null,
         fallback: string = "?"
     ): string {
-        const element = this.clone.querySelector(selector);
+        const element = this.element.querySelector(selector);
         if (!element) {
             throw new Error(
-                `Element with query selector ${selector} not found`
+                `Element with query selector ${selector} not found.`
             );
         }
         element.textContent = value != null ? String(value) : fallback;
@@ -141,20 +141,21 @@ export class WeatherRenderer {
     private setIcon(
         selector: string,
         size: "small" | "medium" | "large",
-        url: string | undefined
-    ): void {
-        const image = this.clone.querySelector(selector) as HTMLImageElement;
+        icon: string | undefined
+    ): string {
+        const image = this.element.querySelector(selector) as HTMLImageElement;
         if (!image) {
             throw new Error(
-                `Image element with query selector ${selector} not found`
+                `Image element with query selector ${selector} not found.`
             );
         }
-        if (url) {
-            const imageUrl = new URL(url);
-            imageUrl.searchParams.set("size", size);
-            image.src = imageUrl.toString();
+        if (icon) {
+            const url = new URL(icon);
+            url.searchParams.set("size", size);
+            image.src = url.toString();
         } else {
             image.src = "img/missing.png";
         }
+        return image.src;
     }
 }
