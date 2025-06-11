@@ -33,6 +33,9 @@ const coordinates: Coordinates[] = [
     // Yorktown, VA
     { latitude: 37.2367, longitude: -76.5065 },
 
+    // Waverly, IA
+    { latitude: 42.7382, longitude: -92.4781 },
+
     // Sheldon, IA
     { latitude: 43.1828, longitude: -95.8418 },
 ];
