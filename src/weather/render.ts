@@ -17,14 +17,47 @@
 import { WeatherLocation } from "./location.js";
 
 export class WeatherRenderer {
-    private readonly parent: HTMLElement;
+    private static readonly TEMPLATE_ID = "weather-template";
+    private readonly clone: DocumentFragment;
 
-    constructor(parentId: string, weather: WeatherLocation) {
-        const element = document.getElementById(parentId);
-        if (!element) {
+    constructor(parentId: string, private readonly weather: WeatherLocation) {
+        const parent = document.getElementById(parentId);
+        if (!parent) {
             throw new Error(`Element with ID "${parentId}" not found.`);
         }
-        this.parent = element;
-        console.log(this.parent, weather);
+        const template = document.getElementById(
+            WeatherRenderer.TEMPLATE_ID
+        ) as HTMLTemplateElement;
+        if (!template) {
+            throw new Error(
+                `Template with ID "${WeatherRenderer.TEMPLATE_ID}" not found.`
+            );
+        }
+        this.clone = template.content.cloneNode(true) as DocumentFragment;
+        this.render();
+        parent.appendChild(this.clone);
+    }
+
+    private render(): void {
+        const station = this.weather.station?.properties;
+        this.setValue(
+            ".station-name",
+            `${station?.name} (${station?.stationIdentifier})`
+        );
+    }
+
+    private setValue(
+        selector: string,
+        value: string | undefined,
+        fallback: string = "?"
+    ): string {
+        const element = this.clone.querySelector(selector);
+        if (!element) {
+            throw new Error(
+                `Element with query selector ${selector} not found`
+            );
+        }
+        element.textContent = value ?? fallback;
+        return element.textContent;
     }
 }

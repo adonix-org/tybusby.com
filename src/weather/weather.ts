@@ -15,19 +15,12 @@
  */
 
 import { WeatherLocation } from "./location.js";
+import { WeatherRenderer } from "./render.js";
 
 try {
     // Waynesboro, VA
     const weather = await WeatherLocation.create(38.076271, -78.91258);
-    console.log(weather.station?.properties);
-} catch (err) {
-    console.error(err);
-}
-
-try {
-    // Default - Horseheads, NY
-    const weather = await WeatherLocation.create();
-    console.log(weather.station?.properties);
+    new WeatherRenderer("weather-grid", weather);
 } catch (err) {
     console.error(err);
 }
