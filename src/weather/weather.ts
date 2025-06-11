@@ -32,3 +32,14 @@ try {
 } catch (err) {
     console.error(err);
 }
+
+try {
+    // Yorktown, VA
+    const weather = await WeatherLocation.create(
+        37.2367388398903,
+        -76.506537081644
+    );
+    new WeatherRenderer("weather-grid", weather);
+} catch (err) {
+    console.error(err);
+}
