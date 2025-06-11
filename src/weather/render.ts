@@ -51,14 +51,14 @@ export class WeatherRenderer {
 
         const temp = Units.to_number(current?.temperature);
         if (temp) {
-            this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`);
-            this.setValue(".current-temp-c", `${Math.round(temp)}°C`);
+            this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`, "--°F");
+            this.setValue(".current-temp-c", `${Math.round(temp)}°C`, "--°C");
         }
         this.setIcon(".current-icon", "large", current?.icon);
 
         const humidity = Units.to_number(current?.relativeHumidity);
         if (humidity) {
-            this.setValue(".humidity", `${Math.round(humidity)}%`);
+            this.setValue(".humidity", `${Math.round(humidity)}%`, "--%");
         }
 
         const windSpeed = Units.to_number(current?.windSpeed);
@@ -70,7 +70,8 @@ export class WeatherRenderer {
                     windDirection
                         ? `${Units.degrees_to_cardinal(windDirection)} `
                         : ""
-                }${Math.round(Units.kmh_to_mph(windSpeed))} mph`
+                }${Math.round(Units.kmh_to_mph(windSpeed))} mph`,
+                "-- mph"
             );
         } else {
             this.setValue(".wind-speed", "Calm");
@@ -82,7 +83,8 @@ export class WeatherRenderer {
                 ".pressure",
                 `${Units.pascals_to_inches(pressure).toFixed(
                     2
-                )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`
+                )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`,
+                "--.-- in (----.- mb)"
             );
         }
 
@@ -92,7 +94,8 @@ export class WeatherRenderer {
                 ".dewpoint",
                 `${Math.round(Units.c_to_f(dewpoint))}°F (${Math.round(
                     dewpoint
-                )}°C)`
+                )}°C)`,
+                "--°F (--°C)"
             );
         }
 
@@ -100,7 +103,8 @@ export class WeatherRenderer {
         if (visibility) {
             this.setValue(
                 ".visibility",
-                `${Units.meters_to_miles(visibility).toFixed(2)} miles`
+                `${Units.meters_to_miles(visibility).toFixed(2)} miles`,
+                "--.-- mi"
             );
         }
 
