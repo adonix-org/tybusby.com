@@ -41,6 +41,12 @@ export class WeatherRenderer {
 
     private render(): void {
         const station = this.weather.station?.properties;
+
+        const location = this.element.querySelector(".location");
+        if (location && station) {
+            location.id = station?.stationIdentifier;
+        }
+
         this.setValue(
             ".station-name",
             `${station?.name} (${station?.stationIdentifier})`

@@ -4,7 +4,7 @@
     padding-top: 1rem;
 }
 
-.weather {
+.location {
     border: 1px solid lightgray;
     display: flex;
     flex-direction: column;

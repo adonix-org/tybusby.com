@@ -32,6 +32,9 @@ const coordinates: Coordinates[] = [
 
     // Yorktown, VA
     { latitude: 37.2367, longitude: -76.5065 },
+
+    // Sheldon, IA
+    { latitude: 43.1828, longitude: -95.8418 },
 ];
 
 const progress = new Progress();
