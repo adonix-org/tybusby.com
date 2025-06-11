@@ -54,6 +54,7 @@ export class WeatherRenderer {
             this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`, "--°F");
             this.setValue(".current-temp-c", `${Math.round(temp)}°C`, "--°C");
         }
+
         this.setIcon(".current-icon", "large", current?.icon);
 
         const humidity = Units.to_number(current?.relativeHumidity);
@@ -125,7 +126,7 @@ export class WeatherRenderer {
 
     private setValue(
         selector: string,
-        value: number | string | undefined | null,
+        value: string | undefined,
         fallback: string = "?"
     ): string {
         const element = this.element.querySelector(selector);
@@ -134,7 +135,7 @@ export class WeatherRenderer {
                 `Element with query selector ${selector} not found.`
             );
         }
-        element.textContent = value != null ? String(value) : fallback;
+        element.textContent = value ? String(value) : fallback;
         return element.textContent;
     }
 
