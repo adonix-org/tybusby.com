@@ -26,7 +26,11 @@ export class Units {
         return undefined;
     }
 
-    public static to_f(celsius: number): number {
+    public static c_to_f(celsius: number): number {
         return Math.round((celsius * 9) / 5 + 32);
+    }
+
+    public static meters_to_miles(meters: number): number {
+        return meters / 1609.344;
     }
 }

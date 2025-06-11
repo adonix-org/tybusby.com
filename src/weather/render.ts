@@ -51,7 +51,7 @@ export class WeatherRenderer {
 
         const temp = Units.to_value(current?.temperature);
         if (temp) {
-            this.setValue(".current-temp-f", `${Units.to_f(temp)}°F`);
+            this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`);
             this.setValue(".current-temp-c", `${Math.round(temp)}°C`);
         }
         this.setImage(".current-icon", "large", current?.icon);
@@ -59,6 +59,38 @@ export class WeatherRenderer {
         const humidity = Units.to_value(current?.relativeHumidity);
         if (humidity) {
             this.setValue(".humidity", `${Math.round(humidity)}%`);
+        }
+
+        const dewpoint = Units.to_value(current?.dewpoint);
+        if (dewpoint) {
+            this.setValue(
+                ".dewpoint",
+                `${Math.round(Units.c_to_f(dewpoint))}°F (${Math.round(
+                    dewpoint
+                )})°C`
+            );
+        }
+
+        const visibility = Units.to_value(current?.visibility);
+        if (visibility) {
+            this.setValue(
+                ".visibility",
+                `${Units.meters_to_miles(visibility).toFixed(2)} miles`
+            );
+        }
+
+        if (current?.timestamp) {
+            this.setValue(
+                ".last-update",
+                new Intl.DateTimeFormat(undefined, {
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                    timeZoneName: "short",
+                }).format(new Date(current?.timestamp))
+            );
         }
     }
 
