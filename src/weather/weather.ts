@@ -14,66 +14,7 @@
  * limitations under the License.
  */
 
-import { DailyForecast, GridpointDailyForecast } from "./forecast.js";
-import { LatestObservation, Observation } from "./observation.js";
-import { Gridpoint, Points } from "./points.js";
-import { Station, StationCollection, Stations } from "./stations.js";
-
-export class WeatherLocation {
-    private _point?: Gridpoint;
-    private _stations?: StationCollection;
-    private _station?: Station;
-    private _current?: Observation;
-    private _forecast?: GridpointDailyForecast;
-
-    public static async create(
-        latitude?: number,
-        longitude?: number
-    ): Promise<WeatherLocation> {
-        const instance = new WeatherLocation(latitude, longitude);
-        await instance.update();
-        return instance;
-    }
-
-    private constructor(
-        private readonly latitude: number = 42.176212,
-        private readonly longitude: number = -76.835879
-    ) {}
-
-    public get point() {
-        return this._point;
-    }
-
-    public get stations() {
-        return this._stations;
-    }
-
-    public get station() {
-        return this._station;
-    }
-
-    public get current() {
-        return this._current;
-    }
-
-    public get forecast() {
-        return this._forecast;
-    }
-
-    public async update(): Promise<void> {
-        this._point = await new Points(this.latitude, this.longitude).get();
-        this._stations = await new Stations(this._point).get();
-
-        const [station] = this._stations.features;
-        if (station) {
-            this._station = station;
-            this._current = await new LatestObservation(
-                this._station.properties.stationIdentifier
-            ).get();
-        }
-        this._forecast = await new DailyForecast(this._point).get();
-    }
-}
+import { WeatherLocation } from "./location.js";
 
 try {
     // Waynesboro, VA

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { WeatherLocation } from "./weather";
+import { WeatherLocation } from "./location.js";
 
 export class WeatherRenderer {
     private readonly parent: HTMLElement;
