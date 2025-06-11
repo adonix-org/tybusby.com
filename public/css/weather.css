@@ -1,6 +1,7 @@
 .weather-grid {
     display: grid;
     grid-template-columns: 1fr;
+    padding-top: 1rem;
 }
 
 .weather {
