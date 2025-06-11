@@ -68,12 +68,22 @@ export class WeatherRenderer {
                 ".wind-speed",
                 `${
                     windDirection
-                        ? `${Units.degree_to_cardinal(windDirection)} `
+                        ? `${Units.degrees_to_cardinal(windDirection)} `
                         : ""
                 }${Math.round(Units.kmh_to_mph(windSpeed))} mph`
             );
         } else {
             this.setValue(".wind-speed", "Calm");
+        }
+
+        const pressure = Units.to_number(current?.barometricPressure);
+        if (pressure) {
+            this.setValue(
+                ".pressure",
+                `${Units.pa_to_inches(pressure).toFixed(
+                    2
+                )} in (${Units.pa_to_mb(pressure).toFixed(1)})`
+            );
         }
 
         const dewpoint = Units.to_number(current?.dewpoint);

@@ -34,13 +34,21 @@ export class Units {
         return meters / 1609.344;
     }
 
-    public static degree_to_cardinal(degree: number): string {
+    public static degrees_to_cardinal(degrees: number): string {
         const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-        const index = Math.round((degree % 360) / 45) % 8;
+        const index = Math.round((degrees % 360) / 45) % 8;
         return directions[index] ?? "?";
     }
 
     public static kmh_to_mph(kmh: number): number {
         return kmh * 0.621371;
+    }
+
+    public static pa_to_inches(pa: number): number {
+        return pa * 0.0002953;
+    }
+
+    public static pa_to_mb(pa: number): number {
+        return pa / 100;
     }
 }
