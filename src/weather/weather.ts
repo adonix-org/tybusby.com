@@ -19,7 +19,8 @@ import { WeatherRenderer } from "./render.js";
 
 try {
     // Waynesboro, VA
-    const weather = await WeatherLocation.create(38.076271, -78.91258);
+    // const weather = await WeatherLocation.create(38.076271, -78.91258);
+    const weather = await WeatherLocation.create();
     new WeatherRenderer("weather-grid", weather);
 } catch (err) {
     console.error(err);

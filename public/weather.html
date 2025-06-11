@@ -67,19 +67,20 @@
     </footer>
 
     <template id="weather-template">
-        <div class="weather">
+        <div class="weather" id="kelm">
+
             <div class="station">
-                <div class="station-name"></div>
+                <div class="station-name">Elmira, Elmira / Corning Regional Airport (KELM)</div>
             </div>
 
             <div class="latest-weather">
                 <div class="observation-group">
-                    <img src="https://api.weather.gov/icons/land/day/ovc?size=large">
+                    <img class="current-icon" src="https://api.weather.gov/icons/land/day/ovc?size=large">
                     <div class="observation-overview">
-                        <div class="text-description">Light Rain Showers</div>
+                        <div class="text-description"></div>
                         <div class="current-temps">
-                            <div class="current-temp-f">100°F</div>
-                            <div class="current-temp-c">22°C</div>
+                            <div class="current-temp-f">--°F</div>
+                            <div class="current-temp-c">--°C</div>
                         </div>
                     </div>
                 </div>
@@ -99,6 +100,7 @@
                 </div>
             </div>
             <div class="forecast">Forecast</div>
+        </div>
         </div>
     </template>
 </body>

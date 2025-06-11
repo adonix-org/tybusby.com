@@ -15,6 +15,7 @@
  */
 
 import { WeatherLocation } from "./location.js";
+import { Units } from "./units.js";
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
@@ -44,11 +45,21 @@ export class WeatherRenderer {
             ".station-name",
             `${station?.name} (${station?.stationIdentifier})`
         );
+
+        const current = this.weather.current?.properties;
+        this.setValue(".text-description", current?.textDescription);
+
+        const temp = Units.getValue(current?.temperature);
+        if (temp) {
+            this.setValue(".current-temp-f", `${Units.to_f(temp)}°F`);
+            this.setValue(".current-temp-c", `${Math.round(temp)}°C`);
+        }
+        this.setImage(".current-icon", "large", current?.icon);
     }
 
     private setValue(
         selector: string,
-        value: string | undefined,
+        value: number | string | undefined | null,
         fallback: string = "?"
     ): string {
         const element = this.clone.querySelector(selector);
@@ -57,7 +68,23 @@ export class WeatherRenderer {
                 `Element with query selector ${selector} not found`
             );
         }
-        element.textContent = value ?? fallback;
+        element.textContent = value != null ? String(value) : fallback;
         return element.textContent;
+    }
+
+    private setImage(
+        selector: string,
+        size: "small" | "medium" | "large",
+        url: string | undefined
+    ): void {
+        const image = this.clone.querySelector(selector) as HTMLImageElement;
+        if (!image) {
+            throw new Error(
+                `Image element with query selector ${selector} not found`
+            );
+        }
+        if (url) {
+            image.src = url.replace(/\?size=medium$/, `?size=${size}`);
+        }
     }
 }
