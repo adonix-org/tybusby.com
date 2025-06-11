@@ -55,6 +55,11 @@ export class WeatherRenderer {
             this.setValue(".current-temp-c", `${Math.round(temp)}°C`);
         }
         this.setImage(".current-icon", "large", current?.icon);
+
+        const humidity = Units.to_value(current?.relativeHumidity);
+        if (humidity) {
+            this.setValue(".humidity", `${Math.round(humidity)}%`);
+        }
     }
 
     private setValue(
