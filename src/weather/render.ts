@@ -54,7 +54,7 @@ export class WeatherRenderer {
             this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`);
             this.setValue(".current-temp-c", `${Math.round(temp)}°C`);
         }
-        this.setImage(".current-icon", "large", current?.icon);
+        this.setIcon(".current-icon", "large", current?.icon);
 
         const humidity = Units.to_value(current?.relativeHumidity);
         if (humidity) {
@@ -109,7 +109,7 @@ export class WeatherRenderer {
         return element.textContent;
     }
 
-    private setImage(
+    private setIcon(
         selector: string,
         size: "small" | "medium" | "large",
         url: string | undefined
@@ -121,7 +121,9 @@ export class WeatherRenderer {
             );
         }
         if (url) {
-            image.src = url.replace(/\?size=medium$/, `?size=${size}`);
+            const imageUrl = new URL(url);
+            imageUrl.searchParams.set("size", size);
+            image.src = imageUrl.toString();
         }
     }
 }
