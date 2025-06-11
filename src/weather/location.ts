@@ -36,8 +36,8 @@ export class WeatherLocation {
     }
 
     private constructor(
-        private readonly latitude: number = 42.176212,
-        private readonly longitude: number = -76.835879
+        private readonly latitude: number = 42.1762,
+        private readonly longitude: number = -76.8358
     ) {}
 
     public get point() {

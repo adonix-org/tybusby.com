@@ -27,7 +27,7 @@ try {
 
 try {
     // Waynesboro, VA
-    const weather = await WeatherLocation.create(38.076271, -78.91258);
+    const weather = await WeatherLocation.create(38.0762, -78.9125);
     new WeatherRenderer("weather-grid", weather);
 } catch (err) {
     console.error(err);
@@ -35,10 +35,7 @@ try {
 
 try {
     // Yorktown, VA
-    const weather = await WeatherLocation.create(
-        37.2367388398903,
-        -76.506537081644
-    );
+    const weather = await WeatherLocation.create(37.2367, -76.5065);
     new WeatherRenderer("weather-grid", weather);
 } catch (err) {
     console.error(err);
