@@ -17,26 +17,30 @@
 import { WeatherLocation } from "./location.js";
 import { WeatherRenderer } from "./render.js";
 
-try {
+interface Coordinates {
+    latitude: number;
+    longitude: number;
+}
+
+const coordinates: Coordinates[] = [
     // Horseheads, NY
-    const weather = await WeatherLocation.create();
-    new WeatherRenderer("weather-grid", weather);
-} catch (err) {
-    console.error(err);
-}
+    { latitude: 42.1762, longitude: -76.8358 },
 
-try {
     // Waynesboro, VA
-    const weather = await WeatherLocation.create(38.0762, -78.9125);
-    new WeatherRenderer("weather-grid", weather);
-} catch (err) {
-    console.error(err);
-}
+    { latitude: 38.0762, longitude: -78.9125 },
 
-try {
     // Yorktown, VA
-    const weather = await WeatherLocation.create(37.2367, -76.5065);
-    new WeatherRenderer("weather-grid", weather);
-} catch (err) {
-    console.error(err);
+    { latitude: 37.2367, longitude: -76.5065 },
+];
+
+for (const coordinate of coordinates) {
+    try {
+        const weather = await WeatherLocation.create(
+            coordinate.latitude,
+            coordinate.longitude
+        );
+        new WeatherRenderer("weather-grid", weather);
+    } catch (err) {
+        console.error(err);
+    }
 }
