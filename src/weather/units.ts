@@ -33,4 +33,14 @@ export class Units {
     public static meters_to_miles(meters: number): number {
         return meters / 1609.344;
     }
+
+    public static degree_to_cardinal(degree: number): string {
+        const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+        const index = Math.round((degree % 360) / 45) % 8;
+        return directions[index] ?? "?";
+    }
+
+    public static kmh_to_mph(kmh: number): number {
+        return kmh * 0.621371;
+    }
 }

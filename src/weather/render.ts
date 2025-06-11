@@ -61,6 +61,21 @@ export class WeatherRenderer {
             this.setValue(".humidity", `${Math.round(humidity)}%`);
         }
 
+        const windSpeed = Units.to_value(current?.windSpeed);
+        const windDirection = Units.to_value(current?.windDirection);
+        if (windSpeed) {
+            this.setValue(
+                ".wind-speed",
+                `${
+                    windDirection
+                        ? `${Units.degree_to_cardinal(windDirection)} `
+                        : ""
+                }${Math.round(Units.kmh_to_mph(windSpeed))} mph`
+            );
+        } else {
+            this.setValue(".wind-speed", "Calm");
+        }
+
         const dewpoint = Units.to_value(current?.dewpoint);
         if (dewpoint) {
             this.setValue(
