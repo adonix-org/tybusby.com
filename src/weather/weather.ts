@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Progress } from "../progress.js";
 import { WeatherLocation } from "./location.js";
 import { WeatherRenderer } from "./render.js";
 
@@ -33,6 +34,8 @@ const coordinates: Coordinates[] = [
     { latitude: 37.2367, longitude: -76.5065 },
 ];
 
+const progress = new Progress();
+let current = 0;
 for (const coordinate of coordinates) {
     try {
         const weather = await WeatherLocation.create(
@@ -43,4 +46,7 @@ for (const coordinate of coordinates) {
     } catch (err) {
         console.error(err);
     }
+    current++;
+    progress.percent = Progress.calculate(current, coordinates.length).percent;
 }
+progress.complete();
