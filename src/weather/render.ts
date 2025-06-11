@@ -80,9 +80,9 @@ export class WeatherRenderer {
         if (pressure) {
             this.setValue(
                 ".pressure",
-                `${Units.pa_to_inches(pressure).toFixed(
+                `${Units.pascals_to_inches(pressure).toFixed(
                     2
-                )} in (${Units.pa_to_mb(pressure).toFixed(1)} mb)`
+                )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`
             );
         }
 

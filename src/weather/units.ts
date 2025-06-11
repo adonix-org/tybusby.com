@@ -44,11 +44,11 @@ export class Units {
         return kmh * 0.621371;
     }
 
-    public static pa_to_inches(pa: number): number {
-        return pa * 0.0002953;
+    public static pascals_to_inches(pascals: number): number {
+        return pascals * 0.0002953;
     }
 
-    public static pa_to_mb(pa: number): number {
-        return pa / 100;
+    public static pascals_to_mb(pascals: number): number {
+        return pascals / 100;
     }
 }
