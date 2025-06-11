@@ -153,6 +153,8 @@ export class WeatherRenderer {
             const imageUrl = new URL(url);
             imageUrl.searchParams.set("size", size);
             image.src = imageUrl.toString();
+        } else {
+            image.src = "img/missing.png";
         }
     }
 }
