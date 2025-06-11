@@ -82,7 +82,7 @@ export class WeatherRenderer {
                 ".dewpoint",
                 `${Math.round(Units.c_to_f(dewpoint))}°F (${Math.round(
                     dewpoint
-                )})°C`
+                )}°C)`
             );
         }
 
