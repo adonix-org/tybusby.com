@@ -18,6 +18,7 @@ import { NWSError } from "./error.js";
 
 export abstract class NationalWeatherService<T> {
     private static readonly API_URL = "https://api.weather.gov";
+
     protected readonly headers = new Headers({
         "User-Agent": "www.tybusby.com (tybusby@gmail.com)",
         Accept: "application/geo+json",
