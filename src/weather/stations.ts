@@ -22,6 +22,9 @@ import { Gridpoint } from "./points.js";
 export class Stations extends NationalWeatherService<StationCollection> {
     constructor(private readonly point: Gridpoint, private readonly limit = 1) {
         super();
+
+        // https://www.weather.gov/documentation/services-web-api
+        this.headers.append("Feature-Flags", "obs_station_provider");
     }
 
     protected get resource(): string {
@@ -51,6 +54,8 @@ interface StationProperties {
     stationIdentifier: string;
     name: string;
     timeZone: string;
+    provider: string;
+    subProvider: string;
     distance: QuantitativeValue;
     bearing: QuantitativeValue;
     forecast: string;
