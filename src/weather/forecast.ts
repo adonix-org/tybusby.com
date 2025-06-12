@@ -79,6 +79,7 @@ interface ForecastPeriod {
     temperatureTrend: string;
     windSpeed: QuantitativeValue;
     windDirection: string;
+    windGust: QuantitativeValue | null;
     icon: string;
     shortForecast: string;
     detailedForecast: string;
