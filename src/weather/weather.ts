@@ -21,34 +21,29 @@ import { WeatherRenderer } from "./render.js";
 
 const positions: Position[] = [
     // Horseheads, NY
-    [42.1762, -76.8358],
+    [-76.8358, 42.1762],
 
     // Waynesboro, VA
-    [38.0762, -78.9125],
+    [-78.9125, 38.0762],
 
     // Yorktown, VA
-    [37.2367, -76.5065],
+    [-76.5065, 37.2367],
 
     // Waverly, IA
-    [42.7382, -92.4781],
+    [-92.4781, 42.7382],
 
     // Sheldon, IA
-    [43.1828, -95.8418],
+    [-95.8418, 43.1828],
 ];
 
 const progress = new Progress();
-let current = 0;
-for (const coordinate of positions) {
+for (const [index, [lon, lat]] of positions.entries()) {
     try {
-        const weather = await WeatherLocation.create(
-            coordinate[0],
-            coordinate[1]
-        );
+        const weather = await WeatherLocation.create(lat, lon);
         new WeatherRenderer("weather-grid", weather);
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(`Error loading weather for [${lat}, ${lon}]:`, error);
     }
-    current++;
-    progress.percent = Progress.calculate(current, positions.length).percent;
+    progress.percent = Progress.calculate(index + 1, positions.length).percent;
 }
 progress.complete();
