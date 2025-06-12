@@ -1,5 +1,9 @@
-import { WeatherLocation } from "./location.js";
+import { Products } from "./products.js";
 
-const weather = await WeatherLocation.create();
+const hazard = await new Products("HWO", "BGM").get();
 
-console.log(weather.station?.properties.provider);
+if (!hazard) {
+    console.log("Product Not Found");
+} else {
+    console.log(hazard?.id);
+}
