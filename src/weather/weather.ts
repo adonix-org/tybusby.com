@@ -19,6 +19,9 @@ import { Progress } from "../progress.js";
 import { WeatherLocation } from "./location.js";
 import { WeatherRenderer } from "./render.js";
 
+/**
+ * GeoPoint positions are lon, lat.
+ */
 const positions: Position[] = [
     // Horseheads, NY
     [-76.8358, 42.1762],
