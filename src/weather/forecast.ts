@@ -22,6 +22,10 @@ import { Gridpoint } from "./points.js";
 abstract class BaseGridpointForecast<T> extends NationalWeatherService<T> {
     constructor(private readonly point: Gridpoint) {
         super();
+        this.headers.append(
+            "Feature-Flags",
+            "forecast_temperature_qv, forecast_wind_speed_qv"
+        );
     }
 
     protected abstract get endpoint(): string;

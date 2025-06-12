@@ -14,45 +14,41 @@
  * limitations under the License.
  */
 
+import { Position } from "geojson";
 import { Progress } from "../progress.js";
 import { WeatherLocation } from "./location.js";
 import { WeatherRenderer } from "./render.js";
 
-interface Coordinates {
-    latitude: number;
-    longitude: number;
-}
-
-const coordinates: Coordinates[] = [
+const positions: Position[] = [
     // Horseheads, NY
-    { latitude: 42.1762, longitude: -76.8358 },
+    [42.1762, -76.8358],
 
     // Waynesboro, VA
-    { latitude: 38.0762, longitude: -78.9125 },
+    [38.0762, -78.9125],
 
     // Yorktown, VA
-    { latitude: 37.2367, longitude: -76.5065 },
+    [37.2367, -76.5065],
 
     // Waverly, IA
-    { latitude: 42.7382, longitude: -92.4781 },
+    [42.7382, -92.4781],
 
     // Sheldon, IA
-    { latitude: 43.1828, longitude: -95.8418 },
+    [43.1828, -95.8418],
 ];
 
 const progress = new Progress();
 let current = 0;
-for (const coordinate of coordinates) {
+for (const coordinate of positions) {
     try {
         const weather = await WeatherLocation.create(
-            coordinate.latitude,
-            coordinate.longitude
+            coordinate[0],
+            coordinate[1]
         );
         new WeatherRenderer("weather-grid", weather);
     } catch (err) {
         console.error(err);
     }
     current++;
-    progress.percent = Progress.calculate(current, coordinates.length).percent;
+    progress.percent = Progress.calculate(current, positions.length).percent;
 }
 progress.complete();

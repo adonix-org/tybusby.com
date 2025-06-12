@@ -18,15 +18,15 @@ import { NWSError } from "./error.js";
 
 export abstract class NationalWeatherService<T> {
     private static readonly API_URL = "https://api.weather.gov";
-    private static readonly HEADERS = {
+    protected readonly headers = new Headers({
         "User-Agent": "www.tybusby.com (tybusby@gmail.com)",
         Accept: "application/geo+json",
-    };
+    });
 
     public async get(): Promise<T> {
         const url = `${NationalWeatherService.API_URL}${this.resource}`;
         const response = await fetch(url, {
-            headers: NationalWeatherService.HEADERS,
+            headers: this.headers,
         });
         const data = await response.json();
         if (!response.ok) {
