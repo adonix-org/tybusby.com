@@ -53,6 +53,9 @@ export class WeatherRenderer {
         );
 
         const current = this.weather.current?.properties;
+
+        this.setIcon(".current-icon", "large", current?.icon);
+
         this.setValue(".text-description", current?.textDescription);
 
         const temp = Units.to_number(current?.temperature);
@@ -60,8 +63,6 @@ export class WeatherRenderer {
             this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`, "--°F");
             this.setValue(".current-temp-c", `${Math.round(temp)}°C`, "--°C");
         }
-
-        this.setIcon(".current-icon", "large", current?.icon);
 
         const humidity = Units.to_number(current?.relativeHumidity);
         if (humidity) {
