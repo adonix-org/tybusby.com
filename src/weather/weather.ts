@@ -20,7 +20,7 @@ import { WeatherLocation } from "./location.js";
 import { WeatherRenderer } from "./render.js";
 
 /**
- * GeoPoint positions are lon, lat.
+ * GeoJson coordinates are [ lon, lat ].
  */
 const positions: Position[] = [
     // Horseheads, NY
