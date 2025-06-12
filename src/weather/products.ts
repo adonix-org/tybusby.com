@@ -17,10 +17,7 @@
 import { NationalWeatherService } from "./nws.js";
 
 export class Products extends NationalWeatherService<Product | undefined> {
-    constructor(
-        private readonly typeId: string,
-        private readonly locationId: string
-    ) {
+    constructor(private readonly type: string, private readonly cwa: string) {
         super();
     }
 
@@ -33,7 +30,7 @@ export class Products extends NationalWeatherService<Product | undefined> {
     }
 
     protected get resource(): string {
-        return `/products/types/${this.typeId}/locations/${this.locationId}/latest`;
+        return `/products/types/${this.type}/locations/${this.cwa}/latest`;
     }
 }
 
