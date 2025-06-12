@@ -22,6 +22,8 @@ import { Gridpoint } from "./points.js";
 abstract class BaseGridpointForecast<T> extends NationalWeatherService<T> {
     constructor(private readonly point: Gridpoint) {
         super();
+
+        // https://www.weather.gov/documentation/services-web-api
         this.headers.append(
             "Feature-Flags",
             "forecast_temperature_qv, forecast_wind_speed_qv"
@@ -73,9 +75,9 @@ interface ForecastPeriod {
     startTime: string;
     endTime: string;
     isDaytime: boolean;
-    temperature: number;
+    temperature: QuantitativeValue;
     temperatureTrend: string;
-    windSpeed: string;
+    windSpeed: QuantitativeValue;
     windDirection: string;
     icon: string;
     shortForecast: string;

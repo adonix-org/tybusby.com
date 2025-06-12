@@ -16,7 +16,9 @@
 
 export interface QuantitativeValue {
     unitCode: string;
-    value: number | null;
+    value?: number | null;
+    maxValue?: number;
+    minValue?: number;
     qualityControl?: QualityControl;
 }
 
