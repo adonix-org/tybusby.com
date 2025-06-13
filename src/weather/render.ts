@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { WeatherLocation } from "./location.js";
+import { WeatherReport } from "./report.js";
 import { Units } from "./units.js";
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
     private readonly element: DocumentFragment;
 
-    constructor(parentId: string, private readonly weather: WeatherLocation) {
+    constructor(parentId: string, private readonly report: WeatherReport) {
         const parent = document.getElementById(parentId);
         if (!parent) {
             throw new Error(`Element with ID "${parentId}" not found.`);
@@ -40,7 +40,7 @@ export class WeatherRenderer {
     }
 
     private render(): void {
-        const station = this.weather.station?.properties;
+        const station = this.report.station?.properties;
 
         const location = this.element.querySelector(".location");
         if (location && station) {
@@ -52,7 +52,7 @@ export class WeatherRenderer {
             `${station?.name} (${station?.stationIdentifier})`
         );
 
-        const current = this.weather.current?.properties;
+        const current = this.report.current?.properties;
 
         this.setIcon(".current-icon", "large", current?.icon);
 
