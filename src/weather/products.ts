@@ -28,10 +28,10 @@ export class Products extends NationalWeatherService<Product | undefined> {
      */
     public override async get(): Promise<Product | undefined> {
         const product = await super.get();
-        if (!product?.id) {
-            return undefined;
+        if (product && "productCode" in product) {
+            return product;
         }
-        return product;
+        return undefined;
     }
 
     protected get resource(): string {
