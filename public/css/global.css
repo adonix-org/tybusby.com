@@ -24,6 +24,10 @@ img {
 
     /* progress bar */
     --progress-color: rgb(255 0 51);
+
+    /* avatar size */
+    --avatar-height: 60px;
+    --avatar-width: 60px;
 }
 
 html,
@@ -63,8 +67,8 @@ footer {
 }
 
 .avatar-icon {
-    height: 60px;
-    width: 60px;
+    height: var(--avatar-height);
+    width: var(--avatar-width);
 }
 
 .spinner-ring {
@@ -72,8 +76,8 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 65px;
-    width: 65px;
+    height: calc(var(--avatar-height) * 1.1);
+    width: calc(var(--avatar-width) * 1.1);
     border-radius: 50%;
     border: 1px solid var(--light-border-color);
 }
