@@ -33,7 +33,7 @@ export abstract class NationalWeatherService<T> {
                 headers: this.headers,
             });
         } catch (cause) {
-            throw new Error(`NWS fetch failure: ${url}`, { cause });
+            throw new Error(`NWS API Failure: ${url}`, { cause });
         }
 
         const data = await response.json();
