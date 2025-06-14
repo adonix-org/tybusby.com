@@ -25,9 +25,8 @@ img {
     /* progress bar */
     --progress-color: rgb(255 0 51);
 
-    /* avatar size */
-    --avatar-height: 60px;
-    --avatar-width: 60px;
+    /* avatar width and height */
+    --avatar-xy: 60px;
 }
 
 html,
@@ -67,8 +66,8 @@ footer {
 }
 
 .avatar-icon {
-    height: var(--avatar-height);
-    width: var(--avatar-width);
+    height: var(--avatar-xy);
+    width: var(--avatar-xy);
 }
 
 .spinner-ring {
@@ -76,10 +75,10 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: calc(var(--avatar-height) * 1.1);
-    width: calc(var(--avatar-width) * 1.1);
+    height: calc(var(--avatar-xy) * 1.1);
+    width: calc(var(--avatar-xy) * 1.1);
     border-radius: 50%;
-    border: 1px solid var(--light-border-color);
+    border: 2px solid var(--light-border-color);
 }
 
 .spinner-ring.loading {
