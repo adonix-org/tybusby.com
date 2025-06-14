@@ -22,7 +22,8 @@ const hazard = await new Products("HWO", "BGMX").get();
 console.log(hazard ?? "Product Not Found");
 
 try {
-    await new LatestObservation("KELMX").get();
+    const observation = await new LatestObservation("KELM").get();
+    console.log(observation);
 } catch (error) {
     console.error(error);
 }
