@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
+import { LatestObservation } from "./observation.js";
 import { Products } from "./products.js";
 
-const hazard = await new Products("HWO", "BGM").get();
+const hazard = await new Products("HWO", "BGMX").get();
 
 console.log(hazard ?? "Product Not Found");
+
+try {
+    await new LatestObservation("KELMX").get();
+} catch (error) {
+    console.error(error);
+}

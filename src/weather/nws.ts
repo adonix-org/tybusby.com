@@ -31,7 +31,7 @@ export abstract class NationalWeatherService<T> {
         });
         const data = await response.json();
         if (!response.ok) {
-            throw new NWSError(data, response.status, url);
+            throw new NWSError(response.status, data, url);
         }
         return data as T;
     }
