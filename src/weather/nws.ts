@@ -26,9 +26,16 @@ export abstract class NationalWeatherService<T> {
 
     public async get(): Promise<T> {
         const url = `${NationalWeatherService.API_URL}${this.resource}`;
-        const response = await fetch(url, {
-            headers: this.headers,
-        });
+
+        let response: Response;
+        try {
+            response = await fetch(url, {
+                headers: this.headers,
+            });
+        } catch (cause) {
+            throw new Error(`NWS fetch failure: ${url}`, { cause });
+        }
+
         const data = await response.json();
         if (!response.ok) {
             throw new NWSError(response.status, response.statusText, url, data);
