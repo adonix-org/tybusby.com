@@ -17,10 +17,11 @@
 export class NWSError extends Error {
     constructor(
         public readonly status: number,
-        public readonly problem: NWSProblem,
-        public readonly url: string
+        public readonly statusText: string,
+        public readonly url: string,
+        public readonly problem?: NWSProblem
     ) {
-        super(`${status} ${problem.title} (${url})`);
+        super(`${status} ${statusText} (${url})`);
         this.name = "NWSError";
     }
 }
