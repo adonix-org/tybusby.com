@@ -84,10 +84,10 @@ footer {
 
 .spinner-ring.loading {
     border-top-color: var(--progress-color);
-    animation: spin 0.8s linear infinite;
+    animation: avatar-spinner 0.8s linear infinite;
 }
 
-@keyframes spin {
+@keyframes avatar-spinner {
     to {
         transform: translate(-50%, -50%) rotate(360deg);
     }
