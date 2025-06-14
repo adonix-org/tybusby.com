@@ -20,7 +20,7 @@ export class NWSError extends Error {
         public readonly problem: NWSProblem,
         public readonly url: string
     ) {
-        super(`${status}: ${problem.title} (${url})`);
+        super(`${status} ${problem.title} (${url})`);
         this.name = "NWSError";
     }
 }
