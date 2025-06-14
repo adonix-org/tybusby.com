@@ -18,6 +18,7 @@ import { Position } from "geojson";
 import { Progress } from "../progress.js";
 import { WeatherReport } from "./report.js";
 import { WeatherRenderer } from "./render.js";
+import { Spinner } from "../spinner.js";
 
 /**
  * GeoJson coordinates are [ lon, lat ].
@@ -39,6 +40,9 @@ const positions: Position[] = [
     [-95.8418, 43.1828],
 ];
 
+const spinner = new Spinner();
+spinner.start();
+
 const progress = new Progress();
 for (const [index, [lon, lat]] of positions.entries()) {
     try {
@@ -50,3 +54,5 @@ for (const [index, [lon, lat]] of positions.entries()) {
     progress.percent = Progress.calculate(index + 1, positions.length).percent;
 }
 progress.complete();
+
+spinner.stop();

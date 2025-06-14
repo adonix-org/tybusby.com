@@ -15,6 +15,7 @@
  */
 
 import { Progress } from "./progress.js";
+import { Spinner } from "./spinner.js";
 import { VideoGroup } from "./videos.js";
 
 const YT_BASE_URL = "https://www.youtube-nocookie.com/embed";
@@ -38,6 +39,7 @@ const URLS = [
     `${YT_BASE_URL}/DeumyOzKqgI`, // Adele - Skyfall
 ];
 
+const spinner = new Spinner();
 const progress = new Progress();
 
 new VideoGroup("music-video-grid", URLS)
@@ -46,10 +48,12 @@ new VideoGroup("music-video-grid", URLS)
         console.log(progress.percent);
     })
     .once("loading", () => {
+        spinner.start();
         console.log("Loading...");
     })
     .once("loaded", function () {
         progress.complete();
+        spinner.stop();
         console.log("Loaded.");
     })
     .load();
