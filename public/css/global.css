@@ -75,11 +75,11 @@ footer {
     height: 65px;
     width: 65px;
     border-radius: 50%;
-    border: 1px solid lightgray;
+    border: 1px solid var(--light-border-color);
 }
 
 .spinner-ring.loading {
-    border-top-color: orangered;
+    border-top-color: var(--progress-color);
     animation: spin 0.8s linear infinite;
 }
 
@@ -113,6 +113,10 @@ footer {
     header {
         border-bottom: solid 3px var(--dark-border-color);
         box-shadow: none;
+    }
+
+    .spinner-ring {
+        border-color: var(--dark-border-color);
     }
 
     footer {
