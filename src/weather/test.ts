@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { NWSError } from "./error.js";
 import { LatestObservation } from "./observation.js";
 import { Products } from "./products.js";
 
@@ -25,5 +26,8 @@ try {
     const observation = await new LatestObservation("KELM").get();
     console.log(observation);
 } catch (error) {
-    console.error(error);
+    if (error instanceof NWSError) {
+        console.error(error.url);
+    }
+    //console.error(error);
 }

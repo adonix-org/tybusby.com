@@ -19,14 +19,14 @@ export class NWSError extends Error {
         public readonly status: number,
         public readonly statusText: string,
         public readonly url: string,
-        public readonly problem?: NWSProblem
+        public readonly problem: NWSProblem
     ) {
-        super(`${status} ${statusText} (${url})`);
+        super(`${status} ${statusText}: ${url}`);
         this.name = "NWSError";
     }
 }
 
-interface NWSProblem {
+export interface NWSProblem {
     correlationId: string;
     title: string;
     type: string;

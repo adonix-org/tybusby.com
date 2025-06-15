@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { NWSError } from "./error.js";
+import { NWSError, NWSProblem } from "./error.js";
 
 export abstract class NationalWeatherService<T> {
     private static readonly API_URL = "https://api.weather.gov";
@@ -37,7 +37,7 @@ export abstract class NationalWeatherService<T> {
         }
 
         const text = await response.text();
-        let json: any;
+        let json: T | NWSProblem;
         try {
             json = JSON.parse(text);
         } catch (cause) {
@@ -47,7 +47,12 @@ export abstract class NationalWeatherService<T> {
         }
 
         if (!response.ok) {
-            throw new NWSError(response.status, response.statusText, url, json);
+            throw new NWSError(
+                response.status,
+                response.statusText,
+                url,
+                json as NWSProblem
+            );
         }
 
         return json as T;
