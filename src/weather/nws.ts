@@ -40,6 +40,7 @@ export abstract class NationalWeatherService<T> {
         if (!response.ok) {
             throw new NWSError(response.status, response.statusText, url, data);
         }
+
         return data as T;
     }
 
