@@ -39,7 +39,7 @@ export abstract class NationalWeatherService<T> {
         try {
             json = JSON.parse(text);
         } catch (cause) {
-            throw new Error(`NWS JSON Error: "${text}"`, { cause });
+            throw new Error(`NWS JSON Error: ${url} "${text}"`, { cause });
         }
 
         if (!response.ok) {
