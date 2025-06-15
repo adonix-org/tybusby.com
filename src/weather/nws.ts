@@ -33,15 +33,24 @@ export abstract class NationalWeatherService<T> {
                 headers: this.headers,
             });
         } catch (cause) {
-            throw new Error(`NWS API Failure: ${url}`, { cause });
+            throw new Error(`NWS API Error: ${url}`, { cause });
         }
 
-        const data = await response.json();
+        const text = await response.text();
+        let json: any;
+        try {
+            json = JSON.parse(text);
+        } catch (cause) {
+            throw new Error(`NWS JSON Error: "${text}"`, {
+                cause,
+            });
+        }
+
         if (!response.ok) {
-            throw new NWSError(response.status, response.statusText, url, data);
+            throw new NWSError(response.status, response.statusText, url, json);
         }
 
-        return data as T;
+        return json as T;
     }
 
     protected abstract get resource(): string;
