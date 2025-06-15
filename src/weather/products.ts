@@ -22,8 +22,8 @@ export class Products extends NationalWeatherService<Product | undefined> {
     }
 
     /**
-     * If the product is not found, the API still returns an object
-     * in a different form. In that case, return undefined.
+     * If the product is not found, the API still returns an empty
+     * object in a different format. In that case, return undefined.
      */
     public override async get(): Promise<Product | undefined> {
         const product = await super.get();
