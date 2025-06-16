@@ -14,19 +14,38 @@
  * limitations under the License.
  */
 
-export class NWSError extends Error {
+abstract class NWSError extends Error {
+    constructor(public readonly url: string, message: string, cause: unknown) {
+        super(message, { cause });
+        this.name = new.target.name;
+    }
+}
+
+export class NWSFetchError extends NWSError {
+    constructor(url: string, cause: unknown) {
+        super(url, `${url}`, cause);
+    }
+}
+
+export class NWSParseError extends NWSError {
+    constructor(url: string, public readonly text: string, cause: unknown) {
+        super(url, `${url} ${text}`, cause);
+    }
+}
+
+export class NWSResponseError extends Error {
     constructor(
         public readonly status: number,
         public readonly statusText: string,
         public readonly url: string,
-        public readonly problem: NWSProblem
+        public readonly problem: NWSResponseProblem
     ) {
         super(`${status} ${statusText}: ${url}`);
-        this.name = "NWSError";
+        this.name = new.target.name;
     }
 }
 
-export interface NWSProblem {
+export interface NWSResponseProblem {
     type: string;
     title: string;
     status: number;

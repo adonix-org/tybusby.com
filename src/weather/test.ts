@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-import { NWSError } from "./error.js";
 import { LatestObservation } from "./observation.js";
-import { Products } from "./products.js";
+//import { Products } from "./products.js";
 
-const hazard = await new Products("HWO", "BGM").get();
+//const hazard = await new Products("HWO", "BGM").get();
 
-console.log(hazard ?? "Product Not Found");
+//console.log(hazard ?? "Product Not Found");
 
 try {
-    const observation = await new LatestObservation("KELMX").get();
+    const observation = await new LatestObservation("KELM").get();
     console.log(observation);
 } catch (error) {
-    if (error instanceof NWSError) {
-        console.error(error);
-    }
-    //console.error(error);
+    console.error(error);
 }

@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import { NWSError, NWSProblem } from "./error.js";
+import {
+    NWSResponseError,
+    NWSFetchError,
+    NWSParseError,
+    NWSResponseProblem,
+} from "./error.js";
 
 export abstract class NationalWeatherService<T> {
     private static readonly API_URL = "https://api.weather.gov";
@@ -34,23 +39,23 @@ export abstract class NationalWeatherService<T> {
                 headers: this.headers,
             });
         } catch (cause) {
-            throw new Error(`NWS API Error: ${url}`, { cause });
+            throw new NWSFetchError(url, { cause });
         }
 
         const text = await response.text();
-        let json: T | NWSProblem;
+        let json: T | NWSResponseProblem;
         try {
             json = JSON.parse(text);
         } catch (cause) {
-            throw new Error(`NWS JSON Error: ${url} "${text}"`, { cause });
+            throw new NWSParseError(url, text, cause);
         }
 
         if (!response.ok) {
-            throw new NWSError(
+            throw new NWSResponseError(
                 response.status,
                 response.statusText,
                 url,
-                json as NWSProblem
+                json as NWSResponseProblem
             );
         }
 
