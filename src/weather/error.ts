@@ -27,10 +27,10 @@ export class NWSError extends Error {
 }
 
 export interface NWSProblem {
-    correlationId: string;
-    title: string;
     type: string;
+    title: string;
     status: number;
     detail: string;
     instance: string;
+    correlationId: string;
 }

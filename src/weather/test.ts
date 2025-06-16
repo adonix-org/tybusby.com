@@ -23,11 +23,11 @@ const hazard = await new Products("HWO", "BGM").get();
 console.log(hazard ?? "Product Not Found");
 
 try {
-    const observation = await new LatestObservation("KELM").get();
+    const observation = await new LatestObservation("KELMX").get();
     console.log(observation);
 } catch (error) {
     if (error instanceof NWSError) {
-        console.error(error.url);
+        console.error(error);
     }
     //console.error(error);
 }
