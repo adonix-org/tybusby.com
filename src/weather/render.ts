@@ -21,7 +21,7 @@ export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
     private readonly element: DocumentFragment;
 
-    constructor(parentId: string, private readonly report: WeatherReport) {
+    constructor(private readonly report: WeatherReport, parentId: string) {
         const parent = document.getElementById(parentId);
         if (!parent) {
             throw new Error(`Element with ID "${parentId}" not found.`);
