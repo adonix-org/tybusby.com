@@ -29,7 +29,10 @@ export abstract class NationalWeatherService<T> {
 
         let response: Response;
         try {
-            response = await fetch(url, { headers: this.headers });
+            response = await fetch(url, {
+                method: "GET",
+                headers: this.headers,
+            });
         } catch (cause) {
             throw new Error(`NWS API Error: ${url}`, { cause });
         }
