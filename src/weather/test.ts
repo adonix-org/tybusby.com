@@ -22,7 +22,7 @@ import { LatestObservation } from "./observation.js";
 //console.log(hazard ?? "Product Not Found");
 
 try {
-    const observation = await new LatestObservation("KELM").get();
+    const observation = await new LatestObservation("KELMA").get();
     console.log(observation);
 } catch (error) {
     console.error(error);

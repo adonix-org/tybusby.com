@@ -38,14 +38,14 @@ export class NWSResponseError extends Error {
         public readonly status: number,
         public readonly statusText: string,
         public readonly url: string,
-        public readonly problem: NWSResponseProblem
+        public readonly details: NWSProblemDetails
     ) {
         super(`${status} ${statusText}: ${url}`);
         this.name = new.target.name;
     }
 }
 
-export interface NWSResponseProblem {
+export interface NWSProblemDetails {
     type: string;
     title: string;
     status: number;

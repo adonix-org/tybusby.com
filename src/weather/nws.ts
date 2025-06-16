@@ -18,7 +18,7 @@ import {
     NWSResponseError,
     NWSFetchError,
     NWSParseError,
-    NWSResponseProblem,
+    NWSProblemDetails,
 } from "./error.js";
 
 export abstract class NationalWeatherService<T> {
@@ -43,7 +43,7 @@ export abstract class NationalWeatherService<T> {
         }
 
         const text = await response.text();
-        let json: T | NWSResponseProblem;
+        let json: T | NWSProblemDetails;
         try {
             json = JSON.parse(text);
         } catch (cause) {
@@ -55,7 +55,7 @@ export abstract class NationalWeatherService<T> {
                 response.status,
                 response.statusText,
                 url,
-                json as NWSResponseProblem
+                json as NWSProblemDetails
             );
         }
 
