@@ -39,7 +39,7 @@ export abstract class NationalWeatherService<T> {
                 headers: this.headers,
             });
         } catch (cause) {
-            throw new NWSFetchError(url, { cause });
+            throw new NWSFetchError(url, cause);
         }
 
         const text = await response.text();
