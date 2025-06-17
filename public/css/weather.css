@@ -5,7 +5,7 @@
 }
 
 .location {
-    border: 1px solid lightgray;
+    border: 1px solid var(--light-border-color);
     display: flex;
     flex-direction: column;
 }
@@ -14,7 +14,6 @@
     background-color: rgb(228, 228, 228);
     border-radius: 5px;
     border: solid 1px white;
-    box-shadow: 0 0 12px rgb(158, 158, 158);
     margin-bottom: 0.25rem;
 }
 
@@ -83,7 +82,16 @@
 }
 
 .forecast {
-    border-top: 1px solid lightgray;
+    border-top: 1px solid var(--light-border-color);
     font-size: 12pt;
     padding: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .station,
+    .location,
+    .forecast {
+        background-color: var(--dark-background-color);
+        border-color: var(--dark-border-color);
+    }
 }
