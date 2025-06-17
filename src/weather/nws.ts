@@ -50,16 +50,16 @@ export abstract class NationalWeatherService<T> {
             throw new NWSParseError(url, text, cause);
         }
 
-        if (!response.ok) {
-            throw new NWSResponseError(
-                response.status,
-                response.statusText,
-                url,
-                json as NWSProblemDetails
-            );
+        if (response.ok) {
+            return json as T;
         }
 
-        return json as T;
+        throw new NWSResponseError(
+            response.status,
+            response.statusText,
+            url,
+            json as NWSProblemDetails
+        );
     }
 
     protected abstract get resource(): string;
