@@ -21,7 +21,10 @@ export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
     private readonly element: Element;
 
-    constructor(private readonly report: WeatherReport, parentId: string) {
+    constructor(
+        private readonly report: WeatherReport,
+        parentId: string = "weather-grid"
+    ) {
         const parent = document.getElementById(parentId);
         if (!parent) {
             throw new Error(`Element with ID "${parentId}" not found.`);

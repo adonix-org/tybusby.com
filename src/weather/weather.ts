@@ -47,7 +47,7 @@ const progress = new Progress();
 for (const [index, [lon, lat]] of positions.entries()) {
     try {
         WeatherReport.create(lat, lon).then((report) => {
-            new WeatherRenderer(report, "weather-grid").render();
+            new WeatherRenderer(report).render();
             updateStatus(index + 1);
         });
     } catch (error) {
