@@ -46,7 +46,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         let current = 0;
         const total = this.urls.length;
 
-        const complete = () => {
+        const progress = () => {
             current += 1;
             this.emit("progress", Progress.calculate(current, total));
             if (current >= total) {
@@ -58,8 +58,8 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         this.urls.forEach((url) => {
             const video = new Video(url);
             this.parent.appendChild(video.element);
-            video.on("loaded", complete);
-            video.on("timeout", complete);
+            video.on("loaded", progress);
+            video.on("timeout", progress);
         });
         return this;
     }
