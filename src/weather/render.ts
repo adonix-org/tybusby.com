@@ -19,7 +19,7 @@ import { Units } from "./units.js";
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
-    private readonly element: DocumentFragment;
+    private readonly element: Element;
 
     constructor(private readonly report: WeatherReport, parentId: string) {
         const parent = document.getElementById(parentId);
@@ -34,9 +34,17 @@ export class WeatherRenderer {
                 `Template with ID "${WeatherRenderer.TEMPLATE_ID}" not found.`
             );
         }
-        this.element = template.content.cloneNode(true) as DocumentFragment;
-        this.render();
+
+        const fragment = template.content.cloneNode(true) as DocumentFragment;
+        if (!fragment.firstElementChild) {
+            throw new Error(
+                `Template with ID "${WeatherRenderer.TEMPLATE_ID}" missing root child.`
+            );
+        }
+
+        this.element = fragment.firstElementChild;
         parent.appendChild(this.element);
+        this.render();
     }
 
     private render(): void {
