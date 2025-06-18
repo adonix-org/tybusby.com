@@ -21,6 +21,10 @@
     border: none;
 }
 
+.video-frame.timeout {
+    animation: none;
+}
+
 @keyframes bg-video-loading {
     0%,
     100% {

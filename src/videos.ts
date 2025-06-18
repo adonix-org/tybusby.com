@@ -24,6 +24,7 @@ interface VideoGroupEvents {
 }
 
 interface VideoEvents {
+    timeout: void;
     loaded: string;
 }
 
@@ -45,23 +46,27 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         let current = 0;
         const total = this.urls.length;
 
+        const videoComplete = () => {
+            current += 1;
+            this.emit("progress", Progress.calculate(current, total));
+            if (current === total) {
+                this.emit("loaded");
+            }
+        };
+
         this.emit("progress", Progress.calculate(current, total));
         this.urls.forEach((url) => {
             const video = new Video(url);
             this.parent.appendChild(video.element);
-            video.on("loaded", () => {
-                current += 1;
-                this.emit("progress", Progress.calculate(current, total));
-                if (current === total) {
-                    this.emit("loaded");
-                }
-            });
+            video.on("loaded", videoComplete);
+            video.on("timeout", videoComplete);
         });
         return this;
     }
 }
 
 class Video extends EventEmitter<VideoEvents> {
+    private static readonly TIMEOUT = 30_000;
     private readonly video: HTMLElement;
 
     constructor(private readonly url: string) {
@@ -84,15 +89,22 @@ class Video extends EventEmitter<VideoEvents> {
         iframe.allowFullscreen = true;
         iframe.referrerPolicy = "strict-origin-when-cross-origin";
 
-        iframe.addEventListener(
-            "load",
-            () => {
-                wrapper.classList.add("loaded");
-                iframe.classList.add("loaded");
-                this.emit("loaded", this.url);
-            },
-            true
-        );
+        const handleLoad = () => {
+            clearTimeout(timeoutId);
+            iframe.removeEventListener("load", handleLoad, true);
+            wrapper.classList.add("loaded");
+            iframe.classList.add("loaded");
+            this.emit("loaded", this.url);
+        };
+
+        iframe.addEventListener("load", handleLoad, true);
+
+        const timeoutId = setTimeout(() => {
+            console.error(`Timeout loading: ${this.url}`);
+            iframe.removeEventListener("load", handleLoad, true);
+            wrapper.classList.add("timeout");
+            this.emit("timeout");
+        }, Video.TIMEOUT);
 
         wrapper.appendChild(iframe);
         return wrapper;
