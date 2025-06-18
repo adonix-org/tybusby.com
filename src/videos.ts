@@ -18,14 +18,14 @@ import { EventEmitter } from "./event.js";
 import { Progress, ProgressData } from "./progress.js";
 
 interface VideoGroupEvents {
-    loading: void;
+    start: void;
     progress: ProgressData;
-    loaded: void;
+    complete: void;
 }
 
 interface VideoEvents {
-    timeout: void;
     loaded: string;
+    timeout: void;
 }
 
 export class VideoGroup extends EventEmitter<VideoGroupEvents> {
@@ -41,16 +41,16 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     }
 
     public load(): this {
-        this.emit("loading");
+        this.emit("start");
 
         let current = 0;
         const total = this.urls.length;
 
-        const completed = () => {
+        const complete = () => {
             current += 1;
             this.emit("progress", Progress.calculate(current, total));
             if (current >= total) {
-                this.emit("loaded");
+                this.emit("complete");
             }
         };
 
@@ -58,8 +58,8 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
         this.urls.forEach((url) => {
             const video = new Video(url);
             this.parent.appendChild(video.element);
-            video.on("loaded", completed);
-            video.on("timeout", completed);
+            video.on("loaded", complete);
+            video.on("timeout", complete);
         });
         return this;
     }

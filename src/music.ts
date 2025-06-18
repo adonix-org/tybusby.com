@@ -47,13 +47,13 @@ new VideoGroup("music-video-grid", URLS)
         progress.percent = data.percent;
         console.log(progress.percent);
     })
-    .once("loading", () => {
+    .once("start", () => {
         spinner.start();
-        console.log("Loading...");
+        console.log("Start");
     })
-    .once("loaded", function () {
+    .once("complete", function () {
         progress.complete();
         spinner.stop();
-        console.log("Loaded.");
+        console.log("Complete");
     })
     .load();
