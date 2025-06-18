@@ -46,8 +46,9 @@ spinner.start();
 const progress = new Progress();
 for (const [index, [lon, lat]] of positions.entries()) {
     try {
-        const report = await WeatherReport.create(lat, lon);
-        new WeatherRenderer(report, "weather-grid");
+        WeatherReport.create(lat, lon).then((report) => {
+            new WeatherRenderer(report, "weather-grid").render();
+        });
     } catch (error) {
         console.error(`Error loading weather for [${lat}, ${lon}]:`, error);
     }

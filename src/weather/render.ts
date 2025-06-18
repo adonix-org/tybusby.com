@@ -44,10 +44,9 @@ export class WeatherRenderer {
 
         this.element = fragment.firstElementChild;
         parent.appendChild(this.element);
-        this.render();
     }
 
-    private render(): void {
+    public render(): void {
         const station = this.report.station?.properties;
 
         const location = this.element.querySelector(".location");
