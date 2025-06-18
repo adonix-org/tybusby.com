@@ -48,12 +48,17 @@ for (const [index, [lon, lat]] of positions.entries()) {
     try {
         WeatherReport.create(lat, lon).then((report) => {
             new WeatherRenderer(report, "weather-grid").render();
+            updateStatus(index + 1);
         });
     } catch (error) {
         console.error(`Error loading weather for [${lat}, ${lon}]:`, error);
     }
-    progress.percent = Progress.calculate(index + 1, positions.length).percent;
 }
-progress.complete();
 
-spinner.stop();
+function updateStatus(current: number) {
+    progress.percent = Progress.calculate(current, positions.length).percent;
+    if (current >= positions.length) {
+        progress.complete();
+        spinner.stop();
+    }
+}
