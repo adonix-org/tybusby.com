@@ -40,13 +40,6 @@ const positions: Position[] = [
     [-95.8418, 43.1828],
 ];
 
-const spinner = new Spinner();
-spinner.start();
-
-const progress = new Progress();
-
-let completed = 0;
-
 const promises = positions.map(([lon, lat]) =>
     WeatherReport.create(lat, lon)
         .catch((error: unknown) => {
@@ -72,6 +65,13 @@ Promise.all(promises).then((results) => {
         }
     });
 });
+
+let completed = 0;
+
+const spinner = new Spinner();
+spinner.start();
+
+const progress = new Progress();
 
 function updateStatus(current: number) {
     progress.percent = Progress.calculate(current, positions.length).percent;
