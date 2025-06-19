@@ -60,7 +60,7 @@ export class WeatherReport {
         return this._forecast;
     }
 
-    public async update(): Promise<void> {
+    private async update(): Promise<void> {
         this._point = await new Points(this.latitude, this.longitude).get();
         this._stations = await new Stations(this._point).get();
 
