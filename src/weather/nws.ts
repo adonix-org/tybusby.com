@@ -54,12 +54,10 @@ export abstract class NationalWeatherService<T> {
             return json as T;
         }
 
-        const details = json as NWSProblemDetails;
         throw new NWSResponseError(
             response.status,
-            details.title,
             url,
-            details
+            json as NWSProblemDetails
         );
     }
 

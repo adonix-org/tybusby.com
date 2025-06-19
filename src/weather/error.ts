@@ -36,11 +36,10 @@ export class NWSParseError extends NWSError {
 export class NWSResponseError extends Error {
     constructor(
         public readonly status: number,
-        public readonly statusText: string,
         public readonly url: string,
         public readonly details: NWSProblemDetails
     ) {
-        super(`${status} ${statusText}: ${url}`);
+        super(`${status} ${details.title}: ${url}`);
         this.name = new.target.name;
     }
 }
