@@ -33,6 +33,9 @@ const positions: Position[] = [
     // Yorktown, VA
     [-76.5065, 37.2367],
 
+    // Waynesboro, VA
+    [0, 0],
+
     // Waverly, IA
     [-92.4781, 42.7382],
 
@@ -49,19 +52,21 @@ let completed = 0;
 
 const promises = positions.map(([lon, lat]) =>
     WeatherReport.create(lat, lon)
-        .catch((error) => {
-            console.error(`Error loading weather for [${lat}, ${lon}]:`, error);
-            return null;
+        .catch((error: Error) => {
+            return error;
         })
-        .finally(() => {
-            updateStatus(++completed);
-        })
+        .finally(() => updateStatus(++completed))
 );
 
-Promise.all(promises).then((reports) => {
-    reports.forEach((report) => {
-        if (report) {
-            new WeatherRenderer(report).render();
+Promise.all(promises).then((results) => {
+    results.forEach((result, index) => {
+        if (result instanceof Error) {
+            console.group(`positions[${index}]: ${result.message}`);
+            console.error(result);
+            console.dir(result);
+            console.groupEnd();
+        } else {
+            new WeatherRenderer(result).render();
         }
     });
 });
