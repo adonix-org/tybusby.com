@@ -68,10 +68,9 @@ Promise.all(promises).then((results) => {
 
 let completed = 0;
 
+const progress = new Progress();
 const spinner = new Spinner();
 spinner.start();
-
-const progress = new Progress();
 
 function updateStatus(current: number) {
     progress.percent = Progress.calculate(current, positions.length).percent;
