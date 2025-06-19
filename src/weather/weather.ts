@@ -44,16 +44,27 @@ const spinner = new Spinner();
 spinner.start();
 
 const progress = new Progress();
-for (const [index, [lon, lat]] of positions.entries()) {
-    try {
-        WeatherReport.create(lat, lon).then((report) => {
+
+let completed = 0;
+
+const promises = positions.map(([lon, lat]) =>
+    WeatherReport.create(lat, lon)
+        .catch((error) => {
+            console.error(`Error loading weather for [${lat}, ${lon}]:`, error);
+            return null;
+        })
+        .finally(() => {
+            updateStatus(++completed);
+        })
+);
+
+Promise.all(promises).then((reports) => {
+    reports.forEach((report) => {
+        if (report) {
             new WeatherRenderer(report).render();
-            updateStatus(index + 1);
-        });
-    } catch (error) {
-        console.error(`Error loading weather for [${lat}, ${lon}]:`, error);
-    }
-}
+        }
+    });
+});
 
 function updateStatus(current: number) {
     progress.percent = Progress.calculate(current, positions.length).percent;
