@@ -53,7 +53,7 @@ const promises = positions.map(([lon, lat]) =>
             if (error instanceof Error) {
                 return error;
             }
-            return new Error(`Unexpected Error: ${String(error)}`, {
+            return new Error(`Unexpected error: ${String(error)}`, {
                 cause: error,
             });
         })
