@@ -33,9 +33,6 @@ const positions: Position[] = [
     // Yorktown, VA
     [-76.5065, 37.2367],
 
-    // Waynesboro, VA
-    [0, 0],
-
     // Waverly, IA
     [-92.4781, 42.7382],
 
@@ -52,8 +49,13 @@ let completed = 0;
 
 const promises = positions.map(([lon, lat]) =>
     WeatherReport.create(lat, lon)
-        .catch((error: Error) => {
-            return error;
+        .catch((error: unknown) => {
+            if (error instanceof Error) {
+                return error;
+            }
+            return new Error(`Unexpected Error: ${String(error)}`, {
+                cause: error,
+            });
         })
         .finally(() => updateStatus(++completed))
 );
