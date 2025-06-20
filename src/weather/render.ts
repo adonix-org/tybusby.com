@@ -17,6 +17,8 @@
 import { WeatherReport } from "./report.js";
 import { Units } from "./units.js";
 
+type ValueRenderConstructor = new (e: Element, r: WeatherReport) => ValueRender;
+
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
     private readonly element: Element;
@@ -60,15 +62,20 @@ export class WeatherRenderer {
         const icon = this.report.current?.properties.icon;
         this.setIcon(".current-icon", "large", icon);
 
-        new Station(this.element, this.report);
-        new TextDescription(this.element, this.report);
-        new CurrentTemperature(this.element, this.report);
-        new Humidity(this.element, this.report);
-        new Wind(this.element, this.report);
-        new Pressure(this.element, this.report);
-        new Dewpoint(this.element, this.report);
-        new Visibility(this.element, this.report);
-        new LatestTimestamp(this.element, this.report);
+        const renderers: ValueRenderConstructor[] = [
+            Station,
+            ObservationText,
+            CurrentTemperature,
+            Humidity,
+            Wind,
+            Pressure,
+            Dewpoint,
+            Visibility,
+            LatestTimestamp,
+        ];
+        for (const RenderClass of renderers) {
+            new RenderClass(this.element, this.report);
+        }
     }
 
     private setIcon(
@@ -155,10 +162,10 @@ class Dewpoint extends TemperatureRender {
     }
 }
 
-class TextDescription extends ValueRender {
+class ObservationText extends ValueRender {
     public render(): void {
         this.setValue(
-            ".text-description",
+            ".observation-text",
             this.report.current?.properties.textDescription
         );
     }
