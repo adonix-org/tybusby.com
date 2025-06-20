@@ -262,7 +262,7 @@ class Station extends ValueRender {
 }
 
 class LastUpdate extends ValueRender {
-    protected static readonly TIMESTAMP_FORMATTER = new Intl.DateTimeFormat(
+    protected static readonly TIMESTAMP_FORMAT = new Intl.DateTimeFormat(
         undefined,
         {
             month: "short",
@@ -275,7 +275,7 @@ class LastUpdate extends ValueRender {
     );
 
     protected override format(timestamp: string): string {
-        return LastUpdate.TIMESTAMP_FORMATTER.format(new Date(timestamp));
+        return LastUpdate.TIMESTAMP_FORMAT.format(new Date(timestamp));
     }
 
     protected render(): void {
