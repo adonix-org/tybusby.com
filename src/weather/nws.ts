@@ -22,10 +22,9 @@ import {
 } from "./error.js";
 
 export abstract class NationalWeatherService<T> {
-    private static readonly API_URL = "https://api.weather.gov";
+    private static readonly API_URL = "https://tybusby.com/nws";
 
     protected readonly headers = new Headers({
-        "User-Agent": "www.tybusby.com (tybusby@gmail.com)",
         Accept: "application/geo+json",
     });
 
