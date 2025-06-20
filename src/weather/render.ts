@@ -114,9 +114,13 @@ abstract class ValueRender {
 
     protected abstract render(): void;
 
+    protected format(value: string | number): string {
+        return String(value);
+    }
+
     protected setValue(
         selector: string,
-        value: string | undefined,
+        value: string | number | undefined,
         fallback: string = "?"
     ) {
         const element = this.parent.querySelector(selector);
@@ -125,7 +129,8 @@ abstract class ValueRender {
                 `Element with query selector ${selector} not found.`
             );
         }
-        element.textContent = value ?? fallback;
+        element.textContent =
+            value === undefined ? fallback : this.format(value);
         return value;
     }
 }
@@ -176,15 +181,15 @@ class ObservationText extends ValueRender {
 }
 
 class Humidity extends ValueRender {
+    protected override format(humidity: number): string {
+        return `${Math.round(humidity)}%`;
+    }
+
     protected render(): void {
         const humidity = Units.to_number(
             this.report.current?.properties.relativeHumidity
         );
-        this.setValue(
-            ".humidity",
-            humidity === undefined ? undefined : `${Math.round(humidity)}%`,
-            "--%"
-        );
+        this.setValue(".humidity", humidity, "--%");
     }
 }
 
@@ -212,34 +217,30 @@ class Wind extends ValueRender {
 }
 
 class Pressure extends ValueRender {
+    protected override format(pressure: number): string {
+        return `${Units.pascals_to_inches(pressure).toFixed(
+            2
+        )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`;
+    }
+
     protected render(): void {
         const pressure = Units.to_number(
             this.report.current?.properties?.barometricPressure
         );
-        this.setValue(
-            ".pressure",
-            pressure === undefined
-                ? undefined
-                : `${Units.pascals_to_inches(pressure).toFixed(
-                      2
-                  )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`,
-            "--.-- in (----.- mb)"
-        );
+        this.setValue(".pressure", pressure, "--.-- in (----.- mb)");
     }
 }
 
 class Visibility extends ValueRender {
+    protected override format(visibility: number): string {
+        return `${Units.meters_to_miles(visibility).toFixed(2)} miles`;
+    }
+
     protected render(): void {
         const visibility = Units.to_number(
             this.report.current?.properties?.visibility
         );
-        this.setValue(
-            ".visibility",
-            visibility === undefined
-                ? undefined
-                : `${Units.meters_to_miles(visibility).toFixed(2)} miles`,
-            "--.-- mi"
-        );
+        this.setValue(".visibility", visibility, "--.-- mi");
     }
 }
 
@@ -254,20 +255,19 @@ class Station extends ValueRender {
 }
 
 class LatestTimestamp extends ValueRender {
+    protected override format(timestamp: string): string {
+        return new Intl.DateTimeFormat(undefined, {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+            timeZoneName: "short",
+        }).format(new Date(timestamp));
+    }
+
     protected render(): void {
         const timestamp = this.report.current?.properties?.timestamp;
-        this.setValue(
-            ".last-update",
-            timestamp === undefined
-                ? undefined
-                : new Intl.DateTimeFormat(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "2-digit",
-                      hour12: true,
-                      timeZoneName: "short",
-                  }).format(new Date(timestamp))
-        );
+        this.setValue(".last-update", timestamp);
     }
 }
