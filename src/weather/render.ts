@@ -130,9 +130,10 @@ abstract class ValueRender {
                 `Element with query selector ${selector} not found.`
             );
         }
-        element.textContent =
-            value === undefined ? fallback : this.format(value);
-        return value;
+
+        const rendered = value === undefined ? fallback : this.format(value);
+        element.textContent = rendered;
+        return rendered;
     }
 }
 
