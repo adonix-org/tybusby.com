@@ -165,7 +165,9 @@ class CurrentTemperatureF extends ValueRender {
 
 class Dewpoint extends ValueRender {
     protected override format(dewpoint: number): string {
-        return `${Units.c_to_f(dewpoint)}°F (${Math.round(dewpoint)}°C)`;
+        const f = Math.round(Units.c_to_f(dewpoint));
+        const c = Math.round(dewpoint);
+        return `${f}°F (${c}°C)`;
     }
 
     protected render(): void {
