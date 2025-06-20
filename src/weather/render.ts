@@ -93,14 +93,14 @@ class IconRender {
             );
         }
 
-        image.src = icon
-            ? (() => {
-                  const url = new URL(icon);
-                  url.searchParams.set("size", size);
-                  return url.toString();
-              })()
-            : "img/missing.png";
+        if (!icon || icon.trim() === "") {
+            image.src = "img/missing.png";
+            return image.src;
+        }
 
+        const url = new URL(icon);
+        url.searchParams.set("size", size);
+        image.src = url.toString();
         return image.src;
     }
 }
