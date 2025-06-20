@@ -64,7 +64,8 @@ export class WeatherRenderer {
         const renderers: ValueRenderConstructor[] = [
             Station,
             ObservationText,
-            CurrentTemperature,
+            CurrentTemperatureF,
+            CurrentTemperatureC,
             Humidity,
             Wind,
             Pressure,
@@ -135,39 +136,42 @@ abstract class ValueRender {
     }
 }
 
-abstract class TemperatureRender extends ValueRender {
-    public static format(value: number | undefined, unit: "C" | "F"): string {
-        if (value === undefined) {
-            return unit === "C" ? "--°C" : "--°F";
-        }
-        return unit === "C"
-            ? `${Math.round(value)}°C`
-            : `${Units.c_to_f(value)}°F`;
+class CurrentTemperatureC extends ValueRender {
+    protected override format(temperature: number): string {
+        return `${Math.round(temperature)}°C`;
     }
-}
 
-class CurrentTemperature extends TemperatureRender {
     protected render(): void {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
-        this.setValue(".current-temp-f", TemperatureRender.format(temp, "F"));
-        this.setValue(".current-temp-c", TemperatureRender.format(temp, "C"));
+        this.setValue(".current-temp-c", temp, "--°C");
     }
 }
 
-class Dewpoint extends TemperatureRender {
+class CurrentTemperatureF extends ValueRender {
+    protected override format(temperature: number): string {
+        return `${Units.c_to_f(temperature)}°F`;
+    }
+
+    protected render(): void {
+        const temp = Units.to_number(
+            this.report.current?.properties.temperature
+        );
+        this.setValue(".current-temp-f", temp, "--°F");
+    }
+}
+
+class Dewpoint extends ValueRender {
+    protected override format(dewpoint: number): string {
+        return `${Units.c_to_f(dewpoint)}°F (${Math.round(dewpoint)}°C)`;
+    }
+
     protected render(): void {
         const dewpoint = Units.to_number(
             this.report.current?.properties.dewpoint
         );
-        this.setValue(
-            ".dewpoint",
-            `${TemperatureRender.format(
-                dewpoint,
-                "F"
-            )} (${TemperatureRender.format(dewpoint, "C")})`
-        );
+        this.setValue(".dewpoint", dewpoint, "--°F (--°C)");
     }
 }
 
