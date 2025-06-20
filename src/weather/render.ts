@@ -119,7 +119,7 @@ abstract class ValueRender {
         return String(value);
     }
 
-    protected setValue(
+    protected set(
         selector: string,
         value: string | number | undefined,
         fallback: string = "?"
@@ -146,7 +146,7 @@ class CurrentTemperatureC extends ValueRender {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
-        this.setValue(".current-temp-c", temp, "--°C");
+        this.set(".current-temp-c", temp, "--°C");
     }
 }
 
@@ -159,7 +159,7 @@ class CurrentTemperatureF extends ValueRender {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
-        this.setValue(".current-temp-f", temp, "--°F");
+        this.set(".current-temp-f", temp, "--°F");
     }
 }
 
@@ -174,13 +174,13 @@ class Dewpoint extends ValueRender {
         const dewpoint = Units.to_number(
             this.report.current?.properties.dewpoint
         );
-        this.setValue(".dewpoint", dewpoint, "--°F (--°C)");
+        this.set(".dewpoint", dewpoint, "--°F (--°C)");
     }
 }
 
 class ObservationText extends ValueRender {
     protected render(): void {
-        this.setValue(
+        this.set(
             ".observation-text",
             this.report.current?.properties.textDescription
         );
@@ -196,7 +196,7 @@ class Humidity extends ValueRender {
         const humidity = Units.to_number(
             this.report.current?.properties.relativeHumidity
         );
-        this.setValue(".humidity", humidity, "--%");
+        this.set(".humidity", humidity, "--%");
     }
 }
 
@@ -209,7 +209,7 @@ class Wind extends ValueRender {
             this.report.current?.properties?.windDirection
         );
         if (windSpeed) {
-            this.setValue(
+            this.set(
                 ".wind-speed",
                 `${
                     windDirection
@@ -218,7 +218,7 @@ class Wind extends ValueRender {
                 }${Math.round(Units.kmh_to_mph(windSpeed))} mph`
             );
         } else {
-            this.setValue(".wind-speed", "Calm");
+            this.set(".wind-speed", "Calm");
         }
     }
 }
@@ -234,7 +234,7 @@ class Pressure extends ValueRender {
         const pressure = Units.to_number(
             this.report.current?.properties?.barometricPressure
         );
-        this.setValue(".pressure", pressure, "--.-- in (----.- mb)");
+        this.set(".pressure", pressure, "--.-- in (----.- mb)");
     }
 }
 
@@ -247,14 +247,14 @@ class Visibility extends ValueRender {
         const visibility = Units.to_number(
             this.report.current?.properties?.visibility
         );
-        this.setValue(".visibility", visibility, "--.-- mi");
+        this.set(".visibility", visibility, "--.-- mi");
     }
 }
 
 class Station extends ValueRender {
     protected render(): void {
         const station = this.report.station?.properties;
-        this.setValue(
+        this.set(
             ".station-name",
             `${station?.name} (${station?.stationIdentifier})`
         );
@@ -275,6 +275,6 @@ class LatestTimestamp extends ValueRender {
 
     protected render(): void {
         const timestamp = this.report.current?.properties?.timestamp;
-        this.setValue(".last-update", timestamp);
+        this.set(".last-update", timestamp);
     }
 }
