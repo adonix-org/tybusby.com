@@ -204,7 +204,7 @@ class Wind extends TextRender {
             this.report.current?.properties?.windSpeed
         );
         const windDirection = Units.to_number(
-            this.report.current?.properties?.windDirection
+            this.report.current?.properties.windDirection
         );
         if (windSpeed) {
             this.set(
@@ -230,7 +230,7 @@ class Pressure extends TextRender {
 
     protected render(): void {
         const pressure = Units.to_number(
-            this.report.current?.properties?.barometricPressure
+            this.report.current?.properties.barometricPressure
         );
         this.set(".pressure", pressure, "--.-- in (----.- mb)");
     }
@@ -277,7 +277,7 @@ class LastUpdate extends TextRender {
     }
 
     protected render(): void {
-        const timestamp = this.report.current?.properties?.timestamp;
+        const timestamp = this.report.current?.properties.timestamp;
         this.set(".last-update", timestamp);
     }
 }
