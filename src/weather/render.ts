@@ -151,7 +151,7 @@ class CurrentTemperatureC extends ValueRender {
 
 class CurrentTemperatureF extends ValueRender {
     protected override format(temperature: number): string {
-        return `${Units.c_to_f(temperature)}°F`;
+        return `${Math.round(Units.c_to_f(temperature))}°F`;
     }
 
     protected render(): void {
