@@ -17,7 +17,7 @@
 import { WeatherReport } from "./report.js";
 import { Units } from "./units.js";
 
-type ValueRenderConstructor = new (e: Element, r: WeatherReport) => ValueRender;
+type TextRenderConstructor = new (e: Element, r: WeatherReport) => TextRender;
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
@@ -52,18 +52,12 @@ export class WeatherRenderer {
     }
 
     public render(): void {
-        const stationId = this.report.station?.properties?.stationIdentifier;
-        const location = this.element.querySelector(".location");
-        if (stationId && location) {
-            location.id = stationId;
-        }
-
         const icon = this.report.current?.properties.icon;
         const alt =
             this.report.current?.properties.textDescription ?? "No Data";
         IconRender.render(this.element, ".current-icon", icon, alt, "large");
 
-        const renderers: ValueRenderConstructor[] = [
+        const renderers: TextRenderConstructor[] = [
             Station,
             ObservationText,
             CurrentTemperatureF,
@@ -109,7 +103,7 @@ class IconRender {
     }
 }
 
-abstract class ValueRender {
+abstract class TextRender {
     constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport
@@ -141,7 +135,7 @@ abstract class ValueRender {
     }
 }
 
-class CurrentTemperatureC extends ValueRender {
+class CurrentTemperatureC extends TextRender {
     protected override format(temperature: number): string {
         return `${Math.round(temperature)}°C`;
     }
@@ -154,7 +148,7 @@ class CurrentTemperatureC extends ValueRender {
     }
 }
 
-class CurrentTemperatureF extends ValueRender {
+class CurrentTemperatureF extends TextRender {
     protected override format(temperature: number): string {
         return `${Math.round(Units.c_to_f(temperature))}°F`;
     }
@@ -167,7 +161,7 @@ class CurrentTemperatureF extends ValueRender {
     }
 }
 
-class Dewpoint extends ValueRender {
+class Dewpoint extends TextRender {
     protected override format(dewpoint: number): string {
         const f = Math.round(Units.c_to_f(dewpoint));
         const c = Math.round(dewpoint);
@@ -182,7 +176,7 @@ class Dewpoint extends ValueRender {
     }
 }
 
-class ObservationText extends ValueRender {
+class ObservationText extends TextRender {
     protected render(): void {
         this.set(
             ".observation-text",
@@ -191,7 +185,7 @@ class ObservationText extends ValueRender {
     }
 }
 
-class Humidity extends ValueRender {
+class Humidity extends TextRender {
     protected override format(humidity: number): string {
         return `${Math.round(humidity)}%`;
     }
@@ -204,7 +198,7 @@ class Humidity extends ValueRender {
     }
 }
 
-class Wind extends ValueRender {
+class Wind extends TextRender {
     protected render(): void {
         const windSpeed = Units.to_number(
             this.report.current?.properties?.windSpeed
@@ -227,7 +221,7 @@ class Wind extends ValueRender {
     }
 }
 
-class Pressure extends ValueRender {
+class Pressure extends TextRender {
     protected override format(pressure: number): string {
         const inches = Units.pascals_to_inches(pressure).toFixed(2);
         const mb = Units.pascals_to_mb(pressure).toFixed(1);
@@ -242,7 +236,7 @@ class Pressure extends ValueRender {
     }
 }
 
-class Visibility extends ValueRender {
+class Visibility extends TextRender {
     protected override format(visibility: number): string {
         return `${Units.meters_to_miles(visibility).toFixed(2)} miles`;
     }
@@ -255,7 +249,7 @@ class Visibility extends ValueRender {
     }
 }
 
-class Station extends ValueRender {
+class Station extends TextRender {
     protected render(): void {
         const station = this.report.station?.properties;
         this.set(
@@ -265,7 +259,7 @@ class Station extends ValueRender {
     }
 }
 
-class LastUpdate extends ValueRender {
+class LastUpdate extends TextRender {
     protected static readonly TIMESTAMP_FORMAT = new Intl.DateTimeFormat(
         undefined,
         {
