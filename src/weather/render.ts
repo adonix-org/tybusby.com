@@ -17,7 +17,7 @@
 import { WeatherReport } from "./report.js";
 import { Units } from "./units.js";
 
-type TextRenderConstructor = new (e: Element, r: WeatherReport) => TextRender;
+type TextRenderClass = new (e: Element, r: WeatherReport) => TextRender;
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
@@ -57,7 +57,7 @@ export class WeatherRenderer {
             this.report.current?.properties.textDescription ?? "No Data";
         IconRender.render(this.element, ".current-icon", icon, alt, "large");
 
-        const renderers: TextRenderConstructor[] = [
+        const renderers: TextRenderClass[] = [
             Station,
             ObservationText,
             CurrentTemperatureF,
