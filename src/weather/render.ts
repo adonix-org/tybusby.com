@@ -59,7 +59,9 @@ export class WeatherRenderer {
         }
 
         const icon = this.report.current?.properties.icon;
-        IconRender.render(this.element, ".current-icon", icon, "large");
+        const alt =
+            this.report.current?.properties.textDescription ?? "No Data";
+        IconRender.render(this.element, ".current-icon", icon, alt, "large");
 
         const renderers: ValueRenderConstructor[] = [
             Station,
@@ -84,15 +86,17 @@ class IconRender {
         parent: Element,
         selector: string,
         icon: string | undefined,
+        alt: string,
         size: "small" | "medium" | "large" = "medium"
     ): string {
-        const image = parent.querySelector(selector) as HTMLImageElement;
-        if (!image) {
+        const image = parent.querySelector(selector);
+        if (!image || !(image instanceof HTMLImageElement)) {
             throw new Error(
                 `Image element with query selector "${selector}" not found.`
             );
         }
 
+        image.alt = alt;
         if (!icon || icon.trim() === "") {
             image.src = "img/missing.png";
             return image.src;
