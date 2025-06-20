@@ -52,15 +52,14 @@ export class WeatherRenderer {
     }
 
     public render(): void {
-        const station = this.report.station?.properties;
-
+        const stationId = this.report.station?.properties?.stationIdentifier;
         const location = this.element.querySelector(".location");
-        if (location && station) {
-            location.id = station?.stationIdentifier;
+        if (stationId && location) {
+            location.id = stationId;
         }
 
         const icon = this.report.current?.properties.icon;
-        this.setIcon(".current-icon", "large", icon);
+        IconRender.render(this.element, ".current-icon", icon, "large");
 
         const renderers: ValueRenderConstructor[] = [
             Station,
@@ -77,25 +76,30 @@ export class WeatherRenderer {
             new RenderClass(this.element, this.report);
         }
     }
+}
 
-    private setIcon(
+class IconRender {
+    public static render(
+        parent: Element,
         selector: string,
-        size: "small" | "medium" | "large",
-        icon: string | undefined
+        icon: string | undefined,
+        size: "small" | "medium" | "large" = "medium"
     ): string {
-        const image = this.element.querySelector(selector) as HTMLImageElement;
+        const image = parent.querySelector(selector) as HTMLImageElement;
         if (!image) {
             throw new Error(
-                `Image element with query selector ${selector} not found.`
+                `Image element with query selector "${selector}" not found.`
             );
         }
-        if (icon) {
-            const url = new URL(icon);
-            url.searchParams.set("size", size);
-            image.src = url.toString();
-        } else {
-            image.src = "img/missing.png";
-        }
+
+        image.src = icon
+            ? (() => {
+                  const url = new URL(icon);
+                  url.searchParams.set("size", size);
+                  return url.toString();
+              })()
+            : "img/missing.png";
+
         return image.src;
     }
 }
