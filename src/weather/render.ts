@@ -71,7 +71,7 @@ export class WeatherRenderer {
             Pressure,
             Dewpoint,
             Visibility,
-            LatestTimestamp,
+            LastUpdate,
         ];
         for (const RenderClass of renderers) {
             new RenderClass(this.element, this.report);
@@ -261,16 +261,21 @@ class Station extends ValueRender {
     }
 }
 
-class LatestTimestamp extends ValueRender {
-    protected override format(timestamp: string): string {
-        return new Intl.DateTimeFormat(undefined, {
+class LastUpdate extends ValueRender {
+    protected static readonly TIMESTAMP_FORMATTER = new Intl.DateTimeFormat(
+        undefined,
+        {
             month: "short",
             day: "numeric",
             hour: "numeric",
             minute: "2-digit",
             hour12: true,
             timeZoneName: "short",
-        }).format(new Date(timestamp));
+        }
+    );
+
+    protected override format(timestamp: string): string {
+        return LastUpdate.TIMESTAMP_FORMATTER.format(new Date(timestamp));
     }
 
     protected render(): void {
