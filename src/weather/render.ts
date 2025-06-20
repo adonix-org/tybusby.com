@@ -142,7 +142,7 @@ abstract class TemperatureRender extends ValueRender {
 }
 
 class CurrentTemperature extends TemperatureRender {
-    public render(): void {
+    protected render(): void {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
@@ -152,7 +152,7 @@ class CurrentTemperature extends TemperatureRender {
 }
 
 class Dewpoint extends TemperatureRender {
-    public render(): void {
+    protected render(): void {
         const dewpoint = Units.to_number(
             this.report.current?.properties.dewpoint
         );
@@ -167,7 +167,7 @@ class Dewpoint extends TemperatureRender {
 }
 
 class ObservationText extends ValueRender {
-    public render(): void {
+    protected render(): void {
         this.setValue(
             ".observation-text",
             this.report.current?.properties.textDescription
@@ -176,7 +176,7 @@ class ObservationText extends ValueRender {
 }
 
 class Humidity extends ValueRender {
-    public render(): void {
+    protected render(): void {
         const humidity = Units.to_number(
             this.report.current?.properties.relativeHumidity
         );
@@ -189,7 +189,7 @@ class Humidity extends ValueRender {
 }
 
 class Wind extends ValueRender {
-    public render(): void {
+    protected render(): void {
         const windSpeed = Units.to_number(
             this.report.current?.properties?.windSpeed
         );
@@ -212,7 +212,7 @@ class Wind extends ValueRender {
 }
 
 class Pressure extends ValueRender {
-    public render(): void {
+    protected render(): void {
         const pressure = Units.to_number(
             this.report.current?.properties?.barometricPressure
         );
@@ -229,7 +229,7 @@ class Pressure extends ValueRender {
 }
 
 class Visibility extends ValueRender {
-    public render(): void {
+    protected render(): void {
         const visibility = Units.to_number(
             this.report.current?.properties?.visibility
         );
