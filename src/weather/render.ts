@@ -121,7 +121,7 @@ abstract class TextRender {
         selector: string,
         value: string | number | undefined,
         fallback: string = "?"
-    ) {
+    ): string {
         const element = this.parent.querySelector(selector);
         if (!element) {
             throw new Error(
