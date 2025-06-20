@@ -57,103 +57,18 @@ export class WeatherRenderer {
             location.id = station?.stationIdentifier;
         }
 
-        this.setValue(
-            ".station-name",
-            `${station?.name} (${station?.stationIdentifier})`
-        );
+        const icon = this.report.current?.properties.icon;
+        this.setIcon(".current-icon", "large", icon);
 
-        const current = this.report.current?.properties;
-
-        this.setIcon(".current-icon", "large", current?.icon);
-
-        this.setValue(".text-description", current?.textDescription);
-
-        const temp = Units.to_number(current?.temperature);
-        if (temp) {
-            this.setValue(".current-temp-f", `${Units.c_to_f(temp)}°F`, "--°F");
-            this.setValue(".current-temp-c", `${Math.round(temp)}°C`, "--°C");
-        }
-
-        const humidity = Units.to_number(current?.relativeHumidity);
-        if (humidity) {
-            this.setValue(".humidity", `${Math.round(humidity)}%`, "--%");
-        }
-
-        const windSpeed = Units.to_number(current?.windSpeed);
-        const windDirection = Units.to_number(current?.windDirection);
-        if (windSpeed) {
-            this.setValue(
-                ".wind-speed",
-                `${
-                    windDirection
-                        ? `${Units.degrees_to_cardinal(windDirection)} `
-                        : ""
-                }${Math.round(Units.kmh_to_mph(windSpeed))} mph`,
-                "-- mph"
-            );
-        } else {
-            this.setValue(".wind-speed", "Calm");
-        }
-
-        const pressure = Units.to_number(current?.barometricPressure);
-        if (pressure) {
-            this.setValue(
-                ".pressure",
-                `${Units.pascals_to_inches(pressure).toFixed(
-                    2
-                )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`,
-                "--.-- in (----.- mb)"
-            );
-        }
-
-        const dewpoint = Units.to_number(current?.dewpoint);
-        if (dewpoint) {
-            this.setValue(
-                ".dewpoint",
-                `${Math.round(Units.c_to_f(dewpoint))}°F (${Math.round(
-                    dewpoint
-                )}°C)`,
-                "--°F (--°C)"
-            );
-        }
-
-        const visibility = Units.to_number(current?.visibility);
-        if (visibility) {
-            this.setValue(
-                ".visibility",
-                `${Units.meters_to_miles(visibility).toFixed(2)} miles`,
-                "--.-- mi"
-            );
-        }
-
-        if (current?.timestamp) {
-            this.setValue(
-                ".last-update",
-                new Intl.DateTimeFormat(undefined, {
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                    timeZoneName: "short",
-                }).format(new Date(current?.timestamp))
-            );
-        }
-    }
-
-    private setValue(
-        selector: string,
-        value: string | undefined,
-        fallback: string = "?"
-    ): string {
-        const element = this.element.querySelector(selector);
-        if (!element) {
-            throw new Error(
-                `Element with query selector ${selector} not found.`
-            );
-        }
-        element.textContent = value ? String(value) : fallback;
-        return element.textContent;
+        new Station(this.element, this.report);
+        new TextDescription(this.element, this.report);
+        new CurrentTemperature(this.element, this.report);
+        new Humidity(this.element, this.report);
+        new Wind(this.element, this.report);
+        new Pressure(this.element, this.report);
+        new Dewpoint(this.element, this.report);
+        new Visibility(this.element, this.report);
+        new LatestTimestamp(this.element, this.report);
     }
 
     private setIcon(
@@ -175,5 +90,173 @@ export class WeatherRenderer {
             image.src = "img/missing.png";
         }
         return image.src;
+    }
+}
+
+abstract class ValueRender {
+    constructor(
+        protected readonly parent: Element,
+        protected readonly report: WeatherReport
+    ) {
+        this.render();
+    }
+
+    protected abstract render(): void;
+
+    protected setValue(
+        selector: string,
+        value: string | undefined,
+        fallback: string = "?"
+    ) {
+        const element = this.parent.querySelector(selector);
+        if (!element) {
+            throw new Error(
+                `Element with query selector ${selector} not found.`
+            );
+        }
+        element.textContent = value ?? fallback;
+        return value;
+    }
+}
+
+abstract class TemperatureRender extends ValueRender {
+    public static format(value: number | undefined, unit: "C" | "F"): string {
+        if (value === undefined) {
+            return unit === "C" ? "--°C" : "--°F";
+        }
+        return unit === "C"
+            ? `${Math.round(value)}°C`
+            : `${Units.c_to_f(value)}°F`;
+    }
+}
+
+class CurrentTemperature extends TemperatureRender {
+    public render(): void {
+        const temp = Units.to_number(
+            this.report.current?.properties.temperature
+        );
+        this.setValue(".current-temp-f", TemperatureRender.format(temp, "F"));
+        this.setValue(".current-temp-c", TemperatureRender.format(temp, "C"));
+    }
+}
+
+class Dewpoint extends TemperatureRender {
+    public render(): void {
+        const dewpoint = Units.to_number(
+            this.report.current?.properties.dewpoint
+        );
+        this.setValue(
+            ".dewpoint",
+            `${TemperatureRender.format(
+                dewpoint,
+                "F"
+            )} (${TemperatureRender.format(dewpoint, "C")})`
+        );
+    }
+}
+
+class TextDescription extends ValueRender {
+    public render(): void {
+        this.setValue(
+            ".text-description",
+            this.report.current?.properties.textDescription
+        );
+    }
+}
+
+class Humidity extends ValueRender {
+    public render(): void {
+        const humidity = Units.to_number(
+            this.report.current?.properties.relativeHumidity
+        );
+        this.setValue(
+            ".humidity",
+            humidity === undefined ? undefined : `${Math.round(humidity)}%`,
+            "--%"
+        );
+    }
+}
+
+class Wind extends ValueRender {
+    public render(): void {
+        const windSpeed = Units.to_number(
+            this.report.current?.properties?.windSpeed
+        );
+        const windDirection = Units.to_number(
+            this.report.current?.properties?.windDirection
+        );
+        if (windSpeed) {
+            this.setValue(
+                ".wind-speed",
+                `${
+                    windDirection
+                        ? `${Units.degrees_to_cardinal(windDirection)} `
+                        : ""
+                }${Math.round(Units.kmh_to_mph(windSpeed))} mph`
+            );
+        } else {
+            this.setValue(".wind-speed", "Calm");
+        }
+    }
+}
+
+class Pressure extends ValueRender {
+    public render(): void {
+        const pressure = Units.to_number(
+            this.report.current?.properties?.barometricPressure
+        );
+        this.setValue(
+            ".pressure",
+            pressure === undefined
+                ? undefined
+                : `${Units.pascals_to_inches(pressure).toFixed(
+                      2
+                  )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`,
+            "--.-- in (----.- mb)"
+        );
+    }
+}
+
+class Visibility extends ValueRender {
+    public render(): void {
+        const visibility = Units.to_number(
+            this.report.current?.properties?.visibility
+        );
+        this.setValue(
+            ".visibility",
+            visibility === undefined
+                ? undefined
+                : `${Units.meters_to_miles(visibility).toFixed(2)} miles`,
+            "--.-- mi"
+        );
+    }
+}
+
+class Station extends ValueRender {
+    protected render(): void {
+        const station = this.report.station?.properties;
+        this.setValue(
+            ".station-name",
+            `${station?.name} (${station?.stationIdentifier})`
+        );
+    }
+}
+
+class LatestTimestamp extends ValueRender {
+    protected render(): void {
+        const timestamp = this.report.current?.properties?.timestamp;
+        this.setValue(
+            ".last-update",
+            timestamp === undefined
+                ? undefined
+                : new Intl.DateTimeFormat(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                      timeZoneName: "short",
+                  }).format(new Date(timestamp))
+        );
     }
 }
