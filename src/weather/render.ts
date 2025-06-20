@@ -222,9 +222,9 @@ class Wind extends ValueRender {
 
 class Pressure extends ValueRender {
     protected override format(pressure: number): string {
-        return `${Units.pascals_to_inches(pressure).toFixed(
-            2
-        )} in (${Units.pascals_to_mb(pressure).toFixed(1)} mb)`;
+        const inches = Units.pascals_to_inches(pressure).toFixed(2);
+        const mb = Units.pascals_to_mb(pressure).toFixed(1);
+        return `${inches} in (${mb} mb)`;
     }
 
     protected render(): void {
