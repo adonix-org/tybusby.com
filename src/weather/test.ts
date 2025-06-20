@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { LatestObservation } from "./observation.js";
 import { Products } from "./products.js";
+import { WeatherReport } from "./report.js";
 
 const hazard = await new Products("HWO", "BGM").get();
 
 console.log(hazard ?? "Product Not Found");
 
 try {
-    const observation = await new LatestObservation("KELM").get();
-    console.log(observation);
+    const report = await WeatherReport.create(42.1762, -76.8358);
+    console.log(report.station?.properties);
 } catch (error) {
     console.error(error);
 }
