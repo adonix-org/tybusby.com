@@ -142,7 +142,7 @@ class CurrentTemperatureC extends TextRender {
         return `${Math.round(temperature)}°C`;
     }
 
-    protected render(): void {
+    protected override render(): void {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
@@ -155,7 +155,7 @@ class CurrentTemperatureF extends TextRender {
         return `${Math.round(Units.c_to_f(temperature))}°F`;
     }
 
-    protected render(): void {
+    protected override render(): void {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
@@ -170,7 +170,7 @@ class Dewpoint extends TextRender {
         return `${f}°F (${c}°C)`;
     }
 
-    protected render(): void {
+    protected override render(): void {
         const dewpoint = Units.to_number(
             this.report.current?.properties.dewpoint
         );
@@ -179,7 +179,7 @@ class Dewpoint extends TextRender {
 }
 
 class ObservationText extends TextRender {
-    protected render(): void {
+    protected override render(): void {
         this.set(
             ".observation-text",
             this.report.current?.properties.textDescription
@@ -192,7 +192,7 @@ class Humidity extends TextRender {
         return `${Math.round(humidity)}%`;
     }
 
-    protected render(): void {
+    protected override render(): void {
         const humidity = Units.to_number(
             this.report.current?.properties.relativeHumidity
         );
@@ -201,7 +201,7 @@ class Humidity extends TextRender {
 }
 
 class Wind extends TextRender {
-    protected render(): void {
+    protected override render(): void {
         const windSpeed = Units.to_number(
             this.report.current?.properties?.windSpeed
         );
@@ -230,7 +230,7 @@ class Pressure extends TextRender {
         return `${inches} in (${mb} mb)`;
     }
 
-    protected render(): void {
+    protected override render(): void {
         const pressure = Units.to_number(
             this.report.current?.properties.barometricPressure
         );
@@ -243,7 +243,7 @@ class Visibility extends TextRender {
         return `${Units.meters_to_miles(visibility).toFixed(2)} miles`;
     }
 
-    protected render(): void {
+    protected override render(): void {
         const visibility = Units.to_number(
             this.report.current?.properties?.visibility
         );
@@ -252,7 +252,7 @@ class Visibility extends TextRender {
 }
 
 class Station extends TextRender {
-    protected render(): void {
+    protected override render(): void {
         const station = this.report.station?.properties;
         this.set(
             ".station-name",
@@ -278,7 +278,7 @@ class LastUpdate extends TextRender {
         return LastUpdate.TIMESTAMP_FORMAT.format(new Date(timestamp));
     }
 
-    protected render(): void {
+    protected override render(): void {
         const timestamp = this.report.current?.properties.timestamp;
         this.set(".last-update", timestamp);
     }
