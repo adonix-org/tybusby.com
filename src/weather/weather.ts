@@ -14,33 +14,29 @@
  * limitations under the License.
  */
 
-import { Position } from "geojson";
 import { Progress } from "../progress.js";
 import { WeatherReport } from "./report.js";
 import { WeatherRenderer } from "./render.js";
 import { Spinner } from "../spinner.js";
 
-/**
- * GeoJson coordinates are [ lon, lat ].
- */
-const positions: Position[] = [
+const coordinates: number[][] = [
     // Horseheads, NY
-    [-76.8358, 42.1762],
+    [42.1762, -76.8358],
 
     // Waynesboro, VA
-    [-78.9125, 38.0762],
+    [38.0762, -78.9125],
 
     // Yorktown, VA
-    [-76.5065, 37.2367],
+    [37.2367, -76.5065],
 
     // Waverly, IA
-    [-92.4781, 42.7382],
+    [42.7382, -92.4781],
 
     // Sheldon, IA
-    [-95.8418, 43.1828],
+    [43.1828, -95.8418],
 ];
 
-const promises = positions.map(([lon, lat]) =>
+const promises = coordinates.map(([lat, lon]) =>
     WeatherReport.create(lat, lon)
         .catch((error: unknown) => {
             if (error instanceof Error) {
@@ -73,9 +69,8 @@ const spinner = new Spinner();
 spinner.start();
 
 function updateStatus(current: number) {
-    progress.percent = Progress.calculate(current, positions.length).percent;
-    if (current >= positions.length) {
-        console.log("dev-header", localStorage.getItem("dev-headers"));
+    progress.percent = Progress.calculate(current, coordinates.length).percent;
+    if (current >= coordinates.length) {
         progress.complete();
         spinner.stop();
     }
