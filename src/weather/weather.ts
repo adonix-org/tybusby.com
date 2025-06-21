@@ -20,7 +20,7 @@ import { WeatherRenderer } from "./render.js";
 import { Spinner } from "../spinner.js";
 
 /**
- * Latitude, Longitude
+ * Order is latitude, longitude.
  */
 type Coordinate = [number, number];
 
