@@ -19,7 +19,12 @@ import { WeatherReport } from "./report.js";
 import { WeatherRenderer } from "./render.js";
 import { Spinner } from "../spinner.js";
 
-const coordinates: number[][] = [
+/**
+ * Latitude, Longitude
+ */
+type Coordinate = [number, number];
+
+const coordinates: Coordinate[] = [
     // Horseheads, NY
     [42.1762, -76.8358],
 

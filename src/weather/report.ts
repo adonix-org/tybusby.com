@@ -27,8 +27,8 @@ export class WeatherReport {
     private _forecast?: GridpointDailyForecast;
 
     public static async create(
-        latitude?: number,
-        longitude?: number
+        latitude: number,
+        longitude: number
     ): Promise<WeatherReport> {
         const instance = new WeatherReport(latitude, longitude);
         await instance.update();
@@ -36,8 +36,8 @@ export class WeatherReport {
     }
 
     private constructor(
-        private readonly latitude: number = 42.1762,
-        private readonly longitude: number = -76.8358
+        private readonly latitude: number,
+        private readonly longitude: number
     ) {}
 
     public get point() {
