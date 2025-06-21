@@ -52,12 +52,8 @@ export class WeatherRenderer {
     }
 
     public render(): void {
-        const icon = this.report.current?.properties.icon;
-        const alt =
-            this.report.current?.properties.textDescription ?? "No Data";
-        IconRender.render(this.element, ".current-icon", icon, alt, "large");
-
         const renderers: RenderClass[] = [
+            CurrentWeatherIcon,
             Station,
             ObservationText,
             CurrentTemperatureF,
@@ -75,15 +71,25 @@ export class WeatherRenderer {
     }
 }
 
-class IconRender {
-    public static render(
-        parent: Element,
+abstract class BaseRender {
+    constructor(
+        protected readonly parent: Element,
+        protected readonly report: WeatherReport
+    ) {
+        this.render();
+    }
+
+    protected abstract render(): void;
+}
+
+abstract class IconRender extends BaseRender {
+    protected set(
         selector: string,
         icon: string | undefined,
         alt: string,
         size: "small" | "medium" | "large" = "medium"
     ): string {
-        const image = parent.querySelector(selector);
+        const image = this.parent.querySelector(selector);
         if (!image || !(image instanceof HTMLImageElement)) {
             throw new Error(
                 `Image element with query selector "${selector}" not found.`
@@ -101,17 +107,6 @@ class IconRender {
         image.src = url.toString();
         return image.src;
     }
-}
-
-abstract class BaseRender {
-    constructor(
-        protected readonly parent: Element,
-        protected readonly report: WeatherReport
-    ) {
-        this.render();
-    }
-
-    protected abstract render(): void;
 }
 
 abstract class TextRender extends BaseRender {
@@ -134,6 +129,16 @@ abstract class TextRender extends BaseRender {
         const rendered = value === undefined ? fallback : this.format(value);
         element.textContent = rendered;
         return rendered;
+    }
+}
+
+class CurrentWeatherIcon extends IconRender {
+    protected override render(): void {
+        const alt =
+            this.report.current?.properties.textDescription?.trim() ||
+            "No Data";
+        const icon = this.report.current?.properties.icon;
+        this.set(".current-icon", icon, alt, "large");
     }
 }
 
