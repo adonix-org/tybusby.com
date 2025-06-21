@@ -88,7 +88,7 @@ abstract class IconRender extends BaseRender {
         icon: string | undefined,
         alt: string,
         size: "small" | "medium" | "large" = "medium"
-    ): string {
+    ): void {
         const image = this.parent.querySelector(selector);
         if (!image || !(image instanceof HTMLImageElement)) {
             throw new Error(
@@ -99,13 +99,12 @@ abstract class IconRender extends BaseRender {
         image.alt = alt;
         if (!icon || icon.trim() === "") {
             image.src = "img/missing.png";
-            return image.src;
+            return;
         }
 
         const url = new URL(icon);
         url.searchParams.set("size", size);
         image.src = url.toString();
-        return image.src;
     }
 }
 
@@ -118,17 +117,15 @@ abstract class TextRender extends BaseRender {
         selector: string,
         value: string | number | undefined,
         fallback: string = "?"
-    ): string {
+    ): void {
         const element = this.parent.querySelector(selector);
         if (!element) {
             throw new Error(
                 `Element with query selector ${selector} not found.`
             );
         }
-
-        const rendered = value === undefined ? fallback : this.format(value);
-        element.textContent = rendered;
-        return rendered;
+        element.textContent =
+            value === undefined ? fallback : this.format(value);
     }
 }
 
