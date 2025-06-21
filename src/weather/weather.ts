@@ -75,6 +75,7 @@ spinner.start();
 function updateStatus(current: number) {
     progress.percent = Progress.calculate(current, positions.length).percent;
     if (current >= positions.length) {
+        console.log("dev-header", localStorage.getItem("dev-headers"));
         progress.complete();
         spinner.stop();
     }

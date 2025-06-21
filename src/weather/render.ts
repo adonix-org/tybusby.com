@@ -17,7 +17,7 @@
 import { WeatherReport } from "./report.js";
 import { Units } from "./units.js";
 
-type TextRenderClass = new (e: Element, r: WeatherReport) => TextRender;
+type RenderClass = new (e: Element, r: WeatherReport) => BaseRender;
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
@@ -57,7 +57,7 @@ export class WeatherRenderer {
             this.report.current?.properties.textDescription ?? "No Data";
         IconRender.render(this.element, ".current-icon", icon, alt, "large");
 
-        const renderers: TextRenderClass[] = [
+        const renderers: RenderClass[] = [
             Station,
             ObservationText,
             CurrentTemperatureF,
@@ -103,7 +103,7 @@ class IconRender {
     }
 }
 
-abstract class TextRender {
+abstract class BaseRender {
     constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport
@@ -112,7 +112,9 @@ abstract class TextRender {
     }
 
     protected abstract render(): void;
+}
 
+abstract class TextRender extends BaseRender {
     protected format(value: string | number): string {
         return String(value);
     }
