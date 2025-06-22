@@ -16,7 +16,7 @@
 
 import { Progress } from "../progress.js";
 import { WeatherReport } from "./report.js";
-import { WeatherRenderer } from "./render.js";
+import { WeatherRenderer } from "./render/render.js";
 import { Spinner } from "../spinner.js";
 
 /**
