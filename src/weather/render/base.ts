@@ -1,4 +1,4 @@
-import { WeatherReport } from "../report";
+import { WeatherReport } from "../report.js";
 
 export type RenderClass = new (e: Element, r: WeatherReport) => BaseRender;
 
