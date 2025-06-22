@@ -16,7 +16,10 @@
 
 import { WeatherReport } from "../report.js";
 
-export type RenderClass = new (e: Element, r: WeatherReport) => BaseRender;
+export type RenderClass = new (
+    parent: Element,
+    report: WeatherReport
+) => BaseRender;
 
 abstract class BaseRender {
     constructor(
