@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { QuantitativeValue } from "./common";
+import { QuantitativeValue } from "./common.js";
 
 export class Units {
     public static to_number(
