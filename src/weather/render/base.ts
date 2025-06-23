@@ -16,10 +16,9 @@
 
 import { WeatherReport } from "../report.js";
 
-export type RenderClass = new (
-    parent: Element,
-    report: WeatherReport
-) => BaseRender;
+export interface RenderClass {
+    new (parent: Element, report: WeatherReport): BaseRender;
+}
 
 export abstract class BaseRender {
     constructor(

@@ -4,11 +4,13 @@ import { Units } from "../units.js";
 import { BaseRender, IconRender, TextRender } from "./base.js";
 import { Template } from "./template.js";
 
-type PeriodRenderClass = new (
-    parent: Element,
-    report: WeatherReport,
-    period: ForecastPeriod
-) => BaseRender;
+interface PeriodRenderClass {
+    new (
+        parent: Element,
+        report: WeatherReport,
+        period: ForecastPeriod
+    ): BaseRender;
+}
 
 export class ForecastRender extends BaseRender {
     private static readonly TEMPLATE_ID = "forecast-period-template";
