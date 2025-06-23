@@ -94,6 +94,10 @@ class PeriodTemp extends PeriodTextRender {
 }
 
 class PeriodShortForecast extends PeriodTextRender {
+    protected override format(forecast: string): string {
+        return forecast.replace("-", "\u2011");
+    }
+
     public override render(): void {
         this.set(".period-short", this.period.shortForecast, "Missing");
     }
