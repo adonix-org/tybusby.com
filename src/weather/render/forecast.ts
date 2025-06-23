@@ -1,4 +1,4 @@
-import { GridpointDailyForecastPeriod } from "../forecast";
+import { ForecastPeriod } from "../forecast";
 import { WeatherReport } from "../report.js";
 import { Units } from "../units.js";
 import { BaseRender, IconRender, TextRender } from "./base.js";
@@ -7,7 +7,7 @@ import { Template } from "./template.js";
 type PeriodRenderClass = new (
     parent: Element,
     report: WeatherReport,
-    period: GridpointDailyForecastPeriod
+    period: ForecastPeriod
 ) => BaseRender;
 
 export class ForecastRender extends BaseRender {
@@ -48,7 +48,7 @@ abstract class PeriodTextRender extends TextRender {
     public constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport,
-        protected readonly period: GridpointDailyForecastPeriod
+        protected readonly period: ForecastPeriod
     ) {
         super(parent, report);
     }
@@ -58,7 +58,7 @@ class PeriodIconRender extends IconRender {
     public constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport,
-        protected readonly period: GridpointDailyForecastPeriod
+        protected readonly period: ForecastPeriod
     ) {
         super(parent, report);
     }
@@ -95,6 +95,7 @@ class PeriodTemp extends PeriodTextRender {
 
 class PeriodShortForecast extends PeriodTextRender {
     protected override format(forecast: string): string {
+        // Unbreakable hyphen on words like T-Storm.
         return forecast.replace("-", "\u2011");
     }
 

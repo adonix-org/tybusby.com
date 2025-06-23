@@ -69,7 +69,7 @@ interface GridpointForecast<P extends ForecastPeriod> {
     periods: P[];
 }
 
-interface ForecastPeriod {
+export interface ForecastPeriod {
     number: number;
     name: string;
     startTime: string;
@@ -86,7 +86,7 @@ interface ForecastPeriod {
     probabilityOfPrecipitation: QuantitativeValue;
 }
 
-export interface GridpointDailyForecastPeriod extends ForecastPeriod {}
+interface GridpointDailyForecastPeriod extends ForecastPeriod {}
 
 interface GridpointHourlyForecastPeriod extends ForecastPeriod {
     dewpoint: QuantitativeValue;
