@@ -86,7 +86,7 @@ interface ForecastPeriod {
     probabilityOfPrecipitation: QuantitativeValue;
 }
 
-interface GridpointDailyForecastPeriod extends ForecastPeriod {}
+export interface GridpointDailyForecastPeriod extends ForecastPeriod {}
 
 interface GridpointHourlyForecastPeriod extends ForecastPeriod {
     dewpoint: QuantitativeValue;

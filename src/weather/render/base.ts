@@ -25,11 +25,9 @@ export abstract class BaseRender {
     constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport
-    ) {
-        this.render();
-    }
+    ) {}
 
-    protected abstract render(): void;
+    public abstract render(): void;
 }
 
 export abstract class TextRender extends BaseRender {

@@ -16,7 +16,9 @@
 
 import { WeatherReport } from "../report.js";
 import { RenderClass } from "./base.js";
+import { ForecastRender } from "./forecast.js";
 import { ObservationRender } from "./observation.js";
+import { Template } from "./template.js";
 
 export class WeatherRenderer {
     private static readonly TEMPLATE_ID = "weather-template";
@@ -30,30 +32,15 @@ export class WeatherRenderer {
         if (!parent) {
             throw new Error(`Element with ID "${parentId}" not found.`);
         }
-        const template = document.getElementById(
-            WeatherRenderer.TEMPLATE_ID
-        ) as HTMLTemplateElement;
-        if (!template) {
-            throw new Error(
-                `Template with ID "${WeatherRenderer.TEMPLATE_ID}" not found.`
-            );
-        }
 
-        const fragment = template.content.cloneNode(true) as DocumentFragment;
-        if (!fragment.firstElementChild) {
-            throw new Error(
-                `Template with ID "${WeatherRenderer.TEMPLATE_ID}" missing root child.`
-            );
-        }
-
-        this.element = fragment.firstElementChild;
+        this.element = Template.createElement(WeatherRenderer.TEMPLATE_ID);
         parent.appendChild(this.element);
     }
 
     public render(): void {
-        const renderers: RenderClass[] = [ObservationRender];
+        const renderers: RenderClass[] = [ObservationRender, ForecastRender];
         for (const RenderClass of renderers) {
-            new RenderClass(this.element, this.report);
+            new RenderClass(this.element, this.report).render();
         }
     }
 }
