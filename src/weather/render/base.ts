@@ -21,7 +21,7 @@ export type RenderClass = new (
     report: WeatherReport
 ) => BaseRender;
 
-abstract class BaseRender {
+export abstract class BaseRender {
     constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport
