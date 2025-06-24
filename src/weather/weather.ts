@@ -54,7 +54,13 @@ const promises = coordinates.map(([lat, lon]) =>
         .finally(() => updateStatus(++completed))
 );
 
+const PARENT_ID = "weather-grid";
+
 Promise.all(promises).then((results) => {
+    const parent = document.getElementById(PARENT_ID);
+    if (!parent) {
+        throw new Error(`Element with ID "${PARENT_ID}" not found.`);
+    }
     results.forEach((result, index) => {
         if (result instanceof Error) {
             console.group(`positions[${index}]: ${result.message}`);
@@ -62,7 +68,7 @@ Promise.all(promises).then((results) => {
             console.dir(result);
             console.groupEnd();
         } else {
-            new ReportRender(result).render();
+            new ReportRender(parent, result).render();
         }
     });
 });

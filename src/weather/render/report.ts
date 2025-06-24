@@ -15,32 +15,29 @@
  */
 
 import { WeatherReport } from "../report.js";
-import { RenderClass } from "./base.js";
+import { BaseRender, RenderClass } from "./base.js";
 import { ForecastRender } from "./forecast.js";
 import { ObservationRender } from "./observation.js";
 import { Template } from "./template.js";
 
-export class ReportRender {
+export class ReportRender extends BaseRender {
     private static readonly TEMPLATE_ID = "weather-template";
-    private readonly element: Element;
+    private readonly child: Element;
 
     constructor(
-        private readonly report: WeatherReport,
-        parentId: string = "weather-grid"
+        protected readonly parent: Element,
+        protected readonly report: WeatherReport
     ) {
-        const parent = document.getElementById(parentId);
-        if (!parent) {
-            throw new Error(`Element with ID "${parentId}" not found.`);
-        }
+        super(parent, report);
 
-        this.element = Template.createElement(ReportRender.TEMPLATE_ID);
-        parent.appendChild(this.element);
+        this.child = Template.createElement(ReportRender.TEMPLATE_ID);
+        parent.appendChild(this.child);
     }
 
     public render(): void {
         const renderers: RenderClass[] = [ObservationRender, ForecastRender];
         for (const RenderClass of renderers) {
-            new RenderClass(this.element, this.report).render();
+            new RenderClass(this.child, this.report).render();
         }
     }
 }
