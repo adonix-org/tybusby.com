@@ -20,6 +20,15 @@ import { Units } from "../units.js";
 import { BaseRender, IconRender, TextRender } from "./base.js";
 import { Template } from "./template.js";
 
+abstract class Text extends TextRender<TextSelector> {}
+type TextSelector =
+    | ".period-icon:"
+    | ".period-name"
+    | ".period-temp"
+    | ".period-short";
+
+type IconSelector = ".period-icon";
+
 interface PeriodRenderClass {
     new (
         parent: Element,
@@ -62,7 +71,7 @@ export class ForecastRender extends BaseRender {
     }
 }
 
-abstract class PeriodTextRender extends TextRender {
+abstract class PeriodTextRender extends Text {
     public constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport,
@@ -72,7 +81,7 @@ abstract class PeriodTextRender extends TextRender {
     }
 }
 
-class PeriodIconRender extends IconRender {
+class PeriodIconRender extends IconRender<IconSelector> {
     public constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport,

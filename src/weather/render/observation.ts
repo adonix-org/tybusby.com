@@ -17,12 +17,28 @@
 import { Units } from "../units.js";
 import { BaseRender, IconRender, RenderClass, TextRender } from "./base.js";
 
+abstract class Text extends TextRender<TextSelector> {}
+type TextSelector =
+    | ".current-temp-c"
+    | ".current-temp-f"
+    | ".dewpoint"
+    | ".description-text"
+    | ".humidity"
+    | ".wind-speed"
+    | ".pressure"
+    | ".visibility"
+    | ".station-name"
+    | ".last-update";
+
+abstract class Icon extends IconRender<IconSelector> {}
+type IconSelector = ".current-icon";
+
 export class ObservationRender extends BaseRender {
     public override render(): void {
         const renderers: RenderClass[] = [
             CurrentWeatherIcon,
             Station,
-            ObservationText,
+            DescriptionText,
             CurrentTemperatureF,
             CurrentTemperatureC,
             Humidity,
@@ -38,7 +54,7 @@ export class ObservationRender extends BaseRender {
     }
 }
 
-class CurrentWeatherIcon extends IconRender {
+class CurrentWeatherIcon extends Icon {
     public override render(): void {
         const alt =
             this.report.current?.properties.textDescription?.trim() ||
@@ -48,7 +64,7 @@ class CurrentWeatherIcon extends IconRender {
     }
 }
 
-class CurrentTemperatureC extends TextRender {
+class CurrentTemperatureC extends Text {
     protected override format(temperature: number): string {
         return `${Math.round(temperature)}°C`;
     }
@@ -61,7 +77,7 @@ class CurrentTemperatureC extends TextRender {
     }
 }
 
-class CurrentTemperatureF extends TextRender {
+class CurrentTemperatureF extends Text {
     protected override format(temperature: number): string {
         return `${Math.round(Units.c_to_f(temperature))}°F`;
     }
@@ -74,7 +90,7 @@ class CurrentTemperatureF extends TextRender {
     }
 }
 
-class Dewpoint extends TextRender {
+class Dewpoint extends Text {
     protected override format(dewpoint: number): string {
         const f = Math.round(Units.c_to_f(dewpoint));
         const c = Math.round(dewpoint);
@@ -89,16 +105,16 @@ class Dewpoint extends TextRender {
     }
 }
 
-class ObservationText extends TextRender {
+class DescriptionText extends Text {
     public override render(): void {
         this.set(
-            ".observation-text",
+            ".description-text",
             this.report.current?.properties.textDescription
         );
     }
 }
 
-class Humidity extends TextRender {
+class Humidity extends Text {
     protected override format(humidity: number): string {
         return `${Math.round(humidity)}%`;
     }
@@ -111,7 +127,7 @@ class Humidity extends TextRender {
     }
 }
 
-class Wind extends TextRender {
+class Wind extends Text {
     public override render(): void {
         const windSpeed = Units.to_number(
             this.report.current?.properties?.windSpeed
@@ -134,7 +150,7 @@ class Wind extends TextRender {
     }
 }
 
-class Pressure extends TextRender {
+class Pressure extends Text {
     protected override format(pressure: number): string {
         const inches = Units.pascals_to_inches(pressure).toFixed(2);
         const mb = Units.pascals_to_mb(pressure).toFixed(1);
@@ -149,7 +165,7 @@ class Pressure extends TextRender {
     }
 }
 
-class Visibility extends TextRender {
+class Visibility extends Text {
     protected override format(visibility: number): string {
         return `${Units.meters_to_miles(visibility).toFixed(2)} miles`;
     }
@@ -162,7 +178,7 @@ class Visibility extends TextRender {
     }
 }
 
-class Station extends TextRender {
+class Station extends Text {
     public override render(): void {
         const station = this.report.station?.properties;
         this.set(
@@ -172,7 +188,7 @@ class Station extends TextRender {
     }
 }
 
-class LastUpdate extends TextRender {
+class LastUpdate extends Text {
     protected static readonly TIMESTAMP_FORMAT = new Intl.DateTimeFormat(
         undefined,
         {
