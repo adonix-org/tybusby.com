@@ -18,22 +18,18 @@ import { NationalWeatherService } from "./nws.js";
 import { QuantitativeValue } from "./common.js";
 import { Point } from "geojson";
 
-
 export class LatestObservation extends NationalWeatherService<Observation> {
     constructor(private readonly station: string) {
         super();
     }
 
     protected override get resource(): string {
-        return `/stations/${this.station}/observations/latest`;
+        return `/stations/${this.station}/observations/latest?require_qc=true`;
     }
 }
 
 export class Observations extends NationalWeatherService<ObservationCollection> {
-    constructor(
-        private readonly station: string,
-        private readonly limit = 1
-    ) {
+    constructor(private readonly station: string, private readonly limit = 1) {
         super();
     }
 
