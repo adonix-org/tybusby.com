@@ -32,7 +32,7 @@ abstract class BaseGridpointForecast<T> extends NationalWeatherService<T> {
 
     protected abstract get endpoint(): string;
 
-    protected get resource(): string {
+    protected override get resource(): string {
         const { gridId, gridX, gridY } = this.point.properties;
         return `/gridpoints/${gridId}/${gridX},${gridY}/${this.endpoint}`;
     }

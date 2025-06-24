@@ -30,7 +30,7 @@ export class Products extends NationalWeatherService<Product | undefined> {
         return product && "productCode" in product ? product : undefined;
     }
 
-    protected get resource(): string {
+    protected override get resource(): string {
         return `/products/types/${this.type}/locations/${this.cwa}/latest`;
     }
 }

@@ -24,7 +24,7 @@ export class LatestObservation extends NationalWeatherService<Observation> {
         super();
     }
 
-    protected get resource(): string {
+    protected override get resource(): string {
         return `/stations/${this.station}/observations/latest`;
     }
 }
@@ -37,7 +37,7 @@ export class Observations extends NationalWeatherService<ObservationCollection> 
         super();
     }
 
-    protected get resource(): string {
+    protected override get resource(): string {
         return `/stations/${this.station}/observations?limit=${this.limit}`;
     }
 }

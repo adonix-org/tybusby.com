@@ -27,7 +27,7 @@ export class Stations extends NationalWeatherService<StationCollection> {
         this.headers.append("Feature-Flags", "obs_station_provider");
     }
 
-    protected get resource(): string {
+    protected override get resource(): string {
         const { gridId, gridX, gridY } = this.point.properties;
         return `/gridpoints/${gridId}/${gridX},${gridY}/stations?limit=${this.limit}`;
     }
