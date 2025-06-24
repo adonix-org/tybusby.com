@@ -22,6 +22,7 @@ import { Gridpoint } from "./points.js";
 export class Stations extends NationalWeatherService<StationCollection> {
     constructor(private readonly point: Gridpoint, private readonly limit = 1) {
         super();
+
         this.params.set("limit", String(this.limit));
 
         // https://www.weather.gov/documentation/services-web-api
