@@ -22,6 +22,7 @@ import { Gridpoint } from "./points.js";
 export class Stations extends NationalWeatherService<StationCollection> {
     constructor(private readonly point: Gridpoint, private readonly limit = 1) {
         super();
+        this.params.set("limit", String(this.limit));
 
         // https://www.weather.gov/documentation/services-web-api
         this.headers.append("Feature-Flags", "obs_station_provider");
@@ -29,7 +30,7 @@ export class Stations extends NationalWeatherService<StationCollection> {
 
     protected override get resource(): string {
         const { gridId, gridX, gridY } = this.point.properties;
-        return `/gridpoints/${gridId}/${gridX},${gridY}/stations?limit=${this.limit}`;
+        return `/gridpoints/${gridId}/${gridX},${gridY}/stations`;
     }
 }
 

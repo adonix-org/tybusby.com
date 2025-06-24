@@ -24,12 +24,20 @@ import {
 export abstract class NationalWeatherService<T> {
     private static readonly API_URL = "https://nws.tybusby.com";
 
+    protected readonly params: URLSearchParams = new URLSearchParams();
+
     protected readonly headers = new Headers({
         Accept: "application/geo+json",
     });
 
     public async get(): Promise<T> {
-        const url = `${NationalWeatherService.API_URL}${this.resource}`;
+        const url = new URL(
+            `${NationalWeatherService.API_URL}${this.resource}`
+        );
+
+        for (const [key, value] of this.params) {
+            url.searchParams.set(key, value);
+        }
 
         let response: Response;
         try {

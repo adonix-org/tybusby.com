@@ -21,20 +21,22 @@ import { Point } from "geojson";
 export class LatestObservation extends NationalWeatherService<Observation> {
     constructor(private readonly station: string) {
         super();
+        this.params.set("require_qc", String(true));
     }
 
     protected override get resource(): string {
-        return `/stations/${this.station}/observations/latest?require_qc=true`;
+        return `/stations/${this.station}/observations/latest`;
     }
 }
 
 export class Observations extends NationalWeatherService<ObservationCollection> {
     constructor(private readonly station: string, private readonly limit = 1) {
         super();
+        this.params.set("limit", String(this.limit));
     }
 
     protected override get resource(): string {
-        return `/stations/${this.station}/observations?limit=${this.limit}`;
+        return `/stations/${this.station}/observations`;
     }
 }
 

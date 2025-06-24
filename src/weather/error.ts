@@ -15,20 +15,20 @@
  */
 
 abstract class NWSError extends Error {
-    constructor(public readonly url: string, message: string, cause: unknown) {
+    constructor(public readonly url: URL, message: string, cause: unknown) {
         super(message, { cause });
         this.name = new.target.name;
     }
 }
 
 export class NWSFetchError extends NWSError {
-    constructor(url: string, cause: unknown) {
+    constructor(url: URL, cause: unknown) {
         super(url, `${url}`, cause);
     }
 }
 
 export class NWSParseError extends NWSError {
-    constructor(url: string, public readonly text: string, cause: unknown) {
+    constructor(url: URL, public readonly text: string, cause: unknown) {
         super(url, `${url} ${text}`, cause);
     }
 }
@@ -36,7 +36,7 @@ export class NWSParseError extends NWSError {
 export class NWSResponseError extends Error {
     constructor(
         public readonly status: number,
-        public readonly url: string,
+        public readonly url: URL,
         public readonly details: NWSProblemDetails
     ) {
         super(`${status} ${details.title}: ${url}`);
