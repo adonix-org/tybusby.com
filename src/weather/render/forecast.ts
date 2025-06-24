@@ -90,7 +90,7 @@ class PeriodTemp extends PeriodTextRender {
         this.set(
             ".period-temp",
             Units.to_number(this.period.temperature),
-            "Missing"
+            "--°F"
         );
     }
 }
