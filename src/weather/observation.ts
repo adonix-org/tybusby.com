@@ -31,10 +31,10 @@ export class LatestObservation extends NationalWeatherService<Observation> {
 }
 
 export class Observations extends NationalWeatherService<ObservationCollection> {
-    constructor(private readonly station: string, private readonly limit = 1) {
+    constructor(private readonly station: string, limit = 1) {
         super();
 
-        this.params.set("limit", String(this.limit));
+        this.params.set("limit", String(limit));
     }
 
     protected override get resource(): string {

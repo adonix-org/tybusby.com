@@ -20,10 +20,10 @@ import { NationalWeatherService } from "./nws.js";
 import { Gridpoint } from "./points.js";
 
 export class Stations extends NationalWeatherService<StationCollection> {
-    constructor(private readonly point: Gridpoint, private readonly limit = 1) {
+    constructor(private readonly point: Gridpoint, limit = 1) {
         super();
 
-        this.params.set("limit", String(this.limit));
+        this.params.set("limit", String(limit));
 
         // https://www.weather.gov/documentation/services-web-api
         this.headers.append("Feature-Flags", "obs_station_provider");
