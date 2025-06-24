@@ -16,7 +16,7 @@
 
 import { Progress } from "../progress.js";
 import { WeatherReport } from "./report.js";
-import { WeatherRenderer } from "./render/render.js";
+import { ReportRender } from "./render/report.js";
 import { Spinner } from "../spinner.js";
 
 /**
@@ -62,7 +62,7 @@ Promise.all(promises).then((results) => {
             console.dir(result);
             console.groupEnd();
         } else {
-            new WeatherRenderer(result).render();
+            new ReportRender(result).render();
         }
     });
 });
