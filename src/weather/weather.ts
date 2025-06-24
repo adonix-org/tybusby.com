@@ -54,12 +54,12 @@ const promises = coordinates.map(([lat, lon]) =>
         .finally(() => updateStatus(++completed))
 );
 
-const PARENT_ID = "weather-grid";
+const REPORT_PARENT_ID = "weather-grid";
 
 Promise.all(promises).then((results) => {
-    const parent = document.getElementById(PARENT_ID);
+    const parent = document.getElementById(REPORT_PARENT_ID);
     if (!parent) {
-        throw new Error(`Element with ID "${PARENT_ID}" not found.`);
+        throw new Error(`Element with ID "${REPORT_PARENT_ID}" not found.`);
     }
     results.forEach((result, index) => {
         if (result instanceof Error) {
