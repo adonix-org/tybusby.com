@@ -48,7 +48,7 @@ export class ObservationRender extends BaseRender {
             Visibility,
             LastUpdate,
         ];
-        
+
         for (const RenderClass of renderers) {
             new RenderClass(this.parent, this.report).render();
         }

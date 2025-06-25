@@ -23,7 +23,7 @@ import { Template } from "./template.js";
 type TextSelector = ".period-name" | ".period-temp" | ".period-short";
 type IconSelector = ".period-icon";
 
-interface RenderClass {
+interface PeriodRenderClass {
     new (
         parent: Element,
         report: WeatherReport,
@@ -52,7 +52,7 @@ export class ForecastRender extends BaseRender {
             const element = Template.createElement(ForecastRender.TEMPLATE_ID);
             forecast.appendChild(element);
 
-            const renderers: RenderClass[] = [
+            const renderers: PeriodRenderClass[] = [
                 PeriodIcon,
                 PeriodName,
                 PeriodTemp,
