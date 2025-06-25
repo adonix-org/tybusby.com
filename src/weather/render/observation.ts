@@ -36,8 +36,8 @@ type IconSelector = ".current-icon";
 export class ObservationRender extends BaseRender {
     public override render(): void {
         const renderers: RenderClass[] = [
-            CurrentWeatherIcon,
             Station,
+            CurrentWeatherIcon,
             DescriptionText,
             CurrentTemperatureF,
             CurrentTemperatureC,
