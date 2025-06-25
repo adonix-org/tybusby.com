@@ -25,6 +25,7 @@ export class Points extends NationalWeatherService<Gridpoint> {
     ) {
         super();
     }
+
     protected override get resource(): string {
         return `/points/${this.latitude},${this.longitude}`;
     }

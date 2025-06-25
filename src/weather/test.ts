@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { Products } from "./products.js";
-import { WeatherReport } from "./report.js";
-
-const hazard = await new Products("HWO", "BGM").get();
-
-console.log(hazard ?? "Product Not Found");
+import { NWSResponseError } from "./error.js";
+import { Points } from "./points.js";
 
 try {
-    const report = await WeatherReport.create(42.1762, -76.8358);
-    console.log(report.station?.properties);
+    const point = await new Points(42.1762, -76.8358).get();
+    console.log(point);
 } catch (error) {
-    console.error(error);
+    if (error instanceof NWSResponseError) {
+        error.details.parameterErrors?.forEach((value) => {
+            console.error(value.message, "parameter:", value.parameter);
+        });
+    }
 }

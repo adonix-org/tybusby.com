@@ -51,4 +51,10 @@ export interface NWSProblemDetails {
     detail: string;
     instance: string;
     correlationId: string;
+    parameterErrors?: NWSParameterError[];
+}
+
+interface NWSParameterError {
+    parameter: string;
+    message: string;
 }
