@@ -21,11 +21,7 @@ import { BaseRender, IconRender, TextRender } from "./base.js";
 import { Template } from "./template.js";
 
 abstract class Text extends TextRender<TextSelector> {}
-type TextSelector =
-    | ".period-icon"
-    | ".period-name"
-    | ".period-temp"
-    | ".period-short";
+type TextSelector = ".period-name" | ".period-temp" | ".period-short";
 
 type IconSelector = ".period-icon";
 
