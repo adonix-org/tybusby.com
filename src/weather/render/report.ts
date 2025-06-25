@@ -34,7 +34,7 @@ export class ReportRender extends BaseRender {
         parent.appendChild(this.child);
     }
 
-    public render(): void {
+    public override render(): void {
         const renderers: RenderClass[] = [ObservationRender, ForecastRender];
         for (const RenderClass of renderers) {
             new RenderClass(this.child, this.report).render();
