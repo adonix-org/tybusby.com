@@ -20,10 +20,7 @@ import { Units } from "../units.js";
 import { BaseRender, IconRender, TextRender } from "./base.js";
 import { Template } from "./template.js";
 
-abstract class Text extends TextRender<TextSelector> {}
 type TextSelector = ".period-name" | ".period-temp" | ".period-short";
-
-abstract class Icon extends IconRender<IconSelector> {}
 type IconSelector = ".period-icon";
 
 interface PeriodRenderClass {
@@ -59,7 +56,7 @@ export class ForecastRender extends BaseRender {
                 PeriodIcon,
                 PeriodName,
                 PeriodTemp,
-                PeriodShortForecast,
+                PeriodShort,
             ];
             for (const RenderClass of renderers) {
                 new RenderClass(element, this.report, period).render();
@@ -68,7 +65,17 @@ export class ForecastRender extends BaseRender {
     }
 }
 
-abstract class PeriodTextRender extends Text {
+abstract class Text extends TextRender<TextSelector> {
+    public constructor(
+        protected readonly parent: Element,
+        protected readonly report: WeatherReport,
+        protected readonly period: ForecastPeriod
+    ) {
+        super(parent, report);
+    }
+}
+
+abstract class Icon extends IconRender<IconSelector> {
     public constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport,
@@ -79,14 +86,6 @@ abstract class PeriodTextRender extends Text {
 }
 
 class PeriodIcon extends Icon {
-    public constructor(
-        protected readonly parent: Element,
-        protected readonly report: WeatherReport,
-        protected readonly period: ForecastPeriod
-    ) {
-        super(parent, report);
-    }
-
     public override render(): void {
         this.set(
             ".period-icon",
@@ -97,13 +96,13 @@ class PeriodIcon extends Icon {
     }
 }
 
-class PeriodName extends PeriodTextRender {
+class PeriodName extends Text {
     public override render(): void {
         this.set(".period-name", this.period.name, "Missing");
     }
 }
 
-class PeriodTemp extends PeriodTextRender {
+class PeriodTemp extends Text {
     protected override format(temperature: number): string {
         return `${Math.round(Units.c_to_f(temperature))}°F`;
     }
@@ -117,7 +116,7 @@ class PeriodTemp extends PeriodTextRender {
     }
 }
 
-class PeriodShortForecast extends PeriodTextRender {
+class PeriodShort extends Text {
     protected override format(forecast: string): string {
         // Unbreakable hyphen on words like T-Storm.
         return forecast.replace("-", "\u2011");
