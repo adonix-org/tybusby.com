@@ -23,6 +23,7 @@ import { Template } from "./template.js";
 abstract class Text extends TextRender<TextSelector> {}
 type TextSelector = ".period-name" | ".period-temp" | ".period-short";
 
+abstract class Icon extends IconRender<IconSelector> {}
 type IconSelector = ".period-icon";
 
 interface PeriodRenderClass {
@@ -55,7 +56,7 @@ export class ForecastRender extends BaseRender {
             forecast.appendChild(element);
 
             const renderers: PeriodRenderClass[] = [
-                PeriodIconRender,
+                PeriodIcon,
                 PeriodName,
                 PeriodTemp,
                 PeriodShortForecast,
@@ -77,7 +78,7 @@ abstract class PeriodTextRender extends Text {
     }
 }
 
-class PeriodIconRender extends IconRender<IconSelector> {
+class PeriodIcon extends Icon {
     public constructor(
         protected readonly parent: Element,
         protected readonly report: WeatherReport,
