@@ -22,7 +22,7 @@ import { Template } from "./template.js";
 
 abstract class Text extends TextRender<TextSelector> {}
 type TextSelector =
-    | ".period-icon:"
+    | ".period-icon"
     | ".period-name"
     | ".period-temp"
     | ".period-short";
