@@ -18,25 +18,25 @@ import { Progress } from "./progress.js";
 import { Spinner } from "./spinner.js";
 import { VideoGroup } from "./videos.js";
 
-const YT_BASE_URL = "https://www.youtube-nocookie.com/embed";
+const YOUTUBE = "https://www.youtube-nocookie.com/embed";
 
 const URLS = [
-    `${YT_BASE_URL}/vmDDOFXSgAs`, // Dave Brubeck - Take Five
-    `${YT_BASE_URL}/ag6KMH0UlVM`, // Sting - I Burn For You
-    `${YT_BASE_URL}/KHR6HkHySWY`, // Ray Charles - It's Not Easy Being Green
-    `${YT_BASE_URL}/xTgKRCXybSM`, // A Perfect Circle - Judith
-    `${YT_BASE_URL}/cRyKCJUXehM`, // Colin Hay - Land Down Under
-    `${YT_BASE_URL}/4N82TLB03Vk`, // David Gilmour - Fender Guitar 50th Anniversary
-    `${YT_BASE_URL}/wwXeSk2Helo`, // Doris Day - Autumn Leaves
-    `${YT_BASE_URL}/8uxt-FnNy2I`, // Coldplay - Don't Panic
-    `${YT_BASE_URL}/Rc7_lCfbQP0`, // Bobby Darin - Beyond The Sea
-    `${YT_BASE_URL}/2SF1iLXSQto`, // Tom Petty - It's Good To Be King
-    `${YT_BASE_URL}/Fb77jRwSky8`, // Frou Frou - Flicks
-    `${YT_BASE_URL}/ggGzE5KfCio`, // Ray Charles - Georgia On My Mind
-    `${YT_BASE_URL}/rPOlakkBlj8`, // Ella Fitzgerald - Misty
-    `${YT_BASE_URL}/fXmEJLMgY8M`, // Björk - Play Dead
-    `${YT_BASE_URL}/PYD-DIggB2k`, // Simon and Garfunkle - April Come She Will
-    `${YT_BASE_URL}/DeumyOzKqgI`, // Adele - Skyfall
+    `${YOUTUBE}/vmDDOFXSgAs`, // Dave Brubeck - Take Five
+    `${YOUTUBE}/ag6KMH0UlVM`, // Sting - I Burn For You
+    `${YOUTUBE}/KHR6HkHySWY`, // Ray Charles - It's Not Easy Being Green
+    `${YOUTUBE}/xTgKRCXybSM`, // A Perfect Circle - Judith
+    `${YOUTUBE}/cRyKCJUXehM`, // Colin Hay - Land Down Under
+    `${YOUTUBE}/4N82TLB03Vk`, // David Gilmour - Fender Guitar 50th Anniversary
+    `${YOUTUBE}/wwXeSk2Helo`, // Doris Day - Autumn Leaves
+    `${YOUTUBE}/8uxt-FnNy2I`, // Coldplay - Don't Panic
+    `${YOUTUBE}/Rc7_lCfbQP0`, // Bobby Darin - Beyond The Sea
+    `${YOUTUBE}/2SF1iLXSQto`, // Tom Petty - It's Good To Be King
+    `${YOUTUBE}/Fb77jRwSky8`, // Frou Frou - Flicks
+    `${YOUTUBE}/ggGzE5KfCio`, // Ray Charles - Georgia On My Mind
+    `${YOUTUBE}/rPOlakkBlj8`, // Ella Fitzgerald - Misty
+    `${YOUTUBE}/fXmEJLMgY8M`, // Björk - Play Dead
+    `${YOUTUBE}/PYD-DIggB2k`, // Simon and Garfunkle - April Come She Will
+    `${YOUTUBE}/DeumyOzKqgI`, // Adele - Skyfall
 ];
 
 const spinner = new Spinner();
@@ -45,15 +45,12 @@ const progress = new Progress();
 new VideoGroup("music-video-grid", URLS)
     .on("progress", (data) => {
         progress.percent = data.percent;
-        console.log(progress.percent);
     })
     .once("start", () => {
         spinner.start();
-        console.log("Start");
     })
     .once("complete", function () {
         progress.complete();
         spinner.stop();
-        console.log("Complete");
     })
     .load();
