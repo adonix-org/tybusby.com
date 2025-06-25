@@ -17,8 +17,8 @@
 import { Units } from "../units.js";
 import { BaseRender, IconRender, RenderClass, TextRender } from "./base.js";
 
-abstract class Text extends TextRender<TextSelector> {}
-type TextSelector =
+abstract class Text extends TextRender<TextSelectors> {}
+type TextSelectors =
     | ".current-temp-c"
     | ".current-temp-f"
     | ".dewpoint"
@@ -30,8 +30,8 @@ type TextSelector =
     | ".station-name"
     | ".last-update";
 
-abstract class Icon extends IconRender<IconSelector> {}
-type IconSelector = ".current-icon";
+abstract class Icon extends IconRender<IconSelectors> {}
+type IconSelectors = ".current-icon";
 
 export class ObservationRender extends BaseRender {
     public override render(): void {
