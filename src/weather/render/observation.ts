@@ -29,12 +29,14 @@ const TEXT_SELECTORS = {
     station_name: ".station-name",
     last_update: ".last-update",
 } as const;
+
 type TextSelector = (typeof TEXT_SELECTORS)[keyof typeof TEXT_SELECTORS];
 abstract class Text extends TextRender<TextSelector> {}
 
 const ICON_SELECTORS = {
     current_icon: ".current-icon",
 } as const;
+
 type IconSelector = (typeof ICON_SELECTORS)[keyof typeof ICON_SELECTORS];
 abstract class Icon extends IconRender<IconSelector> {}
 
