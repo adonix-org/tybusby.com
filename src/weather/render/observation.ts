@@ -17,21 +17,26 @@
 import { Units } from "../units.js";
 import { BaseRender, IconRender, RenderClass, TextRender } from "./base.js";
 
-abstract class Text extends TextRender<TextSelectors> {}
-type TextSelectors =
-    | ".current-temp-c"
-    | ".current-temp-f"
-    | ".dewpoint"
-    | ".description-text"
-    | ".humidity"
-    | ".wind-speed"
-    | ".pressure"
-    | ".visibility"
-    | ".station-name"
-    | ".last-update";
+const TEXT_SELECTORS = {
+    temp_c: ".current-temp-c",
+    temp_f: ".current-temp-f",
+    dewpoint: ".dewpoint",
+    desc: ".current-desc",
+    humidity: ".humidity",
+    wind_speed: ".wind-speed",
+    pressure: ".pressure",
+    visability: ".visibility",
+    station_name: ".station-name",
+    last_update: ".last-update",
+} as const;
+type TextSelector = (typeof TEXT_SELECTORS)[keyof typeof TEXT_SELECTORS];
+abstract class Text extends TextRender<TextSelector> {}
 
-abstract class Icon extends IconRender<IconSelectors> {}
-type IconSelectors = ".current-icon";
+const ICON_SELECTORS = {
+    current_icon: ".current-icon",
+} as const;
+type IconSelector = (typeof ICON_SELECTORS)[keyof typeof ICON_SELECTORS];
+abstract class Icon extends IconRender<IconSelector> {}
 
 export class ObservationRender extends BaseRender {
     public override render(): void {
@@ -61,7 +66,7 @@ class CurrentWeatherIcon extends Icon {
             this.report.current?.properties.textDescription?.trim() ||
             "No Data";
         const icon = this.report.current?.properties.icon;
-        this.set(".current-icon", icon, alt, "large");
+        this.set(ICON_SELECTORS.current_icon, icon, alt, "large");
     }
 }
 
@@ -74,7 +79,7 @@ class CurrentTemperatureC extends Text {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
-        this.set(".current-temp-c", temp, "--°C");
+        this.set(TEXT_SELECTORS.temp_c, temp, "--°C");
     }
 }
 
@@ -87,7 +92,7 @@ class CurrentTemperatureF extends Text {
         const temp = Units.to_number(
             this.report.current?.properties.temperature
         );
-        this.set(".current-temp-f", temp, "--°F");
+        this.set(TEXT_SELECTORS.temp_f, temp, "--°F");
     }
 }
 
@@ -102,14 +107,14 @@ class Dewpoint extends Text {
         const dewpoint = Units.to_number(
             this.report.current?.properties.dewpoint
         );
-        this.set(".dewpoint", dewpoint, "--°F (--°C)");
+        this.set(TEXT_SELECTORS.dewpoint, dewpoint, "--°F (--°C)");
     }
 }
 
 class DescriptionText extends Text {
     public override render(): void {
         this.set(
-            ".description-text",
+            TEXT_SELECTORS.desc,
             this.report.current?.properties.textDescription
         );
     }
@@ -124,7 +129,7 @@ class Humidity extends Text {
         const humidity = Units.to_number(
             this.report.current?.properties.relativeHumidity
         );
-        this.set(".humidity", humidity, "--%");
+        this.set(TEXT_SELECTORS.humidity, humidity, "--%");
     }
 }
 
@@ -138,7 +143,7 @@ class Wind extends Text {
         );
         if (windSpeed) {
             this.set(
-                ".wind-speed",
+                TEXT_SELECTORS.wind_speed,
                 `${
                     windDirection
                         ? `${Units.degrees_to_cardinal(windDirection)} `
@@ -146,7 +151,7 @@ class Wind extends Text {
                 }${Math.round(Units.kmh_to_mph(windSpeed))} mph`
             );
         } else {
-            this.set(".wind-speed", "Calm");
+            this.set(TEXT_SELECTORS.wind_speed, "Calm");
         }
     }
 }
@@ -162,7 +167,7 @@ class Pressure extends Text {
         const pressure = Units.to_number(
             this.report.current?.properties.barometricPressure
         );
-        this.set(".pressure", pressure, "--.-- in (----.- mb)");
+        this.set(TEXT_SELECTORS.pressure, pressure, "--.-- in (----.- mb)");
     }
 }
 
@@ -175,7 +180,7 @@ class Visibility extends Text {
         const visibility = Units.to_number(
             this.report.current?.properties?.visibility
         );
-        this.set(".visibility", visibility, "--.-- mi");
+        this.set(TEXT_SELECTORS.visability, visibility, "--.-- mi");
     }
 }
 
@@ -183,7 +188,7 @@ class Station extends Text {
     public override render(): void {
         const station = this.report.station?.properties;
         this.set(
-            ".station-name",
+            TEXT_SELECTORS.station_name,
             `${station?.name} (${station?.stationIdentifier})`
         );
     }
@@ -208,6 +213,6 @@ class LastUpdate extends Text {
 
     public override render(): void {
         const timestamp = this.report.current?.properties.timestamp;
-        this.set(".last-update", timestamp);
+        this.set(TEXT_SELECTORS.last_update, timestamp);
     }
 }

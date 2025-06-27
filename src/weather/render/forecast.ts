@@ -25,12 +25,11 @@ const TEXT_SELECTORS = {
     temp: ".period-temp",
     desc: ".period-desc",
 } as const;
+type TextSelector = (typeof TEXT_SELECTORS)[keyof typeof TEXT_SELECTORS];
 
 const ICON_SELECTORS = {
     icon: ".period-icon",
 } as const;
-
-type TextSelector = (typeof TEXT_SELECTORS)[keyof typeof TEXT_SELECTORS];
 type IconSelector = (typeof ICON_SELECTORS)[keyof typeof ICON_SELECTORS];
 
 interface PeriodRenderClass {
