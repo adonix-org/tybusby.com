@@ -29,13 +29,17 @@ export abstract class BaseRender {
     public abstract render(): void;
 }
 
-export abstract class TextRender<S extends string> extends BaseRender {
+type Selector<T extends Record<string, string>> = T[keyof T];
+
+export abstract class TextRender<
+    T extends Record<string, string>
+> extends BaseRender {
     protected format(value: string | number): string {
         return String(value);
     }
 
     protected set(
-        selector: S,
+        selector: Selector<T>,
         value: string | number | undefined,
         fallback: string = "?"
     ): void {
@@ -50,9 +54,11 @@ export abstract class TextRender<S extends string> extends BaseRender {
     }
 }
 
-export abstract class IconRender<S extends string> extends BaseRender {
+export abstract class IconRender<
+    T extends Record<string, string>
+> extends BaseRender {
     protected set(
-        selector: S,
+        selector: Selector<T>,
         icon: string | undefined,
         alt: string,
         size: "small" | "medium" | "large" = "medium"
