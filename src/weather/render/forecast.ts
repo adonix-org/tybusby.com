@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ForecastPeriod } from "../forecast";
+import { ForecastPeriod } from "../forecast.js";
 import { WeatherReport } from "../report.js";
 import { Units } from "../units.js";
 import { BaseRender, IconRender, TextRender } from "./base.js";
