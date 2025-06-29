@@ -22,7 +22,7 @@ import {
 } from "./error.js";
 
 export abstract class NationalWeatherService<T> {
-    private static readonly API_URL = "https://nws.tybusby.com";
+    private static _origin = "https://nws.tybusby.com";
 
     protected readonly params = new URLSearchParams();
 
@@ -30,9 +30,17 @@ export abstract class NationalWeatherService<T> {
         Accept: "application/geo+json",
     });
 
+    public static get origin(): string {
+        return this._origin;
+    }
+
+    public static set origin(origin: string) {
+        this._origin = origin;
+    }
+
     public async get(): Promise<T> {
         const url = new URL(
-            `${NationalWeatherService.API_URL}${this.resource}`
+            `${NationalWeatherService.origin}${this.resource}`
         );
 
         for (const [key, value] of this.params) {
