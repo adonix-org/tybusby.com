@@ -55,8 +55,8 @@ export interface Observation {
 }
 
 interface ObservationProperties {
-    id: string;
-    type: string;
+    "@id": string;
+    "@type": string;
     elevation: QuantitativeValue;
     station: string;
     stationID: string;
