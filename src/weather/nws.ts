@@ -24,7 +24,7 @@ import {
 export abstract class NationalWeatherService<T> {
     private static readonly API_URL = "https://nws.tybusby.com";
 
-    protected readonly params: URLSearchParams = new URLSearchParams();
+    protected readonly params = new URLSearchParams();
 
     protected readonly headers = new Headers({
         Accept: "application/geo+json",
