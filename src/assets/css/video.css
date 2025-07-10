@@ -10,7 +10,7 @@
     aspect-ratio: 16/9;
     border: 1px solid;
     border-color: darkgray;
-    background-image: url("../img/play.png");
+    background-image: url("/img/play.png");
     background-size: 20%;
     background-position: center;
     background-repeat: no-repeat;
