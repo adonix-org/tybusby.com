@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { WeatherReport } from "../report.js";
+import { WeatherReport } from "@adonix.org/nws-report";
 
 export interface RenderClass {
     new (parent: Element, report: WeatherReport): BaseRender;

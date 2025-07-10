@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { ForecastPeriod } from "../forecast.js";
-import { WeatherReport } from "../report.js";
-import { Units } from "../units.js";
+import { ForecastPeriod, WeatherReport, Units } from "@adonix.org/nws-report";
 import { BaseRender, IconRender, TextRender } from "./base.js";
 import { Template } from "./template.js";
 

@@ -7,15 +7,15 @@
     <title>Weather</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="img/favicon.ico" sizes="any">
+    <link rel="icon" href="/img/favicon.ico" sizes="any">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/weather.css" />
+    <link rel="stylesheet" href="./src/assets/css/global.css" />
+    <link rel="stylesheet" href="./src/assets/css/weather.css" />
 
     <!-- Scripts -->
-    <script type="module" src="js/weather/weather.js" defer></script>
-    <script type="module" src="js/copyright.js" defer></script>
+    <script type="module" src="./src/weather/weather.ts" defer></script>
+    <script type="module" src="./src/copyright.ts" defer></script>
 </head>
 
 <body>
@@ -24,7 +24,7 @@
             <div class="avatar-spinner-ring" id="avatar-spinner"></div>
             <div class="avatar">
                 <a href="index.html">
-                    <img class="avatar-icon" src="img/avatar.png" alt="Avatar" />
+                    <img class="avatar-icon" src="/img/avatar.png" alt="Avatar" />
                 </a>
             </div>
         </div>
@@ -49,7 +49,7 @@
 
             <div class="latest-weather">
                 <div class="observation-group">
-                    <img class="current-icon" src="img/missing.png">
+                    <img class="current-icon" src="/img/missing.png">
                     <div class="observation-overview">
                         <div class="current-desc"></div>
                         <div class=" current-temps">

@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "public/js",
+        "noEmit": true,
         "target": "ES2022",
         "module": "esnext",
         "moduleResolution": "node",
@@ -18,8 +17,7 @@
         "noFallthroughCasesInSwitch": true,
         "noUncheckedIndexedAccess": true,
         "forceConsistentCasingInFileNames": true,
-        "skipLibCheck": true,
-        "removeComments": true
+        "skipLibCheck": true
     },
     "include": ["src"]
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { WeatherReport } from "../report.js";
+import { WeatherReport } from "@adonix.org/nws-report";
 import { BaseRender, RenderClass } from "./base.js";
 import { ForecastRender } from "./forecast.js";
 import { ObservationRender } from "./observation.js";

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { Progress } from "../progress.js";
-import { WeatherReport } from "./report.js";
+import { NationalWeatherService, WeatherReport } from "@adonix.org/nws-report";
 import { ReportRender } from "./render/report.js";
+import { Progress } from "../progress.js";
 import { Spinner } from "../spinner.js";
-import { NationalWeatherService } from "./nws.js";
 
 NationalWeatherService.origin = "https://nws.tybusby.com";
 

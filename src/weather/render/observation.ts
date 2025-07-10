@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Units } from "../units.js";
+import { Units } from "@adonix.org/nws-report";
 import { BaseRender, IconRender, RenderClass, TextRender } from "./base.js";
 
 const TEXT_SELECTORS = {

@@ -4,8 +4,9 @@
     "description": "Ty Busby Demo Website",
     "type": "module",
     "scripts": {
-        "build": "tsc",
-        "test": "ts-node --esm ./src/weather/test.ts"
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
     },
     "keywords": [
         "ty busby",
@@ -17,9 +18,13 @@
         "url": "https://www.tybusby.com"
     },
     "license": "Apache-2.0",
+    "dependencies": {
+        "@adonix.org/nws-report": "1.0.2"
+    },
     "devDependencies": {
         "@types/geojson": "^7946.0.16",
         "ts-node": "^10.9.2",
-        "typescript": "^5.8.3"
+        "typescript": "^5.8.3",
+        "vite": "^7.0.3"
     }
 }
