@@ -18,6 +18,9 @@ import { Progress } from "../progress.js";
 import { WeatherReport } from "./report.js";
 import { ReportRender } from "./render/report.js";
 import { Spinner } from "../spinner.js";
+import { NationalWeatherService } from "./nws.js";
+
+NationalWeatherService.origin = "https://nws.tybusby.com";
 
 /**
  * Order is latitude, longitude.
