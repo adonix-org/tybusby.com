@@ -19,7 +19,7 @@
     },
     "license": "Apache-2.0",
     "dependencies": {
-        "@adonix.org/nws-report": "1.0.4"
+        "@adonix.org/nws-report": "1.0.5"
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.16",
