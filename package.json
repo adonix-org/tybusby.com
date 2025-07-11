@@ -17,6 +17,10 @@
         "email": "tybusby@gmail.com",
         "url": "https://www.tybusby.com"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/adonix-org/tybusby.com.git"
+    },
     "license": "Apache-2.0",
     "dependencies": {
         "@adonix.org/nws-report": "1.0.5"
