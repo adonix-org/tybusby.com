@@ -76,7 +76,7 @@ Promise.all(promises).then((results) => {
             setInterval(() => {
                 reportRenderer.refresh();
                 console.log(
-                    "refreshing report at " + new Date().toLocaleTimeString()
+                    `refreshing ${result.station?.properties.stationIdentifier} at ${new Date().toLocaleTimeString()}`
                 );
             }, REFRESH_RATE);
         }
