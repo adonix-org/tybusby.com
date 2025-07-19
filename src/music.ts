@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { Progress } from "./progress.js";
-import { Spinner } from "./spinner.js";
-import { VideoGroup } from "./videos.js";
+import { Progress } from "./progress";
+import { Spinner } from "./spinner";
+import { VideoGroup } from "./videos";
 
 const YOUTUBE = "https://www.youtube-nocookie.com/embed";
 

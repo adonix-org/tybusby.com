@@ -15,7 +15,7 @@
  */
 
 import { Units } from "@adonix.org/nws-report";
-import { BaseRender, IconRender, RenderClass, TextRender } from "./base.js";
+import { BaseRender, IconRender, RenderClass, TextRender } from "./base";
 
 const TEXT_SELECTORS = {
     temp_c: ".current-temp-c",

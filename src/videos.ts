@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { EventEmitter } from "./event.js";
-import { Progress, ProgressData } from "./progress.js";
+import { EventEmitter } from "./event";
+import { Progress, ProgressData } from "./progress";
 
 interface VideoGroupEvents {
     start: void;

@@ -15,9 +15,9 @@
  */
 
 import { NationalWeatherService, WeatherReport } from "@adonix.org/nws-report";
-import { ReportRender } from "./render/report.js";
-import { Progress } from "../progress.js";
-import { Spinner } from "../spinner.js";
+import { ReportRender } from "./render/report";
+import { Progress } from "../progress";
+import { Spinner } from "../spinner";
 
 NationalWeatherService.origin = "https://nws.tybusby.com";
 
