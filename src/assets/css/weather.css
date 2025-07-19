@@ -27,6 +27,7 @@
     border: solid 1px lightgray;
     border-radius: 5px;
     padding: 0.5rem;
+    cursor: pointer;
 }
 
 .alert.extreme,

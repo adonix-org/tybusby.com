@@ -14,7 +14,11 @@ export class AlertsRender extends BaseRender {
             div.classList.add("alert");
             div.classList.add(alert.properties.severity.toLowerCase());
             div.innerText = alert.properties.headline;
-            alerts.appendChild(div);
+
+            const link = document.createElement("a");
+            link.onclick = () => console.log(alert);
+            link.appendChild(div);
+            alerts.appendChild(link);
         });
     }
 }
