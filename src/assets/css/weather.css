@@ -31,6 +31,7 @@
 
 .alert.extreme,
 .alert.severe {
+    color: darkred;
     background-color: rgb(252, 223, 223);
 }
 
