@@ -2,6 +2,7 @@ import { BaseRender } from "./base";
 
 export class AlertsRender extends BaseRender {
     private static readonly ALERTS_CLASS = ".alerts";
+
     public render(): void {
         const alerts = this.parent.querySelector(AlertsRender.ALERTS_CLASS);
         if (!alerts) {
