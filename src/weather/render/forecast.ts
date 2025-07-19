@@ -51,6 +51,7 @@ export class ForecastRender extends BaseRender {
                 `Element with query selector ${ForecastRender.FORECAST_CLASS} not found.`
             );
         }
+        forecast.replaceChildren();
         const periods = this.report.forecast?.properties.periods || [];
         for (let i = 0; i < Math.min(9, periods.length); i++) {
             const period = periods[i];

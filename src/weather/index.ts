@@ -57,6 +57,7 @@ const promises = coordinates.map(([lat, lon]) =>
 );
 
 const REPORT_PARENT_ID = "weather-grid";
+const REFRESH_RATE = 1000 * 60 * 2; // 2 minutes
 
 Promise.all(promises).then((results) => {
     const parent = document.getElementById(REPORT_PARENT_ID);
@@ -70,7 +71,14 @@ Promise.all(promises).then((results) => {
             console.dir(result);
             console.groupEnd();
         } else {
-            new ReportRender(parent, result).render();
+            const reportRenderer = new ReportRender(parent, result);
+            reportRenderer.render();
+            setInterval(() => {
+                reportRenderer.refresh();
+                console.log(
+                    "refreshing report at " + new Date().toLocaleTimeString()
+                );
+            }, REFRESH_RATE);
         }
     });
 });

@@ -10,6 +10,7 @@ export class AlertsRender extends BaseRender {
                 `Element with query selector ${AlertsRender.ALERTS_CLASS} not found.`
             );
         }
+        alerts.replaceChildren();
         this.report.alerts?.features.forEach((alert) => {
             const div = document.createElement("div");
             div.classList.add("alert");

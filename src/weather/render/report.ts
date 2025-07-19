@@ -45,4 +45,9 @@ export class ReportRender extends BaseRender {
             new RenderClass(this.child, this.report).render();
         }
     }
+
+    public async refresh(): Promise<void> {
+        await this.report.refresh();
+        this.render();
+    }
 }
