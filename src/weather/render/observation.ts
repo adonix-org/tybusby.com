@@ -197,20 +197,18 @@ class Station extends Text {
 }
 
 class LastUpdate extends Text {
-    protected static readonly TIMESTAMP_FORMAT = new Intl.DateTimeFormat(
-        undefined,
-        {
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-            timeZoneName: "short",
-        }
-    );
+    protected readonly timestampFormat = new Intl.DateTimeFormat(undefined, {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZoneName: "short",
+        timeZone: this.report.point?.properties.timeZone,
+    });
 
     protected override format(timestamp: string): string {
-        return LastUpdate.TIMESTAMP_FORMAT.format(new Date(timestamp));
+        return this.timestampFormat.format(new Date(timestamp));
     }
 
     public override render(): void {
