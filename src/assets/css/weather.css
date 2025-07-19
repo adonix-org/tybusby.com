@@ -22,6 +22,27 @@
     padding: 0.75rem;
 }
 
+.alert {
+    margin: 0 1rem 0.5rem 1rem;
+    border: solid 1px lightgray;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.alert.extreme,
+.alert.severe {
+    background-color: rgb(252, 223, 223);
+}
+
+.alert.moderate {
+    background-color: rgb(255, 255, 184);
+}
+
+.alert.minor,
+.alert.unknown {
+    background-color: rgb(255, 255, 184);
+}
+
 .latest-weather {
     display: flex;
     flex-wrap: wrap;

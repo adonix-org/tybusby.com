@@ -19,6 +19,7 @@ import { BaseRender, RenderClass } from "./base.js";
 import { ForecastRender } from "./forecast.js";
 import { ObservationRender } from "./observation.js";
 import { Template } from "./template.js";
+import { AlertsRender } from "./alerts.js";
 
 export class ReportRender extends BaseRender {
     private static readonly TEMPLATE_ID = "weather-template";
@@ -35,7 +36,11 @@ export class ReportRender extends BaseRender {
     }
 
     public override render(): void {
-        const renderers: RenderClass[] = [ObservationRender, ForecastRender];
+        const renderers: RenderClass[] = [
+            AlertsRender,
+            ObservationRender,
+            ForecastRender,
+        ];
         for (const RenderClass of renderers) {
             new RenderClass(this.child, this.report).render();
         }
