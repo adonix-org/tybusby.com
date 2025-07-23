@@ -37,6 +37,7 @@ const URLS = [
     `${YOUTUBE}/fXmEJLMgY8M`, // Björk - Play Dead
     `${YOUTUBE}/PYD-DIggB2k`, // Simon and Garfunkle - April Come She Will
     `${YOUTUBE}/DeumyOzKqgI`, // Adele - Skyfall
+    `${YOUTUBE}/VjfvBwYRRzM`, // ANÚNA: Suantraí/Lullaby
 ];
 
 const spinner = new Spinner();
