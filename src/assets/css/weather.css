@@ -31,13 +31,10 @@
 }
 
 .alert.extreme,
-.alert.severe {
+.alert.severe,
+.alert.moderate {
     color: darkred;
     background-color: rgb(252, 223, 223);
-}
-
-.alert.moderate {
-    background-color: rgb(255, 255, 184);
 }
 
 .latest-weather {
