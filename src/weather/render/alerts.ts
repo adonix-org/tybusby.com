@@ -29,7 +29,7 @@ export class AlertsRender extends BaseRender {
                 alert.properties.event
             } in effect from ${this.timestampFormat
                 .format(new Date(alert.properties.onset))
-                .replace(" at ", ", ")} to ${this.timestampFormat
+                .replace(" at ", ", ")} until ${this.timestampFormat
                 .format(new Date(alert.properties.ends))
                 .replace(" at ", ", ")}`;
 
