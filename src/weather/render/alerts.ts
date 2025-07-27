@@ -25,7 +25,6 @@ export class AlertsRender extends BaseRender {
         alerts.replaceChildren();
 
         this.report.alerts?.features.forEach((alert) => {
-            console.log(alert.properties.parameters.AWIPSidentifier);
             const div = document.createElement("div");
             div.classList.add("alert");
             div.classList.add(alert.properties.severity.toLowerCase());
@@ -36,7 +35,12 @@ export class AlertsRender extends BaseRender {
             )} until ${this.format(alert.properties.ends)}`;
 
             const link = document.createElement("a");
-            link.onclick = () => console.log(alert);
+            const product = alert.product;
+            link.onclick = () => {
+                product?.segments.forEach((segment) => {
+                    console.log([product?.headline, segment.body].join("\n\n"));
+                });
+            };
             link.appendChild(div);
             alerts.appendChild(link);
         });
