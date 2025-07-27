@@ -25,6 +25,7 @@ export class AlertsRender extends BaseRender {
         alerts.replaceChildren();
 
         this.report.alerts?.features.forEach((alert) => {
+            console.log(alert.properties.parameters.AWIPSidentifier);
             const div = document.createElement("div");
             div.classList.add("alert");
             div.classList.add(alert.properties.severity.toLowerCase());
