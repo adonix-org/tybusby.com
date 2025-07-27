@@ -22,7 +22,8 @@
     padding: 0.75rem;
 }
 
-.alert {
+.alert,
+.product {
     margin: 0 1rem 0.5rem 1rem;
     border: solid 1px lightgray;
     border-radius: 5px;
@@ -32,7 +33,8 @@
 
 .alert.extreme,
 .alert.severe,
-.alert.moderate {
+.alert.moderate,
+.product.hwo {
     color: darkred;
     background-color: rgb(252, 223, 223);
 }

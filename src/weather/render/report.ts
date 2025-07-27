@@ -20,6 +20,7 @@ import { ForecastRender } from "./forecast";
 import { ObservationRender } from "./observation";
 import { Template } from "./template";
 import { AlertsRender } from "./alerts";
+import { ProductsRender } from "./products";
 
 export class ReportRender extends BaseRender {
     private static readonly TEMPLATE_ID = "weather-template";
@@ -37,6 +38,7 @@ export class ReportRender extends BaseRender {
 
     public override render(): void {
         const renderers: RenderClass[] = [
+            ProductsRender,
             AlertsRender,
             ObservationRender,
             ForecastRender,

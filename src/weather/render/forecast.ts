@@ -40,18 +40,19 @@ interface PeriodRenderClass {
 
 export class ForecastRender extends BaseRender {
     private static readonly TEMPLATE_ID = "forecast-period-template";
-    private static readonly FORECAST_CLASS = ".forecast";
+    private static readonly SELECTOR = ".forecast";
 
     public override render(): void {
-        const forecast = this.parent.querySelector(
-            ForecastRender.FORECAST_CLASS
-        );
+        const forecast = this.parent.querySelector(ForecastRender.SELECTOR);
         if (!forecast) {
             throw new Error(
-                `Element with query selector ${ForecastRender.FORECAST_CLASS} not found.`
+                `Element with query selector ${ForecastRender.SELECTOR} not found.`
             );
         }
+
+        // Remove exisitng forecast on report refresh.
         forecast.replaceChildren();
+
         const periods = this.report.forecast?.properties.periods || [];
         for (let i = 0; i < Math.min(9, periods.length); i++) {
             const period = periods[i];

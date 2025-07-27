@@ -1,7 +1,7 @@
 import { BaseRender } from "./base";
 
 export class AlertsRender extends BaseRender {
-    private static readonly ALERTS_CLASS = ".alerts";
+    private static readonly SELECTOR = ".alerts";
 
     protected readonly timestampFormat = new Intl.DateTimeFormat(undefined, {
         month: "long",
@@ -14,13 +14,16 @@ export class AlertsRender extends BaseRender {
     });
 
     public render(): void {
-        const alerts = this.parent.querySelector(AlertsRender.ALERTS_CLASS);
+        const alerts = this.parent.querySelector(AlertsRender.SELECTOR);
         if (!alerts) {
             throw new Error(
-                `Element with query selector ${AlertsRender.ALERTS_CLASS} not found.`
+                `Element with query selector ${AlertsRender.SELECTOR} not found.`
             );
         }
+
+        // Remove exisitng alerts on report refresh.
         alerts.replaceChildren();
+
         this.report.alerts?.features.forEach((alert) => {
             const div = document.createElement("div");
             div.classList.add("alert");
