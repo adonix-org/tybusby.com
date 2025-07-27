@@ -27,16 +27,20 @@ export class AlertsRender extends BaseRender {
             div.classList.add(alert.properties.severity.toLowerCase());
             div.innerText = `${
                 alert.properties.event
-            } in effect from ${this.timestampFormat
-                .format(new Date(alert.properties.onset))
-                .replace(" at ", ", ")} until ${this.timestampFormat
-                .format(new Date(alert.properties.ends))
-                .replace(" at ", ", ")}`;
+            } in effect from ${this.format(
+                alert.properties.onset
+            )} until ${this.format(alert.properties.ends)}`;
 
             const link = document.createElement("a");
             link.onclick = () => console.log(alert);
             link.appendChild(div);
             alerts.appendChild(link);
         });
+    }
+
+    private format(timestamp: string): string {
+        return this.timestampFormat
+            .format(new Date(timestamp))
+            .replace(" at ", ", ");
     }
 }
