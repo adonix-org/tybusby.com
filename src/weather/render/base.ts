@@ -41,7 +41,7 @@ export abstract class TextRender<T extends SelectorMap> extends BaseRender {
         selector: Selector<T>,
         value: string | number | undefined,
         fallback: string = "?"
-    ): void {
+    ): Element {
         const element = this.parent.querySelector(selector);
         if (!element) {
             throw new Error(
@@ -50,6 +50,7 @@ export abstract class TextRender<T extends SelectorMap> extends BaseRender {
         }
         element.textContent =
             value === undefined ? fallback : this.format(value);
+        return element;
     }
 }
 
@@ -59,7 +60,7 @@ export abstract class IconRender<T extends SelectorMap> extends BaseRender {
         icon: string | undefined,
         alt: string,
         size: "small" | "medium" | "large" = "medium"
-    ): void {
+    ): Element {
         const image = this.parent.querySelector(selector);
         if (!image || !(image instanceof HTMLImageElement)) {
             throw new Error(
@@ -70,11 +71,12 @@ export abstract class IconRender<T extends SelectorMap> extends BaseRender {
         image.alt = alt;
         if (!icon || icon.trim() === "") {
             image.src = "img/missing.png";
-            return;
+            return image;
         }
 
         const url = new URL(icon);
         url.searchParams.set("size", size);
         image.src = url.toString();
+        return image;
     }
 }

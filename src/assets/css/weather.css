@@ -68,11 +68,15 @@
 }
 
 .observation-details {
-    height: 135px;
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 1.5rem;
+    row-gap: 3px;
     white-space: nowrap;
+}
+
+.observation-details > .hidden {
+    display: none;
 }
 
 .current-desc {

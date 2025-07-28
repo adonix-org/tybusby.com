@@ -27,6 +27,8 @@ const TEXT_SELECTORS = {
     wind_speed: ".wind-speed",
     pressure: ".pressure",
     visability: ".visibility",
+    heat_index: ".heat-index",
+    wind_chill: ".wind-chill",
     station_name: ".station-name",
     last_update: ".last-update",
 } as const;
@@ -54,6 +56,8 @@ export class ObservationRender extends BaseRender {
             Pressure,
             Dewpoint,
             Visibility,
+            HeatIndex,
+            WindChill,
             LastUpdate,
         ];
 
@@ -184,6 +188,52 @@ class Visibility extends Text {
             this.report.current?.properties?.visibility
         );
         this.set(TEXT_SELECTORS.visability, visibility, "--.-- mi");
+    }
+}
+
+class HeatIndex extends Text {
+    protected override format(heatIndex: number): string {
+        const f = Math.round(Units.c_to_f(heatIndex));
+        const c = Math.round(heatIndex);
+        return `${f}°F (${c}°C)`;
+    }
+
+    public override render(): void {
+        const heatIndex = Units.to_number(
+            this.report.current?.properties.heatIndex
+        );
+        const element = this.set(
+            TEXT_SELECTORS.heat_index,
+            heatIndex,
+            "--°F (--°C)"
+        );
+        if (heatIndex !== undefined) {
+            element.classList.remove("hidden");
+            element.previousElementSibling?.classList.remove("hidden");
+        }
+    }
+}
+
+class WindChill extends Text {
+    protected override format(windChill: number): string {
+        const f = Math.round(Units.c_to_f(windChill));
+        const c = Math.round(windChill);
+        return `${f}°F (${c}°C)`;
+    }
+
+    public override render(): void {
+        const windChill = Units.to_number(
+            this.report.current?.properties.windChill
+        );
+        const element = this.set(
+            TEXT_SELECTORS.wind_chill,
+            windChill,
+            "--°F (--°C)"
+        );
+        if (windChill !== undefined) {
+            element.classList.remove("hidden");
+            element.previousElementSibling?.classList.remove("hidden");
+        }
     }
 }
 

@@ -39,7 +39,7 @@ export class AlertsRender extends BaseRender {
         const event = alert.properties.event;
         const timeZone = this.report.point?.properties.timeZone;
 
-        if (event.trim().toLowerCase() === "special weather statement") {
+        if (!alert.properties.ends) {
             return event;
         }
 
