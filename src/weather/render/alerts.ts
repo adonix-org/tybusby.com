@@ -3,7 +3,7 @@ import { BaseRender } from "./base";
 import { formatIsoDate, isIsoDatePast } from "./datetime";
 
 export class AlertsRender extends BaseRender {
-    private static readonly DATE_TIME_FORMAT = "LLLL d, h:mm a ZZZZ";
+    private static readonly DATE_TIME_FORMAT = "LLLL d, hh:mm a ZZZZ";
     private static readonly SELECTOR = ".alerts";
 
     public render(): void {
