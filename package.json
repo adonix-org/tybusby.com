@@ -6,8 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "preview": "vite preview",
-        "date": "node --no-warnings --loader ts-node/esm ./src/weather/render/datetime.ts"
+        "preview": "vite preview"
     },
     "keywords": [
         "ty busby",
