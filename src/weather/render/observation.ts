@@ -30,6 +30,7 @@ const TEXT_SELECTORS = {
     heat_index: ".heat-index",
     wind_chill: ".wind-chill",
     station_name: ".station-name",
+    location_name: ".location-name",
     last_update: ".last-update",
 } as const;
 type TextSelector = typeof TEXT_SELECTORS;
@@ -46,6 +47,7 @@ abstract class Icon extends IconRender<IconSelector> {}
 export class ObservationRender extends BaseRender {
     public override render(): void {
         const renderers: RenderClass[] = [
+            Location,
             Station,
             CurrentWeatherIcon,
             DescriptionText,
@@ -243,6 +245,17 @@ class Station extends Text {
         this.set(
             TEXT_SELECTORS.station_name,
             `${station?.name} (${station?.stationIdentifier})`
+        );
+    }
+}
+
+class Location extends Text {
+    public override render(): void {
+        const location =
+            this.report.point?.properties.relativeLocation.properties;
+        this.set(
+            TEXT_SELECTORS.location_name,
+            `${location?.city}, ${location?.state}`
         );
     }
 }
