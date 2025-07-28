@@ -16,6 +16,7 @@
 
 import { Units } from "@adonix.org/nws-report";
 import { BaseRender, IconRender, RenderClass, TextRender } from "./base";
+import { formatIsoDate } from "./datetime";
 
 const TEXT_SELECTORS = {
     temp_c: ".current-temp-c",
@@ -197,18 +198,14 @@ class Station extends Text {
 }
 
 class LastUpdate extends Text {
-    protected readonly timestampFormat = new Intl.DateTimeFormat(undefined, {
-        month: "short",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-        timeZoneName: "short",
-        timeZone: this.report.point?.properties.timeZone,
-    });
+    private static DATE_TIME_FORMAT = "LLL d, h:mm a ZZZZ";
 
     protected override format(timestamp: string): string {
-        return this.timestampFormat.format(new Date(timestamp));
+        return formatIsoDate(
+            timestamp,
+            LastUpdate.DATE_TIME_FORMAT,
+            this.report.point?.properties.timeZone
+        );
     }
 
     public override render(): void {
