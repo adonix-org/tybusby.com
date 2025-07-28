@@ -17,13 +17,13 @@
 import { DateTime } from "luxon";
 
 export function formatIsoDate(
-    dateString: string,
+    isoDateString: string,
     format: string,
     timeZone?: string
 ): string {
-    let dt = DateTime.fromISO(dateString);
+    let dt = DateTime.fromISO(isoDateString);
     if (!dt.isValid) {
-        throw new Error(`Invalid DateTime: ${dateString}`);
+        throw new Error(`Invalid DateTime: ${isoDateString}`);
     }
     if (timeZone) {
         dt = dt.setZone(timeZone);
@@ -32,4 +32,12 @@ export function formatIsoDate(
         }
     }
     return dt.toFormat(format);
+}
+
+export function isIsoDatePast(isoDateString: string) {
+    const dt = DateTime.fromISO(isoDateString);
+    if (!dt.isValid) {
+        throw new Error(`Invalid DateTime: ${isoDateString}`);
+    }
+    return dt < DateTime.now();
 }

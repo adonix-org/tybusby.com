@@ -198,7 +198,7 @@ class Station extends Text {
 }
 
 class LastUpdate extends Text {
-    private static DATE_TIME_FORMAT = "LLL d, h:mm a ZZZZ";
+    private static readonly DATE_TIME_FORMAT = "LLL d, h:mm a ZZZZ";
 
     protected override format(timestamp: string): string {
         return formatIsoDate(

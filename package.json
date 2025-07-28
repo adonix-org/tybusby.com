@@ -24,7 +24,7 @@
     },
     "license": "Apache-2.0",
     "dependencies": {
-        "@adonix.org/nws-report": "2.0.3",
+        "@adonix.org/nws-report": "2.0.4",
         "luxon": "^3.7.1"
     },
     "devDependencies": {

@@ -1,17 +1,10 @@
+import { AlertFeature } from "@adonix.org/nws-report";
 import { BaseRender } from "./base";
+import { formatIsoDate, isIsoDatePast } from "./datetime";
 
 export class AlertsRender extends BaseRender {
+    private static readonly DATE_TIME_FORMAT = "LLLL d, h:mm a ZZZZ";
     private static readonly SELECTOR = ".alerts";
-
-    protected readonly timestampFormat = new Intl.DateTimeFormat(undefined, {
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-        timeZoneName: "short",
-        timeZone: this.report.point?.properties.timeZone,
-    });
 
     public render(): void {
         const alerts = this.parent.querySelector(AlertsRender.SELECTOR);
@@ -28,11 +21,7 @@ export class AlertsRender extends BaseRender {
             const div = document.createElement("div");
             div.classList.add("alert");
             div.classList.add(alert.properties.severity.toLowerCase());
-            div.innerText = `${
-                alert.properties.event
-            } in effect from ${this.format(
-                alert.properties.onset
-            )} until ${this.format(alert.properties.ends)}`;
+            div.innerText = this.getHeadline(alert);
 
             const link = document.createElement("a");
             const product = alert.product;
@@ -46,9 +35,28 @@ export class AlertsRender extends BaseRender {
         });
     }
 
-    private format(timestamp: string): string {
-        return this.timestampFormat
-            .format(new Date(timestamp))
-            .replace(" at ", ", ");
+    private getHeadline(alert: AlertFeature): string {
+        const event = alert.properties.event;
+        const timeZone = this.report.point?.properties.timeZone;
+
+        if (event.trim().toLowerCase() === "special weather statement") {
+            return event;
+        }
+
+        const end = formatIsoDate(
+            alert.properties.ends,
+            AlertsRender.DATE_TIME_FORMAT,
+            timeZone
+        );
+        if (isIsoDatePast(alert.properties.onset)) {
+            return `${event} until ${end}`;
+        }
+
+        const start = formatIsoDate(
+            alert.properties.onset,
+            AlertsRender.DATE_TIME_FORMAT,
+            timeZone
+        );
+        return `${event} in effect from ${start} until ${end}`;
     }
 }
