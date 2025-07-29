@@ -71,15 +71,15 @@ class ProductDialog {
     public show(title: string, text: string) {
         // Normalize the end of every display string.
         this.productTextDiv.textContent = text.replace(/\n*$/, "\n\n");
-
-        requestAnimationFrame(() => {
-            this.dialogTitleSpan.textContent = title;
-            this.productTextDiv.scrollTop = 0;
-        });
+        this.dialogTitleSpan.textContent = title;
 
         if (!this.dialog.open) {
             this.dialog.showModal();
         }
+
+        requestAnimationFrame(() => {
+            this.productTextDiv.scrollTop = 0;
+        });
     }
 
     public hide() {
