@@ -29,15 +29,12 @@ class ProductDialog {
         closeButton.addEventListener("click", () => this.dialog.close());
 
         // Close Button Title and X to close.
-        const spacerSpan = document.createElement("span");
-        spacerSpan.classList.add("spacer");
         this.dialogTitleSpan = document.createElement("span");
         this.dialogTitleSpan.classList.add("dialog-title");
         const closeIconSpan = document.createElement("span");
         closeIconSpan.classList.add("close-icon");
         closeIconSpan.textContent = "✖️";
 
-        closeButton.appendChild(spacerSpan);
         closeButton.appendChild(this.dialogTitleSpan);
         closeButton.appendChild(closeIconSpan);
 
