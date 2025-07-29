@@ -69,7 +69,8 @@ class ProductDialog {
     }
 
     public show(title: string, text: string) {
-        this.productTextDiv.textContent = text;
+        // Normalize the end of every display string.
+        this.productTextDiv.textContent = text.replace(/\n*$/, "\n\n");
 
         requestAnimationFrame(() => {
             this.dialogTitleSpan.textContent = title;
