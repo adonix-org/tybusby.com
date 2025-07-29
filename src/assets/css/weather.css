@@ -154,6 +154,43 @@
     color: rgb(94, 94, 94);
 }
 
+dialog {
+    border: none;
+    border-radius: 10px;
+    height: 80%;
+    width: 65ch;
+    max-width: 100vw;
+    max-height: 100vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.dialog-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-button {
+    border: none;
+    font-family: monospace;
+    box-shadow: 0 0 12px var(--light-header-box-shadow);
+    background-color: white;
+    width: 100%;
+    height: 2rem;
+}
+
+.product-text {
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 10pt;
+    padding: 1rem;
+    flex: 1;
+    overflow: auto;
+}
+
 @media (prefers-color-scheme: dark) {
     .station,
     .location,

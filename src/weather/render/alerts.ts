@@ -1,6 +1,7 @@
 import { AlertFeature } from "@adonix.org/nws-report";
 import { BaseRender } from "./base";
 import { formatIsoDate, isIsoDatePast } from "./datetime";
+import { productDialog } from "./dialog";
 
 export class AlertsRender extends BaseRender {
     private static readonly DATE_TIME_FORMAT = "LLLL d, hh:mm a ZZZZ";
@@ -26,9 +27,12 @@ export class AlertsRender extends BaseRender {
             const link = document.createElement("a");
             const product = feature.product;
             link.onclick = () => {
+                let text = "";
                 product?.segments.forEach((segment) => {
-                    console.log([product?.headline, segment.body].join("\n\n"));
+                    text += [product?.headline, segment.body].join("\n\n");
                 });
+                console.log(text);
+                productDialog.show(text);
             };
             link.appendChild(div);
             alerts.appendChild(link);

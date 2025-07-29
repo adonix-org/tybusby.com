@@ -16,6 +16,7 @@
 
 import { ProductSegment, SegmentedProduct } from "@adonix.org/nws-report";
 import { BaseRender } from "./base";
+import { productDialog } from "./dialog";
 
 export class ProductsRender extends BaseRender {
     private static readonly SELECTOR = ".products";
@@ -43,6 +44,9 @@ export class ProductsRender extends BaseRender {
                 link.setAttribute("role", "button");
                 link.setAttribute("tabindex", "0");
                 link.addEventListener("click", () => {
+                    productDialog.show(
+                        [segmented.headline, segment.body].join("\n\n")
+                    );
                     console.log(
                         [segmented.headline, segment.body].join("\n\n")
                     );
@@ -53,7 +57,9 @@ export class ProductsRender extends BaseRender {
         });
     }
 
-    protected getDisplaySegments(segmented: SegmentedProduct): ProductSegment[] {
+    protected getDisplaySegments(
+        segmented: SegmentedProduct
+    ): ProductSegment[] {
         // Hazardous Weather Outlook
         if (segmented.product.productCode === "HWO") {
             return segmented.segments.filter(this.hwoFilter);
