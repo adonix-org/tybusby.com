@@ -1,7 +1,3 @@
-body {
-    font-family: manrope, sans-serif;
-}
-
 .link-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -16,8 +12,13 @@ body {
 .link-grid-item {
     display: flex;
     align-items: center;
-    justify-content: center; /* horizontal */
+    justify-content: center;
     font-size: 30pt;
+    transition: transform 0.2s ease;
+}
+
+.link-grid-item:hover {
+    transform: scale(1.1);
 }
 
 .link-grid-item img {
@@ -26,11 +27,14 @@ body {
 }
 
 .link-grid-item a {
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
     text-decoration: none;
 }
 
 .link-grid-item a:visited {
-    color: black; /* must explicitly match */
+    color: black;
 }
 
 .link-grid-item .github {

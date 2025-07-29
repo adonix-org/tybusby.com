@@ -43,6 +43,7 @@ export class ProductsRender extends BaseRender {
                 const link = document.createElement("a");
                 link.addEventListener("click", () => {
                     productDialog.show(
+                        segmented.product.productName,
                         [segmented.headline, segment.body].join("\n\n")
                     );
                     console.log(

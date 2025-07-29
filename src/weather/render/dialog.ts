@@ -17,16 +17,31 @@
 class ProductDialog {
     private dialog: HTMLDialogElement;
     private productTextDiv: HTMLDivElement;
+    private dialogTitleSpan: HTMLSpanElement;
 
     constructor() {
         this.dialog = document.createElement("dialog");
         this.dialog.classList.add("product-dialog");
 
+        // Close Button
         const closeButton = document.createElement("button");
-        closeButton.textContent = "CLOSE";
         closeButton.className = "close-button";
         closeButton.addEventListener("click", () => this.dialog.close());
 
+        // Close Button Title and X to close.
+        const spacerSpan = document.createElement("span");
+        spacerSpan.classList.add("spacer");
+        this.dialogTitleSpan = document.createElement("span");
+        this.dialogTitleSpan.classList.add("dialog-title");
+        const closeIconSpan = document.createElement("span");
+        closeIconSpan.classList.add("close-icon");
+        closeIconSpan.textContent = "✖️";
+
+        closeButton.appendChild(spacerSpan);
+        closeButton.appendChild(this.dialogTitleSpan);
+        closeButton.appendChild(closeIconSpan);
+
+        // Dialog Content
         const dialogContentDiv = document.createElement("div");
         dialogContentDiv.className = "dialog-content";
 
@@ -36,15 +51,16 @@ class ProductDialog {
         dialogContentDiv.appendChild(closeButton);
         dialogContentDiv.appendChild(this.productTextDiv);
 
+        // Bottom Fade
         const bottomFadeDiv = document.createElement("div");
         bottomFadeDiv.classList.add("bottom-fade");
 
         this.dialog.append(dialogContentDiv);
         this.dialog.append(bottomFadeDiv);
-        
+
+        // Append Dialog
         document.body.appendChild(this.dialog);
 
-        // Optional: click outside to close
         this.dialog.addEventListener("click", (event) => {
             if (event.target === this.dialog) {
                 this.dialog.close();
@@ -52,10 +68,11 @@ class ProductDialog {
         });
     }
 
-    public show(text: string) {
+    public show(title: string, text: string) {
         this.productTextDiv.textContent = text;
 
         requestAnimationFrame(() => {
+            this.dialogTitleSpan.textContent = title;
             this.productTextDiv.scrollTop = 0;
         });
 

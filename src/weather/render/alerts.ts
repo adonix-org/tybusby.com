@@ -33,7 +33,7 @@ export class AlertsRender extends BaseRender {
                     text += [product?.headline, segment.body].join("\n\n");
                 });
                 console.log(text);
-                productDialog.show(text);
+                productDialog.show(feature.properties.event, text);
             };
             link.appendChild(div);
             alerts.appendChild(link);
