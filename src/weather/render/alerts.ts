@@ -14,7 +14,7 @@ export class AlertsRender extends BaseRender {
             );
         }
 
-        // Remove exisitng alerts on report refresh.
+        // Remove existing alerts on report refresh.
         alerts.replaceChildren();
 
         this.report.alerts?.features.forEach((feature) => {

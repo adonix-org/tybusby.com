@@ -50,7 +50,7 @@ export class ForecastRender extends BaseRender {
             );
         }
 
-        // Remove exisitng forecast on report refresh.
+        // Remove existing forecast on report refresh.
         forecast.replaceChildren();
 
         const periods = this.report.forecast?.properties.periods || [];

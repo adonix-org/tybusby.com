@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ProductSegment, SegmentedProduct } from "@adonix.org/nws-report";
 import { BaseRender } from "./base";
 
 export class ProductsRender extends BaseRender {
@@ -27,22 +28,51 @@ export class ProductsRender extends BaseRender {
             );
         }
 
-        // Remove exisitng products on report refresh.
+        // Remove existing products on report refresh.
         products.replaceChildren();
 
-        this.report.products.forEach((product) => {
-            product.segments.forEach((segment) => {
+        this.report.products.forEach((segmented) => {
+            const segments = this.getSegments(segmented);
+            segments.forEach((segment) => {
                 const div = document.createElement("div");
                 div.classList.add("product");
-                div.classList.add(product.product.productCode.toLowerCase());
-                div.innerText = product.product.productName;
+                div.classList.add(segmented.product.productCode.toLowerCase());
+                div.innerText = segmented.product.productName;
 
                 const link = document.createElement("a");
-                link.onclick = () =>
-                    console.log([product.headline, segment.body].join("\n\n"));
+                link.setAttribute("role", "button");
+                link.setAttribute("tabindex", "0");
+                link.addEventListener("click", () => {
+                    console.log(
+                        [segmented.headline, segment.body].join("\n\n")
+                    );
+                });
                 link.appendChild(div);
                 products.appendChild(link);
             });
         });
+    }
+
+    protected getSegments(segmented: SegmentedProduct): ProductSegment[] {
+        if (segmented.product.productCode === "HWOP") {
+            return segmented.segments.filter(this.hwoFilter);
+        }
+        return segmented.segments;
+    }
+
+    protected hwoFilter(segment: ProductSegment): boolean {
+        const match = segment.body.match(
+            /\.DAY\s+[^\n]*[\s\S]*?(?=\.DAY\s+[^\n]*|$)/i
+        );
+
+        if (!match) {
+            // If no .DAY section found, keep the segment
+            return true;
+        }
+
+        const dayOneSection = match[0];
+        return !/no hazardous weather is expected at this time/i.test(
+            dayOneSection
+        );
     }
 }

@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "debug": "tsx ./src/weather/render/debug.ts"
     },
     "keywords": [
         "ty busby",
@@ -23,13 +24,13 @@
     },
     "license": "Apache-2.0",
     "dependencies": {
-        "@adonix.org/nws-report": "2.0.4",
+        "@adonix.org/nws-report": "2.1.0",
         "luxon": "^3.7.1"
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.16",
         "@types/luxon": "^3.6.2",
-        "ts-node": "^10.9.2",
+        "tsx": "^4.20.3",
         "typescript": "^5.8.3",
         "vite": "^7.0.6"
     }
