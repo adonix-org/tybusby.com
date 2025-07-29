@@ -169,6 +169,10 @@
     overflow: hidden;
 }
 
+.product-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
 .product-dialog .dialog-content {
     height: 100%;
     display: flex;
