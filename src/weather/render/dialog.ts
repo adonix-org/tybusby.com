@@ -35,7 +35,13 @@ class ProductDialog {
 
         dialogContentDiv.appendChild(closeButton);
         dialogContentDiv.appendChild(this.productTextDiv);
+
+        const bottomFadeDiv = document.createElement("div");
+        bottomFadeDiv.classList.add("bottom-fade");
+
         this.dialog.append(dialogContentDiv);
+        this.dialog.append(bottomFadeDiv);
+        
         document.body.appendChild(this.dialog);
 
         // Optional: click outside to close

@@ -155,6 +155,7 @@
 }
 
 dialog {
+    position: relative;
     border: none;
     border-radius: 10px;
     height: 80%;
@@ -167,13 +168,13 @@ dialog {
     overflow: hidden;
 }
 
-.dialog-content {
+dialog .dialog-content {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.close-button {
+dialog .close-button {
     border: none;
     cursor: pointer;
     font-family: monospace;
@@ -183,13 +184,24 @@ dialog {
     height: 2rem;
 }
 
-.product-text {
+dialog .product-text {
     white-space: pre-wrap;
     font-family: monospace;
     font-size: 10pt;
     padding: 1rem;
     flex: 1;
     overflow: auto;
+}
+
+dialog .bottom-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2rem;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+    padding-bottom: 1rem;
 }
 
 @media (prefers-color-scheme: dark) {
