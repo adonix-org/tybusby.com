@@ -175,6 +175,7 @@ dialog {
 
 .close-button {
     border: none;
+    cursor: pointer;
     font-family: monospace;
     box-shadow: 0 0 12px var(--light-header-box-shadow);
     background-color: white;

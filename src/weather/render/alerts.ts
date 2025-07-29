@@ -25,6 +25,7 @@ export class AlertsRender extends BaseRender {
             div.innerText = this.getHeadline(feature);
 
             const link = document.createElement("a");
+
             const product = feature.product;
             link.onclick = () => {
                 let text = "";

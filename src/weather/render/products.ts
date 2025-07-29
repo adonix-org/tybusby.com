@@ -41,8 +41,6 @@ export class ProductsRender extends BaseRender {
                 div.innerText = segmented.product.productName;
 
                 const link = document.createElement("a");
-                link.setAttribute("role", "button");
-                link.setAttribute("tabindex", "0");
                 link.addEventListener("click", () => {
                     productDialog.show(
                         [segmented.headline, segment.body].join("\n\n")
