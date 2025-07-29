@@ -4,7 +4,7 @@
     padding: 3rem;
     margin: 1rem;
     max-width: 900px;
-    gap: 1rem;
+    gap: 3rem;
     margin-left: auto;
     margin-right: auto;
 }
@@ -28,9 +28,8 @@
 
 .link-grid-item a {
     color: black;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, sans-serif;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .link-grid-item a:visited {
