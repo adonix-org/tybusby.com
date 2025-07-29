@@ -68,7 +68,7 @@ class ProductDialog {
         });
     }
 
-    public show(title: string, text: string) {
+    public show(title: string, text: string): void {
         // Normalize the end of every display string.
         this.productTextDiv.textContent = text.replace(/\n*$/, "\n\n");
         this.dialogTitleSpan.textContent = title;
@@ -82,7 +82,7 @@ class ProductDialog {
         });
     }
 
-    public hide() {
+    public hide(): void {
         this.dialog.close();
     }
 }
