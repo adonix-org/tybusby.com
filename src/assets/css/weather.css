@@ -154,10 +154,11 @@
     color: rgb(94, 94, 94);
 }
 
-dialog {
+.product-dialog {
     position: relative;
     border: none;
-    border-radius: 10px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     height: 80%;
     width: 65ch;
     max-width: 100vw;
@@ -168,13 +169,13 @@ dialog {
     overflow: hidden;
 }
 
-dialog .dialog-content {
+.product-dialog .dialog-content {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-dialog .close-button {
+.product-dialog .close-button {
     border: none;
     cursor: pointer;
     font-family: monospace;
@@ -184,7 +185,13 @@ dialog .close-button {
     height: 2rem;
 }
 
-dialog .product-text {
+.product-dialog .close-button:active {
+    box-shadow: none;
+    border: 1px solid #888;
+    font-size: 9pt;
+}
+
+.product-dialog .product-text {
     white-space: pre-wrap;
     font-family: monospace;
     font-size: 10pt;
@@ -193,7 +200,7 @@ dialog .product-text {
     overflow: auto;
 }
 
-dialog .bottom-fade {
+.product-dialog .bottom-fade {
     position: absolute;
     bottom: 0;
     left: 0;

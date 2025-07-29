@@ -1,0 +1,39 @@
+body {
+    font-family: manrope, sans-serif;
+}
+
+.link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    padding: 3rem;
+    margin: 1rem;
+    max-width: 900px;
+    gap: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.link-grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* horizontal */
+    font-size: 30pt;
+}
+
+.link-grid-item img {
+    vertical-align: middle;
+    margin-right: 0.1em;
+}
+
+.link-grid-item a {
+    text-decoration: none;
+}
+
+.link-grid-item a:visited {
+    color: black; /* must explicitly match */
+}
+
+.link-grid-item .github {
+    display: flex;
+    align-items: center;
+}
