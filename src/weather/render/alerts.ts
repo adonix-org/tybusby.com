@@ -48,7 +48,10 @@ export class AlertsRender extends BaseRender {
             AlertsRender.DATE_TIME_FORMAT,
             timeZone
         );
-        if (isIsoDatePast(feature.properties.onset)) {
+        if (
+            !feature.properties.onset ||
+            isIsoDatePast(feature.properties.onset)
+        ) {
             return `${event} until ${end}`;
         }
 

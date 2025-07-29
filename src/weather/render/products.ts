@@ -32,7 +32,7 @@ export class ProductsRender extends BaseRender {
         products.replaceChildren();
 
         this.report.products.forEach((segmented) => {
-            const segments = this.getSegments(segmented);
+            const segments = this.getDisplaySegments(segmented);
             segments.forEach((segment) => {
                 const div = document.createElement("div");
                 div.classList.add("product");
@@ -53,26 +53,22 @@ export class ProductsRender extends BaseRender {
         });
     }
 
-    protected getSegments(segmented: SegmentedProduct): ProductSegment[] {
-        if (segmented.product.productCode === "HWOP") {
+    protected getDisplaySegments(segmented: SegmentedProduct): ProductSegment[] {
+        // Hazardous Weather Outlook
+        if (segmented.product.productCode === "HWO") {
             return segmented.segments.filter(this.hwoFilter);
         }
         return segmented.segments;
     }
 
     protected hwoFilter(segment: ProductSegment): boolean {
-        const match = segment.body.match(
-            /\.DAY\s+[^\n]*[\s\S]*?(?=\.DAY\s+[^\n]*|$)/i
-        );
+        const noHazardRegex = /no hazardous weather is expected at this time/i;
+        const dayOneRegex = /\.DAY[\s\S]*?(?=\.DAY|\Z)/;
+        const match = segment.body.match(dayOneRegex);
 
         if (!match) {
-            // If no .DAY section found, keep the segment
             return true;
         }
-
-        const dayOneSection = match[0];
-        return !/no hazardous weather is expected at this time/i.test(
-            dayOneSection
-        );
+        return !noHazardRegex.test(match[0]);
     }
 }
