@@ -29,8 +29,8 @@ class ProductDialog {
         );
 
         // Close the dialog on click anywhere on the backdrop.
-        // The dialog content intercepts clicks on the dialog
-        // itself.
+        // The dialog content intercepts all clicks on the
+        // dialog itself.
         this.dialog.addEventListener("click", (event) => {
             if (event.target === this.dialog) {
                 this.dialog.close();

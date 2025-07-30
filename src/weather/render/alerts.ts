@@ -36,19 +36,43 @@ export class AlertsRender extends BaseRender {
             div.innerText = this.getHeadline(feature);
 
             const link = document.createElement("a");
-
-            const product = feature.product;
             link.onclick = () => {
-                let text = "";
-                product?.segments.forEach((segment) => {
-                    text += [product?.headline, segment.body].join("\n\n");
-                });
+                const text = this.getBody(feature);
                 console.log(text);
                 productDialog.show(feature.properties.event, text);
             };
             link.appendChild(div);
             alerts.appendChild(link);
         });
+    }
+
+    private getBody(feature: AlertFeature): string {
+        const product = feature.product;
+        let text = "";
+        if (product && product.segments.length) {
+            product?.segments.forEach((segment) => {
+                text += [product?.headline, segment.body].join("\n\n");
+            });
+            return text + "\n\n";
+        }
+        text += feature.properties.event + "\n";
+        text +=
+            feature.properties.senderName.replace(
+                /^NWS/g,
+                "National Weather Service"
+            ) + "\n";
+        if (feature.properties.sent) {
+            text += formatIsoDate(
+                feature.properties.sent,
+                "hmm a ZZZZ EEE MMM dd yyyy",
+                this.report.point?.properties.timeZone
+            );
+        }
+        text += "\n\n" + feature.properties.description;
+        if (feature.properties.instruction) {
+            text += "\n\n" + feature.properties.instruction;
+        }
+        return text + "\n\n";
     }
 
     private getHeadline(feature: AlertFeature): string {
