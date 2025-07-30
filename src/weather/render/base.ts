@@ -33,6 +33,7 @@ export function getElement<T extends Element>(
     }
     return element;
 }
+
 interface HTMLElementType<T extends Element> {
     new (): T;
 }
@@ -59,12 +60,7 @@ export abstract class TextRender<T extends SelectorMap> extends BaseRender {
         value: string | number | undefined,
         fallback: string = "?"
     ): Element {
-        const element = this.parent.querySelector(selector);
-        if (!element) {
-            throw new Error(
-                `Element with query selector ${selector} not found.`
-            );
-        }
+        const element = getElement(selector, Element, this.parent);
         element.textContent =
             value === undefined ? fallback : this.format(value);
         return element;
@@ -78,13 +74,7 @@ export abstract class IconRender<T extends SelectorMap> extends BaseRender {
         alt: string,
         size: "small" | "medium" | "large" = "medium"
     ): Element {
-        const image = this.parent.querySelector(selector);
-        if (!image || !(image instanceof HTMLImageElement)) {
-            throw new Error(
-                `Image element with query selector "${selector}" not found.`
-            );
-        }
-
+        const image = getElement(selector, HTMLImageElement, this.parent);
         image.alt = alt;
         if (!icon || icon.trim() === "") {
             image.src = "img/missing.png";

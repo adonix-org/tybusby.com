@@ -15,7 +15,7 @@
  */
 
 import { ForecastPeriod, WeatherReport, Units } from "@adonix.org/nws-report";
-import { BaseRender, IconRender, TextRender } from "./base";
+import { BaseRender, getElement, IconRender, TextRender } from "./base";
 import { Template } from "./template";
 
 const TEXT_SELECTORS = {
@@ -43,12 +43,11 @@ export class ForecastRender extends BaseRender {
     private static readonly SELECTOR = ".forecast";
 
     public override render(): void {
-        const forecast = this.parent.querySelector(ForecastRender.SELECTOR);
-        if (!forecast) {
-            throw new Error(
-                `Element with query selector ${ForecastRender.SELECTOR} not found.`
-            );
-        }
+        const forecast = getElement(
+            ForecastRender.SELECTOR,
+            Element,
+            this.parent
+        );
 
         // Remove existing forecast on report refresh.
         forecast.replaceChildren();

@@ -15,19 +15,18 @@
  */
 
 import { ProductSegment, SegmentedProduct } from "@adonix.org/nws-report";
-import { BaseRender } from "./base";
+import { BaseRender, getElement } from "./base";
 import { productDialog } from "./dialog";
 
 export class ProductsRender extends BaseRender {
     private static readonly SELECTOR = ".products";
 
     public render(): void {
-        const products = this.parent.querySelector(ProductsRender.SELECTOR);
-        if (!products) {
-            throw new Error(
-                `Element with query selector ${ProductsRender.SELECTOR} not found.`
-            );
-        }
+        const products = getElement(
+            ProductsRender.SELECTOR,
+            Element,
+            this.parent
+        );
 
         // Remove existing products on report refresh.
         products.replaceChildren();

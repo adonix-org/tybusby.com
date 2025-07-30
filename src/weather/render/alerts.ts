@@ -15,7 +15,7 @@
  */
 
 import { AlertFeature } from "@adonix.org/nws-report";
-import { BaseRender } from "./base";
+import { BaseRender, getElement } from "./base";
 import { formatIsoDate, isIsoDatePast } from "./datetime";
 import { productDialog } from "./dialog";
 
@@ -24,12 +24,7 @@ export class AlertsRender extends BaseRender {
     private static readonly SELECTOR = ".alerts";
 
     public render(): void {
-        const alerts = this.parent.querySelector(AlertsRender.SELECTOR);
-        if (!alerts) {
-            throw new Error(
-                `Element with query selector ${AlertsRender.SELECTOR} not found.`
-            );
-        }
+        const alerts = getElement(AlertsRender.SELECTOR, Element, this.parent);
 
         // Remove existing alerts on report refresh.
         alerts.replaceChildren();
