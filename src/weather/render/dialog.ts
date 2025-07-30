@@ -15,71 +15,64 @@
  */
 
 class ProductDialog {
-    private dialog: HTMLDialogElement;
-    private productTextDiv: HTMLDivElement;
-    private dialogTitleSpan: HTMLSpanElement;
+    private readonly dialog: HTMLDialogElement;
+    private readonly dialogText: HTMLDivElement;
+    private readonly dialogTitle: HTMLSpanElement;
 
     constructor() {
-        this.dialog = document.createElement("dialog");
-        this.dialog.classList.add("product-dialog");
-        this.dialog.tabIndex = -1;
-
-        // Close Button
-        const closeButton = document.createElement("button");
-        closeButton.className = "close-button";
-        closeButton.addEventListener("click", () => this.dialog.close());
-        closeButton.tabIndex = 0;
-
-        // Close Button Title and X to close.
-        this.dialogTitleSpan = document.createElement("span");
-        this.dialogTitleSpan.classList.add("dialog-title");
-        const closeIconSpan = document.createElement("span");
-        closeIconSpan.classList.add("close-icon");
-        closeIconSpan.textContent = "✖️";
-
-        closeButton.appendChild(this.dialogTitleSpan);
-        closeButton.appendChild(closeIconSpan);
-
-        // Dialog Content
-        const dialogContentDiv = document.createElement("div");
-        dialogContentDiv.className = "dialog-content";
-
-        this.productTextDiv = document.createElement("div");
-        this.productTextDiv.className = "product-text";
-        this.productTextDiv.tabIndex = 0;
-
-        dialogContentDiv.appendChild(closeButton);
-        dialogContentDiv.appendChild(this.productTextDiv);
-
-        // Bottom Fade
-        const bottomFadeDiv = document.createElement("div");
-        bottomFadeDiv.classList.add("bottom-fade");
-
-        this.dialog.append(dialogContentDiv);
-        this.dialog.append(bottomFadeDiv);
-
-        // Append Dialog
-        document.body.appendChild(this.dialog);
-
+        this.dialog = this.getElement(".product-dialog", HTMLDialogElement);
         this.dialog.addEventListener("click", (event) => {
             if (event.target === this.dialog) {
                 this.dialog.close();
             }
         });
+
+        const closeButton = this.getElement(
+            ".close-button",
+            HTMLButtonElement,
+            this.dialog
+        );
+        closeButton.addEventListener("click", () => this.dialog.close());
+
+        this.dialogTitle = this.getElement(
+            ".dialog-title",
+            HTMLSpanElement,
+            this.dialog
+        );
+
+        this.dialogText = this.getElement(
+            ".product-text",
+            HTMLDivElement,
+            this.dialog
+        );
+    }
+
+    public getElement<T extends Element = Element>(
+        selector: string,
+        type: { new (): T },
+        parent: ParentNode = document
+    ): T {
+        const element = parent.querySelector(selector);
+        if (!element || !(element instanceof type)) {
+            throw new Error(
+                `${type.name} element with query selector ${selector} not found.`
+            );
+        }
+        return element;
     }
 
     public show(title: string, text: string): void {
         // Normalize the end of every display string.
-        this.productTextDiv.textContent = text.replace(/\n*$/, "\n\n");
-        this.dialogTitleSpan.textContent = title;
+        this.dialogText.textContent = text.replace(/\n*$/, "\n\n");
+        this.dialogTitle.textContent = title;
 
         if (!this.dialog.open) {
             this.dialog.showModal();
         }
 
         requestAnimationFrame(() => {
-            this.productTextDiv.scrollTop = 0;
-            this.productTextDiv.focus();
+            this.dialogText.scrollTop = 0;
+            this.dialogText.focus();
         });
     }
 
