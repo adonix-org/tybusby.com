@@ -155,7 +155,6 @@
 }
 
 .product-dialog {
-    position: relative;
     border: none;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
@@ -180,6 +179,7 @@
 }
 
 .product-dialog .close-button {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -214,7 +214,7 @@
 }
 
 .close-icon {
-    position: absolute; /* if you want it fixed on one side */
+    position: absolute;
     right: 0.5rem;
     font-size: 15pt;
 }
