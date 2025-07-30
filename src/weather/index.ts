@@ -18,6 +18,7 @@ import { NationalWeatherService, WeatherReport } from "@adonix.org/nws-report";
 import { ReportRender } from "./render/report";
 import { Progress } from "../progress";
 import { Spinner } from "../spinner";
+import { getElementById } from "../elements";
 
 NationalWeatherService.origin = "https://nws.tybusby.com";
 
@@ -38,6 +39,9 @@ const coordinates: Coordinate[] = [
 
     // Waverly, IA
     [42.7382, -92.4781],
+
+    // Waterloo, IA
+    [42.50567180952728, -92.35516347370681],
 
     // Sheldon, IA
     [43.1828, -95.8418],
@@ -60,10 +64,7 @@ const REPORT_PARENT_ID = "weather-grid";
 const REFRESH_RATE = 1000 * 60 * 2; // 2 minutes
 
 Promise.all(promises).then((results) => {
-    const parent = document.getElementById(REPORT_PARENT_ID);
-    if (!parent) {
-        throw new Error(`Element with ID "${REPORT_PARENT_ID}" not found.`);
-    }
+    const parent = getElementById(REPORT_PARENT_ID);
     results.forEach((result, index) => {
         if (result instanceof Error) {
             console.group(`positions[${index}]: ${result.message}`);
@@ -76,7 +77,9 @@ Promise.all(promises).then((results) => {
             setInterval(() => {
                 reportRenderer.refresh();
                 console.log(
-                    `refreshing ${result.station?.properties.stationIdentifier} at ${new Date().toLocaleTimeString()}`
+                    `refreshing ${
+                        result.station?.properties.stationIdentifier
+                    } at ${new Date().toLocaleTimeString()}`
                 );
             }, REFRESH_RATE);
         }

@@ -123,7 +123,13 @@ class PeriodTemp extends Text {
 class PeriodDesc extends Text {
     protected override format(forecast: string): string {
         // Unbreakable hyphen on words like T-Storm.
-        return forecast.replace("-", "\u2011");
+        return this.abbreviate(forecast).replace(/-/g, "\u2011");
+    }
+
+    protected abbreviate(forecast: string): string {
+        return forecast
+            .replace(/\bThunderstorms\b/gi, "T-Storms")
+            .replace(/\bThunderstorm\b/gi, "T-Storm");
     }
 
     public override render(): void {
