@@ -27,6 +27,7 @@ class ProductDialog {
         const closeButton = document.createElement("button");
         closeButton.className = "close-button";
         closeButton.addEventListener("click", () => this.dialog.close());
+        closeButton.tabIndex = 0;
 
         // Close Button Title and X to close.
         this.dialogTitleSpan = document.createElement("span");
@@ -44,6 +45,7 @@ class ProductDialog {
 
         this.productTextDiv = document.createElement("div");
         this.productTextDiv.className = "product-text";
+        this.productTextDiv.tabIndex = 0;
 
         dialogContentDiv.appendChild(closeButton);
         dialogContentDiv.appendChild(this.productTextDiv);
@@ -76,6 +78,7 @@ class ProductDialog {
 
         requestAnimationFrame(() => {
             this.productTextDiv.scrollTop = 0;
+            this.productTextDiv.focus();
         });
     }
 
