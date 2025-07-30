@@ -15,7 +15,7 @@
  */
 
 import { AlertFeature } from "@adonix.org/nws-report";
-import { BaseRender, getElement } from "./base";
+import { BaseRender } from "./base";
 import { formatIsoDate, isIsoDatePast } from "./datetime";
 import { productDialog } from "./dialog";
 
@@ -24,7 +24,7 @@ export class AlertsRender extends BaseRender {
     private static readonly SELECTOR = ".alerts";
 
     public render(): void {
-        const alerts = getElement(AlertsRender.SELECTOR, Element, this.parent);
+        const alerts = this.getElement(AlertsRender.SELECTOR, Element);
 
         // Remove existing alerts on report refresh.
         alerts.replaceChildren();

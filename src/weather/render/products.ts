@@ -15,18 +15,14 @@
  */
 
 import { ProductSegment, SegmentedProduct } from "@adonix.org/nws-report";
-import { BaseRender, getElement } from "./base";
+import { BaseRender } from "./base";
 import { productDialog } from "./dialog";
 
 export class ProductsRender extends BaseRender {
     private static readonly SELECTOR = ".products";
 
     public render(): void {
-        const products = getElement(
-            ProductsRender.SELECTOR,
-            Element,
-            this.parent
-        );
+        const products = this.getElement(ProductsRender.SELECTOR, Element);
 
         // Remove existing products on report refresh.
         products.replaceChildren();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { getElement } from "./base";
+import { getElement } from "../../elements";
 
 class ProductDialog {
     private readonly dialog: HTMLDialogElement;

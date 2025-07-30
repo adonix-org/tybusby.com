@@ -15,27 +15,10 @@
  */
 
 import { WeatherReport } from "@adonix.org/nws-report";
+import { getElement, HTMLElementType } from "../../elements";
 
 export interface RenderClass {
     new (parent: Element, report: WeatherReport): BaseRender;
-}
-
-export function getElement<T extends Element>(
-    selectors: string,
-    type: HTMLElementType<T>,
-    parent: ParentNode = document
-): T {
-    const element = parent.querySelector(selectors);
-    if (!element || !(element instanceof type)) {
-        throw new Error(
-            `${type.name} with selectors "${selectors}" not found.`
-        );
-    }
-    return element;
-}
-
-interface HTMLElementType<T extends Element> {
-    new (): T;
 }
 
 export abstract class BaseRender {
@@ -43,6 +26,14 @@ export abstract class BaseRender {
         protected readonly parent: Element,
         protected readonly report: WeatherReport
     ) {}
+
+    public getElement<T extends Element>(
+        selectors: string,
+        type: HTMLElementType<T>,
+        parent: ParentNode = this.parent
+    ): T {
+        return getElement(selectors, type, parent);
+    }
 
     public abstract render(): void;
 }
