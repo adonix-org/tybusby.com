@@ -36,10 +36,10 @@ export abstract class BaseRender {
     }
 
     public getElementById<T extends HTMLElement>(
-        selectors: string,
+        elementId: string,
         type: ElementType<T>
     ): T {
-        return getElementById(selectors, type);
+        return getElementById(elementId, type);
     }
 
     public abstract render(): void;
