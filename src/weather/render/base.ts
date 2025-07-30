@@ -21,14 +21,14 @@ export interface RenderClass {
 }
 
 export function getElement<T extends Element>(
-    selector: string,
+    selectors: string,
     type: HTMLElementType<T>,
     parent: ParentNode = document
 ): T {
-    const element = parent.querySelector(selector);
+    const element = parent.querySelector(selectors);
     if (!element || !(element instanceof type)) {
         throw new Error(
-            `${type.name} element with query selector "${selector}" not found.`
+            `${type.name} with selectors "${selectors}" not found.`
         );
     }
     return element;
