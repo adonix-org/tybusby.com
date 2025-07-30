@@ -47,7 +47,7 @@ class ProductDialog {
         );
     }
 
-    public getElement<T extends Element = Element>(
+    public getElement<T extends Element>(
         selector: string,
         type: { new (): T },
         parent: ParentNode = document
@@ -55,7 +55,7 @@ class ProductDialog {
         const element = parent.querySelector(selector);
         if (!element || !(element instanceof type)) {
             throw new Error(
-                `${type.name} element with query selector ${selector} not found.`
+                `${type.name} element with query selector "${selector}" not found.`
             );
         }
         return element;

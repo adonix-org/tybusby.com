@@ -223,7 +223,8 @@
     font-size: 10pt;
     padding: 1rem;
     flex: 1;
-    overflow: auto;
+    overflow-y: scroll;
+    overflow-x: auto;
 }
 
 .product-dialog .bottom-fade {
