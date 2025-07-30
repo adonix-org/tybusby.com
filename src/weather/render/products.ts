@@ -68,7 +68,7 @@ export class ProductsRender extends BaseRender {
 
     protected hwoFilter(segment: ProductSegment): boolean {
         const noHazardRegex = /no hazardous weather is expected at this time/i;
-        const dayOneRegex = /\.DAY[\s\S]*?(?=\.DAY|\Z)/;
+        const dayOneRegex = /\.DAY ONE[\s\S]*?(?=\.DAYS? TWO|\Z)/;
         const match = segment.body.match(dayOneRegex);
 
         if (!match) {
