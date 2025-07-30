@@ -22,6 +22,7 @@ class ProductDialog {
     constructor() {
         this.dialog = document.createElement("dialog");
         this.dialog.classList.add("product-dialog");
+        this.dialog.tabIndex = -1;
 
         // Close Button
         const closeButton = document.createElement("button");
