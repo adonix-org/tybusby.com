@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
+import { getElementById } from "./elements";
+
 export class Spinner {
     private readonly _element: HTMLElement;
     constructor(id: string = "avatar-spinner") {
-        const element = document.getElementById(id);
-        if (!element) {
-            throw new Error(`Spinner element with ID "${id}" not found.`);
-        }
-        this._element = element;
+        this._element = getElementById(id, HTMLElement);
     }
 
     public start(): void {

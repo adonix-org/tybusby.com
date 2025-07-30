@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { getElementById } from "./elements";
+
 export interface ProgressData {
     count: number;
     total: number;
@@ -25,11 +27,7 @@ export class Progress {
     private _percent: number = 0;
 
     constructor(id: string = "progress") {
-        const element = document.getElementById(id);
-        if (!element) {
-            throw new Error(`Progress element with ID "${id}" not found.`);
-        }
-        this._element = element;
+        this._element = getElementById(id, HTMLElement);
     }
 
     /**

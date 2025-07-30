@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { getElementById } from "./elements";
+
 const copyright: string = `&copy; ${new Date().getFullYear()} tybusby.com`;
 
-document.getElementById("copyright")!.innerHTML = copyright;
+getElementById("copyright", HTMLElement).innerHTML = copyright;

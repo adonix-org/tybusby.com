@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { getElementById } from "./elements";
 import { EventEmitter } from "./event";
 import { Progress, ProgressData } from "./progress";
 
@@ -33,11 +34,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
 
     constructor(parentId: string, private readonly urls: string[]) {
         super();
-        const element = document.getElementById(parentId);
-        if (!element) {
-            throw new Error(`Element with ID "${parentId}" not found.`);
-        }
-        this.parent = element;
+        this.parent = getElementById(parentId, HTMLElement);
     }
 
     public load(): this {

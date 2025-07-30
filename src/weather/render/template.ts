@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
+import { getElementById } from "../../elements";
+
 export class Template {
     public static createElement(templateId: string): Element {
-        const template = document.getElementById(
-            templateId
-        ) as HTMLTemplateElement;
-        if (!template) {
-            throw new Error(`Template with ID "${templateId}" not found.`);
-        }
-
+        const template = getElementById(templateId, HTMLTemplateElement);
         const fragment = template.content.cloneNode(true) as DocumentFragment;
         if (!fragment.firstElementChild) {
             throw new Error(
