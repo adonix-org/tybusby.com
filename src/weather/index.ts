@@ -40,9 +40,6 @@ const coordinates: Coordinate[] = [
     // Waverly, IA
     [42.7382, -92.4781],
 
-    // Waterloo, IA
-    [42.50567180952728, -92.35516347370681],
-
     // Sheldon, IA
     [43.1828, -95.8418],
 ];
