@@ -18,4 +18,4 @@ import { getElementById } from "./elements";
 
 const copyright: string = `&copy; ${new Date().getFullYear()} tybusby.com`;
 
-getElementById("copyright", HTMLElement).innerHTML = copyright;
+getElementById("copyright").innerHTML = copyright;

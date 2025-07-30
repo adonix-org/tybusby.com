@@ -29,15 +29,15 @@ export abstract class BaseRender {
 
     public getElement<T extends Element>(
         selectors: string,
-        type: ElementType<T>,
-        parent: ParentNode = this.parent
+        parent: ParentNode = this.parent,
+        type?: ElementType<T>
     ): T {
-        return getElement(selectors, type, parent);
+        return getElement(selectors, parent, type);
     }
 
     public getElementById<T extends HTMLElement>(
         elementId: string,
-        type: ElementType<T>
+        type?: ElementType<T>
     ): T {
         return getElementById(elementId, type);
     }
@@ -58,7 +58,7 @@ export abstract class TextRender<T extends SelectorMap> extends BaseRender {
         value: string | number | undefined,
         fallback: string = "?"
     ): Element {
-        const element = getElement(selector, Element, this.parent);
+        const element = getElement(selector, this.parent);
         element.textContent =
             value === undefined ? fallback : this.format(value);
         return element;
@@ -72,7 +72,7 @@ export abstract class IconRender<T extends SelectorMap> extends BaseRender {
         alt: string,
         size: "small" | "medium" | "large" = "medium"
     ): Element {
-        const image = getElement(selector, HTMLImageElement, this.parent);
+        const image = getElement(selector, this.parent, HTMLImageElement);
         image.alt = alt;
         if (!icon || icon.trim() === "") {
             image.src = "img/missing.png";

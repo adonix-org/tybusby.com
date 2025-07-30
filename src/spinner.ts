@@ -19,7 +19,7 @@ import { getElementById } from "./elements";
 export class Spinner {
     private readonly _element: HTMLElement;
     constructor(id: string = "avatar-spinner") {
-        this._element = getElementById(id, HTMLElement);
+        this._element = getElementById(id);
     }
 
     public start(): void {

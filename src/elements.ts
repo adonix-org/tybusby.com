@@ -16,27 +16,31 @@
 
 export function getElement<T extends Element>(
     selectors: string,
-    type: ElementType<T>,
-    parent: ParentNode = document
+    parent: ParentNode = document,
+    type?: ElementType<T>
 ): T {
     const element = parent.querySelector(selectors);
-    if (!element || !(element instanceof type)) {
+    if (!element || (type && !(element instanceof type))) {
         throw new Error(
-            `${type.name} with selectors "${selectors}" not found.`
+            `${
+                type?.name ?? "Element"
+            } with selectors "${selectors}" not found.`
         );
     }
-    return element;
+    return element as T;
 }
 
 export function getElementById<T extends HTMLElement>(
     elementId: string,
-    type: ElementType<T>
+    type?: ElementType<T>
 ): T {
     const element = document.getElementById(elementId);
-    if (!element || !(element instanceof type)) {
-        throw new Error(`${type.name} with ID "${elementId}" not found.`);
+    if (!element || (type && !(element instanceof type))) {
+        throw new Error(
+            `${type?.name ?? "HTMLElement"} with ID "${elementId}" not found.`
+        );
     }
-    return element;
+    return element as T;
 }
 
 export interface ElementType<T extends Element> {

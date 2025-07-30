@@ -34,7 +34,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
 
     constructor(parentId: string, private readonly urls: string[]) {
         super();
-        this.parent = getElementById(parentId, HTMLElement);
+        this.parent = getElementById(parentId);
     }
 
     public load(): this {

@@ -24,7 +24,7 @@ export class AlertsRender extends BaseRender {
     private static readonly SELECTOR = ".alerts";
 
     public render(): void {
-        const alerts = this.getElement(AlertsRender.SELECTOR, Element);
+        const alerts = this.getElement(AlertsRender.SELECTOR);
 
         // Remove existing alerts on report refresh.
         alerts.replaceChildren();

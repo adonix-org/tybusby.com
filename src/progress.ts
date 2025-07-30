@@ -27,7 +27,7 @@ export class Progress {
     private _percent: number = 0;
 
     constructor(id: string = "progress") {
-        this._element = getElementById(id, HTMLElement);
+        this._element = getElementById(id);
     }
 
     /**

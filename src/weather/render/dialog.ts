@@ -22,7 +22,11 @@ class ProductDialog {
     private readonly dialogTitle: HTMLSpanElement;
 
     constructor() {
-        this.dialog = getElement(".product-dialog", HTMLDialogElement);
+        this.dialog = getElement(
+            ".product-dialog",
+            document,
+            HTMLDialogElement
+        );
         this.dialog.addEventListener("click", (event) => {
             if (event.target === this.dialog) {
                 this.dialog.close();
@@ -31,21 +35,21 @@ class ProductDialog {
 
         const closeButton = getElement(
             ".close-button",
-            HTMLButtonElement,
-            this.dialog
+            this.dialog,
+            HTMLButtonElement
         );
         closeButton.addEventListener("click", () => this.dialog.close());
 
         this.dialogTitle = getElement(
             ".dialog-title",
-            HTMLSpanElement,
-            this.dialog
+            this.dialog,
+            HTMLSpanElement
         );
 
         this.dialogText = getElement(
             ".product-text",
-            HTMLDivElement,
-            this.dialog
+            this.dialog,
+            HTMLDivElement
         );
     }
 

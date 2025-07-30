@@ -22,7 +22,7 @@ export class ProductsRender extends BaseRender {
     private static readonly SELECTOR = ".products";
 
     public render(): void {
-        const products = this.getElement(ProductsRender.SELECTOR, Element);
+        const products = this.getElement(ProductsRender.SELECTOR);
 
         // Remove existing products on report refresh.
         products.replaceChildren();

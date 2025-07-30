@@ -43,7 +43,7 @@ export class ForecastRender extends BaseRender {
     private static readonly SELECTOR = ".forecast";
 
     public override render(): void {
-        const forecast = this.getElement(ForecastRender.SELECTOR, Element);
+        const forecast = this.getElement(ForecastRender.SELECTOR);
 
         // Remove existing forecast on report refresh.
         forecast.replaceChildren();
