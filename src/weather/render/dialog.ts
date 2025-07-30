@@ -18,8 +18,8 @@ import { getElement } from "../../elements";
 
 class ProductDialog {
     private readonly dialog: HTMLDialogElement;
-    private readonly dialogText: HTMLDivElement;
-    private readonly dialogTitle: HTMLSpanElement;
+    private readonly dialogTitle: Element;
+    private readonly dialogText: HTMLElement;
 
     constructor() {
         this.dialog = getElement(
@@ -27,6 +27,10 @@ class ProductDialog {
             document,
             HTMLDialogElement
         );
+
+        // Close the dialog on click anywhere on the backdrop.
+        // The dialog content intercepts clicks on the dialog
+        // itself.
         this.dialog.addEventListener("click", (event) => {
             if (event.target === this.dialog) {
                 this.dialog.close();
@@ -40,17 +44,8 @@ class ProductDialog {
         );
         closeButton.addEventListener("click", () => this.dialog.close());
 
-        this.dialogTitle = getElement(
-            ".dialog-title",
-            this.dialog,
-            HTMLSpanElement
-        );
-
-        this.dialogText = getElement(
-            ".product-text",
-            this.dialog,
-            HTMLDivElement
-        );
+        this.dialogTitle = getElement(".dialog-title", this.dialog);
+        this.dialogText = getElement(".product-text", this.dialog, HTMLElement);
     }
 
     public show(title: string, text: string): void {
