@@ -14,51 +14,39 @@
  * limitations under the License.
  */
 
+import { getElement } from "./base";
+
 class ProductDialog {
     private readonly dialog: HTMLDialogElement;
     private readonly dialogText: HTMLDivElement;
     private readonly dialogTitle: HTMLSpanElement;
 
     constructor() {
-        this.dialog = this.getElement(".product-dialog", HTMLDialogElement);
+        this.dialog = getElement(".product-dialog", HTMLDialogElement);
         this.dialog.addEventListener("click", (event) => {
             if (event.target === this.dialog) {
                 this.dialog.close();
             }
         });
 
-        const closeButton = this.getElement(
+        const closeButton = getElement(
             ".close-button",
             HTMLButtonElement,
             this.dialog
         );
         closeButton.addEventListener("click", () => this.dialog.close());
 
-        this.dialogTitle = this.getElement(
+        this.dialogTitle = getElement(
             ".dialog-title",
             HTMLSpanElement,
             this.dialog
         );
 
-        this.dialogText = this.getElement(
+        this.dialogText = getElement(
             ".product-text",
             HTMLDivElement,
             this.dialog
         );
-    }
-
-    public getElement<T extends Element>(
-        selector: string,
-        type: { new (): T },
-        parent: ParentNode = document
-    ): T {
-        const element = parent.querySelector(selector);
-        if (!element || !(element instanceof type)) {
-            throw new Error(
-                `${type.name} element with query selector "${selector}" not found.`
-            );
-        }
-        return element;
     }
 
     public show(title: string, text: string): void {

@@ -20,6 +20,23 @@ export interface RenderClass {
     new (parent: Element, report: WeatherReport): BaseRender;
 }
 
+export function getElement<T extends Element>(
+    selector: string,
+    type: HTMLElementType<T>,
+    parent: ParentNode = document
+): T {
+    const element = parent.querySelector(selector);
+    if (!element || !(element instanceof type)) {
+        throw new Error(
+            `${type.name} element with query selector "${selector}" not found.`
+        );
+    }
+    return element;
+}
+interface HTMLElementType<T extends Element> {
+    new (): T;
+}
+
 export abstract class BaseRender {
     constructor(
         protected readonly parent: Element,
