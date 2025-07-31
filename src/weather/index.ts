@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { NationalWeatherService, WeatherReport } from "@adonix.org/nws-report";
+import { WeatherReport } from "@adonix.org/nws-report";
 import { ReportRender } from "./render/report";
 import { Progress } from "../progress";
 import { Spinner } from "../spinner";
 import { getElementById } from "../elements";
 
-NationalWeatherService.origin = "https://nws.tybusby.com";
+// NationalWeatherService.origin = "https://nws.tybusby.com";
 
 /**
  * Order is latitude, longitude.

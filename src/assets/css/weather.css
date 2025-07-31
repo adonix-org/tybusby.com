@@ -46,6 +46,11 @@
     background-color: rgb(252, 223, 223);
 }
 
+.alert.unknown {
+    color: rgb(90, 90, 90);
+    background-color: rgb(255, 255, 184);
+}
+
 .latest-weather {
     display: flex;
     flex-wrap: wrap;
