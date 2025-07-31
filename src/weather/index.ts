@@ -20,8 +20,6 @@ import { Progress } from "../progress";
 import { Spinner } from "../spinner";
 import { getElementById } from "../elements";
 
-// NationalWeatherService.origin = "https://nws.tybusby.com";
-
 /**
  * Order is latitude, longitude.
  */

@@ -42,6 +42,7 @@ header {
     align-items: center;
     box-shadow: 0 0 12px var(--light-header-box-shadow);
     display: flex;
+    z-index: 1000;
 }
 
 main {
@@ -57,6 +58,7 @@ footer {
     background-color: var(--light-footer-background-color);
     color: var(--light-footer-color);
     display: flex;
+    z-index: 1000;
 }
 
 .avatar-container {
