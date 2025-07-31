@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { WeatherReport } from "@adonix.org/nws-report";
+import { AlertAdminMessage, WeatherReport } from "@adonix.org/nws-report";
 import { ReportRender } from "./render/report";
 import { Progress } from "../progress";
 import { Spinner } from "../spinner";
@@ -88,6 +88,11 @@ let completed = 0;
 const progress = new Progress();
 const spinner = new Spinner();
 spinner.start();
+
+const admin = await new AlertAdminMessage().get();
+if (admin) {
+    console.log(admin?.productText);
+}
 
 function updateStatus(current: number) {
     progress.percent = Progress.calculate(current, coordinates.length).percent;
