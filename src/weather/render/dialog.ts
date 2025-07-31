@@ -50,7 +50,7 @@ class ProductDialog {
 
     public show(title: string, text: string): void {
         // Normalize the end of every display string.
-        this.dialogText.textContent = text.replace(/\n*$/, "\n\n");
+        this.dialogText.innerHTML = this.linkify(text.replace(/\n*$/, "\n\n"));
         this.dialogTitle.textContent = title;
 
         if (!this.dialog.open) {
@@ -60,6 +60,14 @@ class ProductDialog {
         requestAnimationFrame(() => {
             this.dialogText.scrollTop = 0;
             this.dialogText.focus();
+        });
+    }
+
+    private linkify(text: string): string {
+        const regex = /\bwww\.weather\.gov\/[^\s]+/g;
+        return text.replace(regex, (match) => {
+            const href = `https://${match}`;
+            return `<a href="${href}" target="_blank" rel="noopener noreferrer">${match}</a>`;
         });
     }
 
