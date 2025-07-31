@@ -41,9 +41,6 @@ export class ProductsRender extends BaseRender {
                         segmented.product.productName,
                         [segmented.headline, segment.body].join("\n\n")
                     );
-                    console.log(
-                        [segmented.headline, segment.body].join("\n\n")
-                    );
                 });
                 link.appendChild(div);
                 products.appendChild(link);

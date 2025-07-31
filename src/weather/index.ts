@@ -89,9 +89,9 @@ const progress = new Progress();
 const spinner = new Spinner();
 spinner.start();
 
-const admin = await new AlertAdminMessage().get();
-if (admin) {
-    console.log(admin?.productText);
+const adminAlert = await new AlertAdminMessage().get();
+if (adminAlert) {
+    console.log(adminAlert?.productText);
 }
 
 function updateStatus(current: number) {

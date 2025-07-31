@@ -38,7 +38,6 @@ export class AlertsRender extends BaseRender {
             const link = document.createElement("a");
             link.onclick = () => {
                 const text = this.getBody(feature);
-                console.log(text);
                 productDialog.show(feature.properties.event, text);
             };
             link.appendChild(div);
