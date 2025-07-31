@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AlertFeature } from "@adonix.org/nws-report";
+import { AlertFeature, AlertFeatureProduct } from "@adonix.org/nws-report";
 import { BaseRender } from "./base";
 import { formatIsoDate, isIsoDatePast } from "./datetime";
 import { productDialog } from "./dialog";
@@ -45,7 +45,7 @@ export class AlertsRender extends BaseRender {
         });
     }
 
-    private getBody(feature: AlertFeature): string {
+    private getBody(feature: AlertFeatureProduct): string {
         const product = feature.product;
         let text = "";
         if (product && product.segments.length) {
