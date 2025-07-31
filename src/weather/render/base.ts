@@ -15,7 +15,7 @@
  */
 
 import { WeatherReport } from "@adonix.org/nws-report";
-import { getElement, getElementById, ElementType } from "../../elements";
+import { getElement, getElementById, ElementClass } from "../../elements";
 
 export interface RenderClass {
     new (parent: Element, report: WeatherReport): BaseRender;
@@ -30,14 +30,14 @@ export abstract class BaseRender {
     public getElement<T extends Element>(
         selectors: string,
         parent: ParentNode = this.parent,
-        type?: ElementType<T>
+        type?: ElementClass<T>
     ): T {
         return getElement(selectors, parent, type);
     }
 
     public getElementById<T extends HTMLElement>(
         elementId: string,
-        type?: ElementType<T>
+        type?: ElementClass<T>
     ): T {
         return getElementById(elementId, type);
     }

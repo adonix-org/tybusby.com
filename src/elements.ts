@@ -17,7 +17,7 @@
 export function getElement<T extends Element>(
     selectors: string,
     parent: ParentNode = document,
-    type?: ElementType<T>
+    type?: ElementClass<T>
 ): T {
     const element = parent.querySelector(selectors);
     if (!element || (type && !(element instanceof type))) {
@@ -32,7 +32,7 @@ export function getElement<T extends Element>(
 
 export function getElementById<T extends HTMLElement>(
     elementId: string,
-    type?: ElementType<T>
+    type?: ElementClass<T>
 ): T {
     const element = document.getElementById(elementId);
     if (!element || (type && !(element instanceof type))) {
@@ -43,7 +43,7 @@ export function getElementById<T extends HTMLElement>(
     return element as T;
 }
 
-export interface ElementType<T extends Element> {
+export interface ElementClass<T extends Element> {
     new (): T;
     prototype: T;
 }
