@@ -56,11 +56,7 @@ export class AlertsRender extends BaseRender {
             return text + "\n\n";
         }
         text += feature.properties.event + "\n";
-        text +=
-            feature.properties.senderName.replace(
-                /^NWS/g,
-                "National Weather Service"
-            ) + "\n";
+        text += feature.properties.senderName + "\n";
         if (feature.properties.sent) {
             text += formatIsoDate(
                 feature.properties.sent,
