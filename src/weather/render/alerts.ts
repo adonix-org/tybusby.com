@@ -54,6 +54,9 @@ export class AlertsRender extends BaseRender {
             });
             return text + "\n\n";
         }
+        // TODO: Remove?
+        text += feature.properties.parameters.AWIPSidentifier?.[0] + "\n";
+
         text += feature.properties.event + "\n";
         text += feature.properties.senderName + "\n";
         if (feature.properties.sent) {

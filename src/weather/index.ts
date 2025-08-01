@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-import { AlertAdminMessage, WeatherReport } from "@adonix.org/nws-report";
+import {
+    AlertAdminMessage,
+    NationalWeatherService,
+    WeatherReport,
+} from "@adonix.org/nws-report";
 import { ReportRender } from "./render/report";
 import { Progress } from "../progress";
 import { Spinner } from "../spinner";
 import { getElementById } from "../elements";
 
+// NationalWeatherService.origin = "http://localhost:8787";
+NationalWeatherService.origin = "https://nws.tybusby.com";
+
 /**
- * Order is latitude, longitude.
+ * latitude, longitude
  */
 type Coordinate = [number, number];
 
@@ -42,6 +49,9 @@ const coordinates: Coordinate[] = [
     [43.1828, -95.8418],
 ];
 
+const REPORT_PARENT_ID = "weather-grid";
+const REFRESH_RATE = 1000 * 60 * 5;
+
 const promises = coordinates.map(([lat, lon]) =>
     WeatherReport.create(lat, lon)
         .catch((error: unknown) => {
@@ -55,28 +65,24 @@ const promises = coordinates.map(([lat, lon]) =>
         .finally(() => updateStatus(++completed))
 );
 
-const REPORT_PARENT_ID = "weather-grid";
-const REFRESH_RATE = 1000 * 60 * 2; // 2 minutes
-
 Promise.all(promises).then((results) => {
     const parent = getElementById(REPORT_PARENT_ID);
     results.forEach((result, index) => {
         if (result instanceof Error) {
-            console.group(`positions[${index}]: ${result.message}`);
+            console.group(`coordinates[${index}]: ${result.message}`);
             console.error(result);
             console.dir(result);
             console.groupEnd();
         } else {
             const reportRenderer = new ReportRender(parent, result);
             reportRenderer.render();
-            setInterval(() => {
-                reportRenderer.refresh();
-                console.log(
-                    `refreshing ${
-                        result.station?.properties.stationIdentifier
-                    } at ${new Date().toLocaleTimeString()}`
-                );
-            }, REFRESH_RATE);
+            const staggerDelay = (index + 1) * 1000 * 60;
+            startStaggeredRefresh(
+                reportRenderer,
+                result.station?.properties.stationIdentifier ??
+                    `station-${index}`,
+                staggerDelay
+            );
         }
     });
 });
@@ -100,4 +106,25 @@ function updateStatus(current: number) {
         progress.complete();
         spinner.stop();
     }
+}
+
+function startStaggeredRefresh(
+    reportRenderer: ReportRender,
+    stationId: string,
+    delayMs: number
+) {
+    setTimeout(function scheduleRefresh() {
+        (async () => {
+            try {
+                await reportRenderer.refresh();
+                console.log(
+                    `refreshing ${stationId} at ${new Date().toLocaleTimeString()}`
+                );
+            } catch (err) {
+                console.error(`Error refreshing ${stationId}:`, err);
+            } finally {
+                setTimeout(scheduleRefresh, REFRESH_RATE);
+            }
+        })();
+    }, delayMs);
 }
