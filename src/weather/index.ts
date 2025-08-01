@@ -116,10 +116,10 @@ function startStaggeredRefresh(
     setTimeout(function scheduleRefresh() {
         (async () => {
             try {
-                await reportRenderer.refresh();
                 console.log(
                     `refreshing ${stationId} at ${new Date().toLocaleTimeString()}`
                 );
+                await reportRenderer.refresh();
             } catch (err) {
                 console.error(`Error refreshing ${stationId}:`, err);
             } finally {

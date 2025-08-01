@@ -194,6 +194,8 @@ class Visibility extends Text {
 }
 
 class HeatIndex extends Text {
+    private static readonly DISPLAY_THRESHOLD_C = 33;
+
     protected override format(heatIndex: number): string {
         const f = Math.round(Units.c_to_f(heatIndex));
         const c = Math.round(heatIndex);
@@ -209,7 +211,10 @@ class HeatIndex extends Text {
             heatIndex,
             "--°F (--°C)"
         );
-        if (heatIndex !== undefined) {
+        if (
+            heatIndex !== undefined &&
+            heatIndex > HeatIndex.DISPLAY_THRESHOLD_C
+        ) {
             element.classList.remove("hidden");
             element.previousElementSibling?.classList.remove("hidden");
         }
@@ -217,6 +222,8 @@ class HeatIndex extends Text {
 }
 
 class WindChill extends Text {
+    private static readonly DISPLAY_THRESHOLD_C = 33;
+
     protected override format(windChill: number): string {
         const f = Math.round(Units.c_to_f(windChill));
         const c = Math.round(windChill);
@@ -232,7 +239,10 @@ class WindChill extends Text {
             windChill,
             "--°F (--°C)"
         );
-        if (windChill !== undefined) {
+        if (
+            windChill !== undefined &&
+            windChill < WindChill.DISPLAY_THRESHOLD_C
+        ) {
             element.classList.remove("hidden");
             element.previousElementSibling?.classList.remove("hidden");
         }
