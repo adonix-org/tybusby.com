@@ -24,7 +24,7 @@ import { Progress } from "../progress";
 import { Spinner } from "../spinner";
 import { getElementById } from "../elements";
 
-// NationalWeatherService.origin = "http://localhost:8787";
+//NationalWeatherService.origin = "http://localhost:8787";
 NationalWeatherService.origin = "https://nws.tybusby.com";
 
 /**
