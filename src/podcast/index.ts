@@ -15,9 +15,4 @@
  */
 
 import { Player } from "./player";
-import { Podcast } from "./podcast";
-
-const podcast = new Podcast();
-
-const seasons = await podcast.getSeasons();
-const player = Player.create();
+Player.create();

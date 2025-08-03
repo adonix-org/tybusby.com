@@ -15,12 +15,14 @@
  */
 
 import { getElement } from "../elements";
-import { Podcast } from "./podcast";
+import { Playlist, Podcast } from "./podcast";
 
 export class Player {
     private readonly podcast: Podcast = new Podcast();
     private readonly selectSeason: HTMLSelectElement;
-    private readonly selectEpisode: HTMLDivElement;
+    private readonly audioPlayer: HTMLAudioElement;
+    private readonly episodeList: HTMLDivElement;
+    private playlist?: Playlist;
 
     public static async create() {
         return await new Player().init();
@@ -28,11 +30,19 @@ export class Player {
 
     private constructor() {
         this.selectSeason = getElement(".select-season");
-        this.selectEpisode = getElement(".select-episode");
+        this.episodeList = getElement(".select-episode");
+        this.audioPlayer = getElement(".audio-player");
 
         this.selectSeason.addEventListener("change", async () => {
             await this.loadEpisodes();
         });
+
+        const observer = new ResizeObserver(() => {
+            this.selectSeason.style.width = `${this.episodeList.offsetWidth}px`;
+            this.audioPlayer.style.width = `${this.episodeList.offsetWidth}px`;
+        });
+
+        observer.observe(this.episodeList);
     }
 
     private async init(): Promise<Player> {
@@ -44,20 +54,55 @@ export class Player {
             this.selectSeason.add(option);
         }
         await this.loadEpisodes();
+
+        const episodeList = getElement(".select-episode");
+        episodeList.addEventListener("click", (e) => {
+            const target = e.target as HTMLElement;
+            const episode = target.closest(".episode") as HTMLElement;
+            if (!episode) return;
+
+            const index = parseInt(episode.dataset.index || "0");
+            this.selectEpisode(index);
+        });
         return this;
+    }
+
+    public selectEpisode(index: number): void {
+        const previouslySelected = this.episodeList.querySelector(".selected");
+        if (previouslySelected) {
+            previouslySelected.classList.remove("selected");
+        }
+        const episode = getElement(`.episode[data-index="${index}"]`);
+        if (episode) {
+            episode.classList.add("selected");
+            episode.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }
+
+        this.playEpisode(index);
+    }
+
+    public playEpisode(index: number): void {
+        if (!this.playlist) {
+            return;
+        }
+
+        const url = this.playlist.playlist[index]?.url;
+        if (url) {
+            this.audioPlayer.src = url;
+            this.audioPlayer.play();
+        }
     }
 
     private async loadEpisodes(): Promise<void> {
         const season = this.selectSeason.value;
-        const episodes = await this.podcast.getPlaylist(season);
-        this.selectEpisode.innerHTML = "";
-        episodes.playlist.forEach((episode, i) => {
+        this.playlist = await this.podcast.getPlaylist(season);
+        this.episodeList.innerHTML = "";
+        this.playlist.playlist.forEach((episode, i) => {
             const option = document.createElement("div");
             option.classList.add("episode");
             option.innerText = episode.title;
             option.dataset.index = String(i);
-            this.selectEpisode.appendChild(option);
+            this.episodeList.appendChild(option);
         });
-        this.selectSeason.style.width = `${this.selectEpisode.offsetWidth}px`;
     }
 }
