@@ -22,6 +22,8 @@ export class Player {
     private readonly selectSeason: HTMLSelectElement;
     private readonly audioPlayer: HTMLAudioElement;
     private readonly episodeList: HTMLDivElement;
+    private episodeIndex = 0;
+    private currentTime = 0;
     private playlist?: Playlist;
 
     public static async create() {
@@ -41,8 +43,15 @@ export class Player {
             this.selectSeason.style.width = `${this.episodeList.offsetWidth}px`;
             this.audioPlayer.style.width = `${this.episodeList.offsetWidth}px`;
         });
-
         observer.observe(this.episodeList);
+
+        this.audioPlayer.addEventListener("timeupdate", () => {
+            const currentTime = Math.floor(this.audioPlayer.currentTime);
+            if (currentTime > this.currentTime + 1) {
+                this.currentTime = currentTime;
+                this.saveState(currentTime);
+            }
+        });
     }
 
     private async init(): Promise<Player> {
@@ -61,35 +70,33 @@ export class Player {
             const episode = target.closest(".episode") as HTMLElement;
             if (!episode) return;
 
-            const index = parseInt(episode.dataset.index || "0");
-            this.selectEpisode(index);
+            this.episodeIndex = parseInt(episode.dataset.index || "0");
+            this.selectEpisode();
         });
+
+        const playerState = this.loadState();
+        this.episodeIndex = playerState.episode;
+        this.selectEpisode();
+        this.audioPlayer.currentTime = playerState.time;
         return this;
     }
 
-    public selectEpisode(index: number): void {
+    public selectEpisode(): void {
         const previouslySelected = this.episodeList.querySelector(".selected");
         if (previouslySelected) {
             previouslySelected.classList.remove("selected");
         }
-        const episode = getElement(`.episode[data-index="${index}"]`);
+        const episode = getElement(
+            `.episode[data-index="${this.episodeIndex}"]`
+        );
         if (episode) {
             episode.classList.add("selected");
             episode.scrollIntoView({ block: "nearest", behavior: "smooth" });
         }
 
-        this.playEpisode(index);
-    }
-
-    public playEpisode(index: number): void {
-        if (!this.playlist) {
-            return;
-        }
-
-        const url = this.playlist.playlist[index]?.url;
+        const url = this.playlist?.playlist[this.episodeIndex]?.url;
         if (url) {
             this.audioPlayer.src = url;
-            this.audioPlayer.play();
         }
     }
 
@@ -105,4 +112,31 @@ export class Player {
             this.episodeList.appendChild(option);
         });
     }
+
+    private saveState(currentTime: number) {
+        const state = {
+            season: this.selectSeason.value,
+            episode: this.episodeIndex,
+            time: currentTime,
+        };
+        localStorage.setItem("playlist-state", JSON.stringify(state));
+    }
+
+    private loadState(): SaveState {
+        const state = localStorage.getItem("playlist-state");
+        if (state) {
+            return JSON.parse(state) as SaveState;
+        }
+        return {
+            season: "2017",
+            episode: 0,
+            time: 0,
+        };
+    }
+}
+
+interface SaveState {
+    season: string;
+    episode: number;
+    time: number;
 }
