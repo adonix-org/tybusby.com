@@ -73,9 +73,10 @@ export class Player {
         const list = await this.podcast.getSeasons();
         for (const season of list.seasons) {
             const option = document.createElement("option");
-            option.label = season;
+            //option.label = season;
+            option.textContent = season;
             option.value = season;
-            this.selectSeason.add(option);
+            this.selectSeason.appendChild(option);
         }
         this.selectSeason.selectedIndex = playerState.season;
 
