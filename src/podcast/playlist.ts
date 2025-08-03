@@ -47,7 +47,7 @@ export class HTTPError extends Error {
     }
 }
 
-export class Playlists {
+export class Podcast {
     private static readonly BASE = new URL("https://playlist.adonix.org");
 
     public async getSeasons(): Promise<Seasons> {
@@ -55,12 +55,12 @@ export class Playlists {
     }
 
     public async getPlaylist(season: string): Promise<Playlist> {
-        const url = new URL(Playlists.BASE.toString());
+        const url = new URL(Podcast.BASE.toString());
         url.searchParams.set("season", season);
         return await this.get<Playlist>(url);
     }
 
-    protected async get<T>(url: URL = Playlists.BASE): Promise<T> {
+    protected async get<T>(url: URL = Podcast.BASE): Promise<T> {
         let response: Response;
         try {
             response = await fetch(url, {

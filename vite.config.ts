@@ -8,6 +8,7 @@ export default defineConfig({
                 main: resolve(__dirname, "index.html"),
                 weather: resolve(__dirname, "weather.html"),
                 music: resolve(__dirname, "music.html"),
+                podcast: resolve(__dirname, "podcast.html"),
             },
         },
     },
