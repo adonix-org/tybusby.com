@@ -7,7 +7,8 @@
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
-        "debug": "tsx ./src/weather/render/debug.ts"
+        "debug": "tsx ./src/weather/render/debug.ts",
+        "play": "tsx ./src/playlist/playlist.ts"
     },
     "keywords": [
         "ty busby",
