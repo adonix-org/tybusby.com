@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
+import { Player } from "./player";
 import { Podcast } from "./podcast";
 
 const podcast = new Podcast();
 
-const headers = await podcast.getSeasons();
-console.log(headers);
-
-const playlist = await podcast.getPlaylist("2017");
-console.log(playlist);
+const seasons = await podcast.getSeasons();
+const player = Player.create();
