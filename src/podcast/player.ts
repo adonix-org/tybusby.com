@@ -47,14 +47,29 @@ export class Player {
 
         this.audioPlayer.addEventListener("timeupdate", () => {
             const currentTime = Math.floor(this.audioPlayer.currentTime);
-            if (currentTime > this.currentTime + 1) {
+            if (
+                currentTime > this.currentTime + 1 ||
+                currentTime < this.currentTime
+            ) {
                 this.currentTime = currentTime;
-                this.saveState(currentTime);
+                this.saveState(this.audioPlayer.currentTime);
             }
+        });
+
+        this.audioPlayer.addEventListener("ended", () => {
+            const length = this.playlist?.playlist.length;
+            if (length && this.episodeIndex + 1 < length) {
+                this.episodeIndex = this.episodeIndex + 1;
+            } else {
+                this.episodeIndex = 0;
+            }
+            this.selectEpisode();
         });
     }
 
     private async init(): Promise<Player> {
+        const playerState = this.loadState();
+
         const list = await this.podcast.getSeasons();
         for (const season of list.seasons) {
             const option = document.createElement("option");
@@ -62,8 +77,9 @@ export class Player {
             option.value = season;
             this.selectSeason.add(option);
         }
-        await this.loadEpisodes();
+        this.selectSeason.selectedIndex = playerState.season;
 
+        await this.loadEpisodes();
         const episodeList = getElement(".select-episode");
         episodeList.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
@@ -74,7 +90,6 @@ export class Player {
             this.selectEpisode();
         });
 
-        const playerState = this.loadState();
         this.episodeIndex = playerState.episode;
         this.selectEpisode();
         this.audioPlayer.currentTime = playerState.time;
@@ -114,8 +129,8 @@ export class Player {
     }
 
     private saveState(currentTime: number) {
-        const state = {
-            season: this.selectSeason.value,
+        const state: SaveState = {
+            season: this.selectSeason.selectedIndex,
             episode: this.episodeIndex,
             time: currentTime,
         };
@@ -128,7 +143,7 @@ export class Player {
             return JSON.parse(state) as SaveState;
         }
         return {
-            season: "2017",
+            season: 0,
             episode: 0,
             time: 0,
         };
@@ -136,7 +151,7 @@ export class Player {
 }
 
 interface SaveState {
-    season: string;
+    season: number;
     episode: number;
     time: number;
 }
