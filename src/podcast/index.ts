@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+import { Spinner } from "../spinner";
 import { Player } from "./player";
-Player.create();
+
+const spinner = new Spinner();
+spinner.start();
+
+await Player.create();
+
+spinner.stop();
