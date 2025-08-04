@@ -138,7 +138,7 @@ export class Player {
                 album: data.album ?? "Podcast",
                 artwork: [
                     {
-                        src: "https://www.tybusby.com/img/avatar.png",
+                        src: "https://www.tybusby.com/img/podcast.png",
                         sizes: "512x512",
                         type: "image/png",
                     },
