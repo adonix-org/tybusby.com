@@ -102,17 +102,18 @@ export class Player {
         if (previouslySelected) {
             previouslySelected.classList.remove("selected");
         }
-        const episode = getElement(
+        const option = getElement(
             `.episode[data-index="${this.episodeIndex}"]`
         );
-        if (episode) {
-            episode.classList.add("selected");
-            episode.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        if (option) {
+            option.classList.add("selected");
+            option.scrollIntoView({ block: "nearest", behavior: "smooth" });
         }
 
-        const url = this.playlist?.[this.episodeIndex]?.url;
-        if (url) {
-            this.audioPlayer.src = url;
+        const episode = this.playlist?.[this.episodeIndex];
+        if (episode) {
+            this.audioPlayer.src = episode.url;
+            this.setMetaData(episode);
         }
     }
 
@@ -127,6 +128,23 @@ export class Player {
             option.dataset.index = String(i);
             this.episodeList.appendChild(option);
         });
+    }
+
+    private setMetaData(data: MetaData): void {
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: data.title,
+                artist: data.artist ?? "Unknown Artist",
+                album: data.album ?? "Podcast",
+                artwork: [
+                    {
+                        src: "https://www.tybusby.com/img/avatar.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                    },
+                ],
+            });
+        }
     }
 
     private saveState(currentTime: number) {
