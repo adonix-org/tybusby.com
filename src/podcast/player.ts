@@ -134,11 +134,9 @@ export class Player {
         this.episodeList.innerHTML = "";
         this.playlist.forEach((track, i) => {
             const row = Template.createElement("episode-template");
-            getElement(".episode-title", row).textContent =
-                track.title +
-                " - A Very long string let's see if we can still see it";
+            getElement(".episode-title", row).textContent = track.title;
             getElement(".episode-album", row).textContent = track.album;
-            getElement(".episode-length", row).textContent = String(
+            getElement(".episode-length", row).textContent = formatTime(
                 track.seconds
             );
             row.dataset.index = String(i);
@@ -202,4 +200,10 @@ interface SaveState {
     season: number;
     episode: number;
     time: number;
+}
+
+function formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds) % 60;
+    return `${minutes}:${secs.toString().padStart(2, "0")}`;
 }
