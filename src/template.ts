@@ -17,7 +17,7 @@
 import { getElementById } from "./elements";
 
 export class Template {
-    public static createElement(templateId: string): Element {
+    public static createElement(templateId: string): HTMLElement {
         const template = getElementById(templateId, HTMLTemplateElement);
         const fragment = template.content.cloneNode(true) as DocumentFragment;
         if (!fragment.firstElementChild) {
@@ -25,6 +25,6 @@ export class Template {
                 `Template with ID "${templateId}" missing root child.`
             );
         }
-        return fragment.firstElementChild;
+        return fragment.firstElementChild as HTMLElement;
     }
 }

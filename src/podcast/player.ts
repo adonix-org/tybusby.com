@@ -15,6 +15,7 @@
  */
 
 import { getElement } from "../elements";
+import { Template } from "../template";
 import { PODCAST_256X256_JPG } from "./image";
 import { MetaData, Podcast } from "./podcast";
 
@@ -92,7 +93,7 @@ export class Player {
         const episodeList = getElement(".select-episode");
         episodeList.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
-            const episode = target.closest(".episode") as HTMLElement;
+            const episode = target.closest(".episode-row") as HTMLElement;
             if (!episode) return;
 
             this.episodeIndex = parseInt(episode.dataset.index || "0");
@@ -113,7 +114,7 @@ export class Player {
             previouslySelected.classList.remove("selected");
         }
         const option = getElement(
-            `.episode[data-index="${this.episodeIndex}"]`
+            `.episode-row[data-index="${this.episodeIndex}"]`
         );
         if (option) {
             option.classList.add("selected");
@@ -131,12 +132,17 @@ export class Player {
         const season = this.selectSeason.value;
         this.playlist = await this.podcast.getPlaylist(season);
         this.episodeList.innerHTML = "";
-        this.playlist.forEach((episode, i) => {
-            const option = document.createElement("div");
-            option.classList.add("episode");
-            option.innerText = episode.title;
-            option.dataset.index = String(i);
-            this.episodeList.appendChild(option);
+        this.playlist.forEach((track, i) => {
+            const row = Template.createElement("episode-template");
+            getElement(".episode-title", row).textContent =
+                track.title +
+                " - A Very long string let's see if we can still see it";
+            getElement(".episode-album", row).textContent = track.album;
+            getElement(".episode-length", row).textContent = String(
+                track.seconds
+            );
+            row.dataset.index = String(i);
+            this.episodeList.appendChild(row);
         });
     }
 

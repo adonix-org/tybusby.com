@@ -1,3 +1,7 @@
+main {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", sans-serif;
+}
 .podcast-player {
     display: flex;
     flex-direction: column;
@@ -25,33 +29,83 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    overflow-y: scroll;
+    height: 100%;
     border: 1px solid darkgray;
+    overflow-y: scroll;
     border-radius: 5px;
-    padding: 5px;
     flex-grow: 1;
 }
 
-.episode {
-    flex-shrink: 0;
-    min-width: 0;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
+.episode-row {
+    display: flex;
+    align-items: center;
     cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid lightgray;
+    min-height: 110px;
 }
 
-.episode:hover {
+.episode-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    height: auto;
+    padding-right: 10px;
+    justify-content: center;
+}
+
+.episode-row img {
+    width: 70px;
+    height: auto;
+    border: 5px solid white;
+    border-radius: 50%;
+    margin: 0.5rem;
+}
+
+.episode-row:hover {
     background-color: lightgray;
 }
 
-.episode.selected {
+.episode-row .episode-title {
+    font-weight: bold;
+    font-size: 14pt;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* max 2 lines */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.episode-row .episode-album {
+    color: rgb(59, 59, 59);
+}
+
+.episode-row .episode-length {
+    color: rgb(59, 59, 59);
+}
+
+.episode-row.selected .episode-album {
+    color: white;
+}
+
+.episode-row.selected .episode-length {
+    color: white;
+}
+
+.episode-row.selected {
     background-color: rgb(44 85 139);
     color: white;
 }
 
 .podcast-player select {
     font-family: inherit;
-    font-size: inherit;
+    font-size: 15pt;
+    font-weight: bold;
+    height: 3.5rem;
+    padding: 0.5rem;
 }
 
 .podcast-player audio {
