@@ -102,6 +102,8 @@ export class Player {
         this.episodeIndex = playerState.episode;
         this.selectEpisode();
         this.audioPlayer.currentTime = playerState.time;
+
+        getElement(".podcast-player").classList.add("loaded");
         return this;
     }
 

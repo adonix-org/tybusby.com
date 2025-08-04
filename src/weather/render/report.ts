@@ -18,7 +18,7 @@ import { WeatherReport } from "@adonix.org/nws-report";
 import { BaseRender, RenderClass } from "./base";
 import { ForecastRender } from "./forecast";
 import { ObservationRender } from "./observation";
-import { Template } from "./template";
+import { Template } from "../../template";
 import { AlertsRender } from "./alerts";
 import { ProductsRender } from "./products";
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { getElementById } from "../../elements";
+import { getElementById } from "./elements";
 
 export class Template {
     public static createElement(templateId: string): Element {

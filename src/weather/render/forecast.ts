@@ -16,7 +16,7 @@
 
 import { ForecastPeriod, WeatherReport, Units } from "@adonix.org/nws-report";
 import { BaseRender, IconRender, TextRender } from "./base";
-import { Template } from "./template";
+import { Template } from "../../template";
 
 const TEXT_SELECTORS = {
     name: ".period-name",
