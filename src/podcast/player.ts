@@ -15,7 +15,7 @@
  */
 
 import { getElement } from "../elements";
-import { getTemplate } from "../elements";
+import { getTemplateRoot } from "../elements";
 import { PODCAST_256X256_JPG } from "./image";
 import { MetaData, Podcast } from "./podcast";
 
@@ -200,7 +200,7 @@ export class Player {
         this.playlist = await this.podcast.getPlaylist(season);
         this.episodeList.innerHTML = "";
         this.playlist.forEach((track, i) => {
-            const row = getTemplate("episode-template");
+            const row = getTemplateRoot("episode-template");
             getElement(".episode-title", row).textContent = track.title;
             getElement(".episode-album", row).textContent = formatAlbum(
                 track.album
