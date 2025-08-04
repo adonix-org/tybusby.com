@@ -36,9 +36,15 @@ export class Player {
         this.selectSeason = getElement(".select-season");
         this.episodeList = getElement(".select-episode");
         this.audioPlayer = getElement(".audio-player");
+    }
+
+    private async init(): Promise<Player> {
+        const playerState = this.loadState();
 
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
+            this.episodeIndex = 0;
+            this.selectTrack();
         });
 
         this.audioPlayer.addEventListener("timeupdate", () => {
@@ -55,22 +61,73 @@ export class Player {
         let scrollTimeout: number | undefined;
         let returnTimeout: number | undefined;
         this.episodeList.addEventListener("scroll", () => {
-            // Clear pending timeouts
             clearTimeout(scrollTimeout);
             clearTimeout(returnTimeout);
 
-            // Wait for scroll to stop
             scrollTimeout = window.setTimeout(() => {
-                // Wait 5 seconds after scroll ends
                 returnTimeout = window.setTimeout(() => {
                     this.showCurrentTrack();
                 }, 5000);
-            }, 200); // debounce: detect scroll stop
+            }, 200);
         });
 
         this.audioPlayer.addEventListener("ended", () => {
             this.nextTrack();
         });
+
+        const seasons = await this.podcast.getSeasons();
+        for (const season of seasons) {
+            const option = document.createElement("option");
+            option.textContent = season;
+            option.value = season;
+            this.selectSeason.appendChild(option);
+        }
+        this.selectSeason.selectedIndex = playerState.season;
+
+        await this.loadSeason();
+        this.episodeList.addEventListener("click", (e) => {
+            const target = e.target as HTMLElement;
+            const episode = target.closest(".episode-row") as HTMLElement;
+            if (!episode) return;
+
+            this.episodeIndex = parseInt(episode.dataset.index || "0");
+            this.selectTrack();
+        });
+
+        document.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "Enter":
+                    e.preventDefault();
+                    const target = e.target as HTMLElement;
+                    if (!target.classList.contains("episode-row")) return;
+                    this.episodeIndex = parseInt(target.dataset.index || "0");
+                    this.selectTrack();
+                    break;
+
+                case "Escape":
+                    e.preventDefault();
+                    this.showCurrentTrack();
+                    break;
+
+                case "ArrowRight":
+                    e.preventDefault();
+                    this.audioPlayer.currentTime += 30;
+                    break;
+
+                case "ArrowLeft":
+                    e.preventDefault();
+                    this.audioPlayer.currentTime -= 30;
+                    break;
+            }
+        });
+
+        this.episodeIndex = playerState.episode;
+        this.selectTrack();
+        this.audioPlayer.currentTime = playerState.time;
+
+        getElement(".podcast-player").classList.add("loaded");
+
+        return this;
     }
 
     private showCurrentTrack() {
@@ -103,54 +160,6 @@ export class Player {
             this.episodeIndex = 0;
         }
         this.selectTrack();
-    }
-
-    private async init(): Promise<Player> {
-        const playerState = this.loadState();
-
-        const seasons = await this.podcast.getSeasons();
-        for (const season of seasons) {
-            const option = document.createElement("option");
-            option.textContent = season;
-            option.value = season;
-            this.selectSeason.appendChild(option);
-        }
-        this.selectSeason.selectedIndex = playerState.season;
-
-        await this.loadSeason();
-        this.episodeList.addEventListener("click", (e) => {
-            const target = e.target as HTMLElement;
-            const episode = target.closest(".episode-row") as HTMLElement;
-            if (!episode) return;
-
-            this.episodeIndex = parseInt(episode.dataset.index || "0");
-            this.selectTrack();
-        });
-
-        this.episodeList.addEventListener("keypress", (e) => {
-            const target = e.target as HTMLElement;
-            if (!target.classList.contains("episode-row")) return;
-
-            switch (e.key) {
-                case "Enter":
-                    e.preventDefault();
-                    this.episodeIndex = parseInt(target.dataset.index || "0");
-                    this.selectTrack();
-                    break;
-
-                case "Escape":
-                    e.preventDefault();
-                    this.showCurrentTrack();
-                    break;
-            }
-        });
-
-        this.episodeIndex = playerState.episode;
-        this.selectTrack();
-        this.audioPlayer.currentTime = playerState.time;
-
-        getElement(".podcast-player").classList.add("loaded");
-        return this;
     }
 
     public selectTrack(): void {
