@@ -40,7 +40,7 @@ export class HTTPError extends Error {
 }
 
 export class Podcast {
-    private static readonly BASE = new URL("https://playlist.adonix.org");
+    private static readonly BASE = new URL("https://podcast.adonix.org");
 
     public async getSeasons(): Promise<string[]> {
         return await this.get<string[]>();
