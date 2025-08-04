@@ -40,12 +40,6 @@ export class Player {
             await this.loadEpisodes();
         });
 
-        const observer = new ResizeObserver(() => {
-            this.selectSeason.style.width = `${this.episodeList.offsetWidth}px`;
-            this.audioPlayer.style.width = `${this.episodeList.offsetWidth}px`;
-        });
-        observer.observe(this.episodeList);
-
         this.audioPlayer.addEventListener("timeupdate", () => {
             const currentTime = Math.floor(this.audioPlayer.currentTime);
             if (
