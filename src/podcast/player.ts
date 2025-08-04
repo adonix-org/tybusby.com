@@ -38,7 +38,7 @@ export class Player {
         this.audioPlayer = getElement(".audio-player");
 
         this.selectSeason.addEventListener("change", async () => {
-            await this.loadEpisodes();
+            await this.loadSeason();
         });
 
         this.audioPlayer.addEventListener("timeupdate", () => {
@@ -63,19 +63,26 @@ export class Player {
             scrollTimeout = window.setTimeout(() => {
                 // Wait 5 seconds after scroll ends
                 returnTimeout = window.setTimeout(() => {
-                    const selected = getElement(".selected");
-                    if (selected) {
-                        selected.scrollIntoView({
-                            behavior: "smooth",
-                            block: "nearest",
-                        });
-                    }
+                    this.showCurrentTrack();
                 }, 5000);
             }, 200); // debounce: detect scroll stop
         });
 
         this.audioPlayer.addEventListener("ended", () => {
             this.nextTrack();
+        });
+    }
+
+    private showCurrentTrack() {
+        const selected = getElement(".selected", this.episodeList, HTMLElement);
+        if (selected) {
+            selected.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+            });
+        }
+        requestAnimationFrame(() => {
+            selected.focus({ preventScroll: true });
         });
     }
 
@@ -86,7 +93,7 @@ export class Player {
         } else {
             this.episodeIndex = 0;
         }
-        this.selectEpisode();
+        this.selectTrack();
     }
 
     private previousTrack() {
@@ -95,7 +102,7 @@ export class Player {
         } else {
             this.episodeIndex = 0;
         }
-        this.selectEpisode();
+        this.selectTrack();
     }
 
     private async init(): Promise<Player> {
@@ -110,36 +117,54 @@ export class Player {
         }
         this.selectSeason.selectedIndex = playerState.season;
 
-        await this.loadEpisodes();
-        const episodeList = getElement(".select-episode");
-        episodeList.addEventListener("click", (e) => {
+        await this.loadSeason();
+        this.episodeList.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
             const episode = target.closest(".episode-row") as HTMLElement;
             if (!episode) return;
 
             this.episodeIndex = parseInt(episode.dataset.index || "0");
-            this.selectEpisode();
+            this.selectTrack();
+        });
+
+        this.episodeList.addEventListener("keypress", (e) => {
+            const target = e.target as HTMLElement;
+            if (!target.classList.contains("episode-row")) return;
+
+            switch (e.key) {
+                case "Enter":
+                    e.preventDefault();
+                    this.episodeIndex = parseInt(target.dataset.index || "0");
+                    this.selectTrack();
+                    break;
+
+                case "Escape":
+                    e.preventDefault();
+                    this.showCurrentTrack();
+                    break;
+            }
         });
 
         this.episodeIndex = playerState.episode;
-        this.selectEpisode();
+        this.selectTrack();
         this.audioPlayer.currentTime = playerState.time;
 
         getElement(".podcast-player").classList.add("loaded");
         return this;
     }
 
-    public selectEpisode(): void {
+    public selectTrack(): void {
         const previouslySelected = this.episodeList.querySelector(".selected");
         if (previouslySelected) {
             previouslySelected.classList.remove("selected");
         }
         const option = getElement(
-            `.episode-row[data-index="${this.episodeIndex}"]`
+            `.episode-row[data-index="${this.episodeIndex}"]`,
+            this.episodeList
         );
         if (option) {
             option.classList.add("selected");
-            option.scrollIntoView({ block: "nearest", behavior: "smooth" });
+            this.showCurrentTrack();
         }
 
         const episode = this.playlist?.[this.episodeIndex];
@@ -149,7 +174,7 @@ export class Player {
         }
     }
 
-    private async loadEpisodes(): Promise<void> {
+    private async loadSeason(): Promise<void> {
         const season = this.selectSeason.value;
         this.playlist = await this.podcast.getPlaylist(season);
         this.episodeList.innerHTML = "";
