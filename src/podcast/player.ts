@@ -153,7 +153,7 @@ export class Player {
                 artwork: [
                     {
                         src: `data:image/png;base64,${PODCAST_IMAGE_64}`,
-                        sizes: "512x512",
+                        sizes: "128x128",
                         type: "image/png",
                     },
                 ],
