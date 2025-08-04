@@ -98,9 +98,21 @@ export class Player {
             switch (e.key) {
                 case "Enter":
                     e.preventDefault();
-                    const target = e.target as HTMLElement;
+                    const target = e.target;
+                    if (!(target instanceof HTMLElement)) return;
                     if (!target.classList.contains("episode-row")) return;
-                    this.episodeIndex = parseInt(target.dataset.index || "0");
+                    const index = parseInt(target.dataset.index || "0");
+
+                    // Toggle Play/Pause
+                    if (this.episodeIndex === index) {
+                        this.audioPlayer.paused
+                            ? this.audioPlayer.play()
+                            : this.audioPlayer.pause();
+                        return;
+                    }
+
+                    // A different track had focus on Enter
+                    this.episodeIndex = index;
                     this.selectTrack();
                     break;
 
