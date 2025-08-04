@@ -57,14 +57,27 @@ export class Player {
         });
 
         this.audioPlayer.addEventListener("ended", () => {
-            const length = this.playlist?.length;
-            if (length && this.episodeIndex + 1 < length) {
-                this.episodeIndex = this.episodeIndex + 1;
-            } else {
-                this.episodeIndex = 0;
-            }
-            this.selectEpisode();
+            this.nextTrack();
         });
+    }
+
+    private nextTrack() {
+        const length = this.playlist?.length;
+        if (length && this.episodeIndex + 1 < length) {
+            this.episodeIndex = this.episodeIndex + 1;
+        } else {
+            this.episodeIndex = 0;
+        }
+        this.selectEpisode();
+    }
+
+    private previousTrack() {
+        if (this.episodeIndex - 1 > 0) {
+            this.episodeIndex = this.episodeIndex - 1;
+        } else {
+            this.episodeIndex = 0;
+        }
+        this.selectEpisode();
     }
 
     private async init(): Promise<Player> {
@@ -143,6 +156,19 @@ export class Player {
                         type: "image/png",
                     },
                 ],
+            });
+
+            navigator.mediaSession.setActionHandler("play", () => {
+                this.audioPlayer.play();
+            });
+            navigator.mediaSession.setActionHandler("pause", () => {
+                this.audioPlayer.pause();
+            });
+            navigator.mediaSession.setActionHandler("nexttrack", () => {
+                this.nextTrack();
+            });
+            navigator.mediaSession.setActionHandler("previoustrack", () => {
+                this.previousTrack();
             });
         }
     }
