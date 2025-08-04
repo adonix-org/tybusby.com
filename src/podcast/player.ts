@@ -15,6 +15,7 @@
  */
 
 import { getElement } from "../elements";
+import { PODCAST_IMAGE_64 } from "./image";
 import { MetaData, Podcast } from "./podcast";
 
 export class Player {
@@ -151,7 +152,7 @@ export class Player {
                 album: data.album ?? "Podcast",
                 artwork: [
                     {
-                        src: "https://www.tybusby.com/img/podcast.png",
+                        src: `data:image/png;base64,${PODCAST_IMAGE_64}`,
                         sizes: "512x512",
                         type: "image/png",
                     },
