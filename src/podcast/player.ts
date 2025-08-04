@@ -15,7 +15,7 @@
  */
 
 import { getElement } from "../elements";
-import { Template } from "../template";
+import { getTemplate } from "../elements";
 import { PODCAST_256X256_JPG } from "./image";
 import { MetaData, Podcast } from "./podcast";
 
@@ -52,6 +52,28 @@ export class Player {
             }
         });
 
+        let scrollTimeout: number | undefined;
+        let returnTimeout: number | undefined;
+        this.episodeList.addEventListener("scroll", () => {
+            // Clear pending timeouts
+            clearTimeout(scrollTimeout);
+            clearTimeout(returnTimeout);
+
+            // Wait for scroll to stop
+            scrollTimeout = window.setTimeout(() => {
+                // Wait 5 seconds after scroll ends
+                returnTimeout = window.setTimeout(() => {
+                    const selected = getElement(".selected");
+                    if (selected) {
+                        selected.scrollIntoView({
+                            behavior: "smooth",
+                            block: "nearest",
+                        });
+                    }
+                }, 5000);
+            }, 200); // debounce: detect scroll stop
+        });
+
         this.audioPlayer.addEventListener("ended", () => {
             this.nextTrack();
         });
@@ -82,7 +104,6 @@ export class Player {
         const seasons = await this.podcast.getSeasons();
         for (const season of seasons) {
             const option = document.createElement("option");
-            //option.label = season;
             option.textContent = season;
             option.value = season;
             this.selectSeason.appendChild(option);
@@ -133,7 +154,7 @@ export class Player {
         this.playlist = await this.podcast.getPlaylist(season);
         this.episodeList.innerHTML = "";
         this.playlist.forEach((track, i) => {
-            const row = Template.createElement("episode-template");
+            const row = getTemplate("episode-template");
             getElement(".episode-title", row).textContent = track.title;
             getElement(".episode-album", row).textContent = formatAlbum(
                 track.album

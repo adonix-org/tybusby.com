@@ -18,7 +18,7 @@ import { WeatherReport } from "@adonix.org/nws-report";
 import { BaseRender, RenderClass } from "./base";
 import { ForecastRender } from "./forecast";
 import { ObservationRender } from "./observation";
-import { Template } from "../../template";
+import { getTemplate } from "../../elements";
 import { AlertsRender } from "./alerts";
 import { ProductsRender } from "./products";
 
@@ -32,7 +32,7 @@ export class ReportRender extends BaseRender {
     ) {
         super(parent, report);
 
-        this.child = Template.createElement(ReportRender.TEMPLATE_ID);
+        this.child = getTemplate(ReportRender.TEMPLATE_ID);
         parent.appendChild(this.child);
     }
 

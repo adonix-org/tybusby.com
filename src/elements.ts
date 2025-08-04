@@ -43,6 +43,26 @@ export function getElementById<T extends HTMLElement>(
     return element as T;
 }
 
+export function getTemplate<T extends HTMLElement>(
+    templateId: string,
+    type?: ElementClass<T>
+): T {
+    const template = getElementById(templateId, HTMLTemplateElement);
+    const fragment = template.content.cloneNode(true) as DocumentFragment;
+    const element = fragment.firstElementChild;
+    if (!element) {
+        throw new Error(`Template with ID "${templateId}" missing root child.`);
+    }
+    if (type && !(element instanceof type)) {
+        throw new Error(
+            `Template child element is not of expected type ${
+                type?.name ?? "HTMLElement"
+            }`
+        );
+    }
+    return fragment.firstElementChild as T;
+}
+
 export interface ElementClass<T extends Element> {
     new (): T;
     prototype: T;

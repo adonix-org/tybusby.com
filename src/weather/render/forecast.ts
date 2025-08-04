@@ -16,7 +16,7 @@
 
 import { ForecastPeriod, WeatherReport, Units } from "@adonix.org/nws-report";
 import { BaseRender, IconRender, TextRender } from "./base";
-import { Template } from "../../template";
+import { getTemplate } from "../../elements";
 
 const TEXT_SELECTORS = {
     name: ".period-name",
@@ -53,7 +53,7 @@ export class ForecastRender extends BaseRender {
             const period = periods[i];
             if (!period) continue;
 
-            const element = Template.createElement(ForecastRender.TEMPLATE_ID);
+            const element = getTemplate(ForecastRender.TEMPLATE_ID);
             forecast.appendChild(element);
 
             const renderers: PeriodRenderClass[] = [
