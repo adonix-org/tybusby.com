@@ -27,14 +27,6 @@ export interface MetaData {
     channels: number;
 }
 
-export interface Playlist {
-    playlist: MetaData[];
-}
-
-export interface Seasons {
-    seasons: string[];
-}
-
 export class HTTPError extends Error {
     constructor(
         public readonly status: number,
@@ -50,14 +42,14 @@ export class HTTPError extends Error {
 export class Podcast {
     private static readonly BASE = new URL("https://playlist.adonix.org");
 
-    public async getSeasons(): Promise<Seasons> {
-        return await this.get<Seasons>();
+    public async getSeasons(): Promise<string[]> {
+        return await this.get<string[]>();
     }
 
-    public async getPlaylist(season: string): Promise<Playlist> {
+    public async getPlaylist(season: string): Promise<MetaData[]> {
         const url = new URL(Podcast.BASE.toString());
         url.searchParams.set("season", season);
-        return await this.get<Playlist>(url);
+        return await this.get<MetaData[]>(url);
     }
 
     protected async get<T>(url: URL = Podcast.BASE): Promise<T> {

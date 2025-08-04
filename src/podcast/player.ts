@@ -15,7 +15,7 @@
  */
 
 import { getElement } from "../elements";
-import { Playlist, Podcast } from "./podcast";
+import { MetaData, Podcast } from "./podcast";
 
 export class Player {
     private readonly podcast: Podcast = new Podcast();
@@ -24,7 +24,7 @@ export class Player {
     private readonly episodeList: HTMLDivElement;
     private episodeIndex = 0;
     private currentTime = 0;
-    private playlist?: Playlist;
+    private playlist?: MetaData[];
 
     public static async create() {
         return await new Player().init();
@@ -57,7 +57,7 @@ export class Player {
         });
 
         this.audioPlayer.addEventListener("ended", () => {
-            const length = this.playlist?.playlist.length;
+            const length = this.playlist?.length;
             if (length && this.episodeIndex + 1 < length) {
                 this.episodeIndex = this.episodeIndex + 1;
             } else {
@@ -70,8 +70,8 @@ export class Player {
     private async init(): Promise<Player> {
         const playerState = this.loadState();
 
-        const list = await this.podcast.getSeasons();
-        for (const season of list.seasons) {
+        const seasons = await this.podcast.getSeasons();
+        for (const season of seasons) {
             const option = document.createElement("option");
             //option.label = season;
             option.textContent = season;
@@ -110,7 +110,7 @@ export class Player {
             episode.scrollIntoView({ block: "nearest", behavior: "smooth" });
         }
 
-        const url = this.playlist?.playlist[this.episodeIndex]?.url;
+        const url = this.playlist?.[this.episodeIndex]?.url;
         if (url) {
             this.audioPlayer.src = url;
         }
@@ -120,7 +120,7 @@ export class Player {
         const season = this.selectSeason.value;
         this.playlist = await this.podcast.getPlaylist(season);
         this.episodeList.innerHTML = "";
-        this.playlist.playlist.forEach((episode, i) => {
+        this.playlist.forEach((episode, i) => {
             const option = document.createElement("div");
             option.classList.add("episode");
             option.innerText = episode.title;
