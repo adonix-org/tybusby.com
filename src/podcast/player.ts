@@ -133,12 +133,11 @@ export class Player {
         this.playlist = await this.podcast.getPlaylist(season);
         this.episodeList.innerHTML = "";
         this.playlist.forEach((track, i) => {
-            // Normalize album string for consistent layout
-            track.album = track.album.replace(/^.*?\b(Car.*)/, "$1");
-
             const row = Template.createElement("episode-template");
             getElement(".episode-title", row).textContent = track.title;
-            getElement(".episode-album", row).textContent = track.album;
+            getElement(".episode-album", row).textContent = formatAlbum(
+                track.album
+            );
             getElement(".episode-length", row).textContent = formatTime(
                 track.seconds
             );
@@ -203,6 +202,17 @@ interface SaveState {
     season: number;
     episode: number;
     time: number;
+}
+
+function formatAlbum(album: string): string {
+    const carMatch = album.match(/\bCar Talk\b( .+)?/);
+    if (!carMatch) return album;
+
+    let result = "Car Talk";
+    if (carMatch[1]) {
+        result += " ·" + carMatch[1];
+    }
+    return result.trim();
 }
 
 function formatTime(seconds: number): string {
