@@ -94,8 +94,6 @@ export class Player {
 
             const newIndex = parseInt(episode.dataset.index || "0");
 
-            console.log(this.episodeIndex, newIndex);
-
             // Toggle Play/Pause
             if (this.episodeIndex === newIndex) {
                 this.toggle();
@@ -107,24 +105,28 @@ export class Player {
         });
 
         document.addEventListener("keydown", (e) => {
+            console.log(e.key);
             switch (e.key) {
                 case "Enter":
                     e.preventDefault();
                     const target = e.target;
-                    if (!(target instanceof HTMLElement)) return;
-                    if (!target.classList.contains("episode-row")) return;
-
-                    const newIndex = parseInt(target.dataset.index || "0");
-
-                    // Toggle Play/Pause
-                    if (this.episodeIndex === newIndex) {
-                        this.toggle();
-                        return;
+                    if (
+                        target instanceof HTMLElement &&
+                        target.classList.contains("episode-row")
+                    ) {
+                        const newIndex = parseInt(target.dataset.index || "0");
+                        if (newIndex !== this.episodeIndex) {
+                            // A different track had focus on Enter
+                            this.episodeIndex = newIndex;
+                            this.selectTrack();
+                            return;
+                        }
                     }
 
-                    // A different track had focus on Enter
-                    this.episodeIndex = newIndex;
-                    this.selectTrack();
+                    if (this.getCurrentTrack()) {
+                        this.toggle();
+                    }
+
                     break;
 
                 case "Escape":
@@ -147,7 +149,12 @@ export class Player {
         this.episodeIndex = playerState.episode;
         this.selectTrack();
         this.audioPlayer.currentTime = playerState.time;
-        this.isPlaying = !this.audioPlayer.paused;
+        this.audioPlayer.onplaying = () => {
+            this.isPlaying = true;
+        };
+        this.audioPlayer.onpause = () => {
+            this.isPlaying = false;
+        }
 
         getElement(".podcast-player").classList.add("loaded");
 
@@ -155,22 +162,11 @@ export class Player {
     }
 
     private toggle(): void {
-        console.log(this.isPlaying);
         if (this.isPlaying) {
             this.audioPlayer.pause();
             this.isPlaying = false;
         } else {
-            const promise = this.audioPlayer.play();
-            if (promise) {
-                promise
-                    .then(() => {
-                        this.isPlaying = true;
-                    })
-                    .catch(() => {
-                        this.audioPlayer.pause();
-                        this.isPlaying = false;
-                    });
-            }
+            this.audioPlayer.play();
         }
     }
 
