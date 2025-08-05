@@ -9,7 +9,6 @@ export default defineConfig({
                 weather: resolve(__dirname, "weather.html"),
                 music: resolve(__dirname, "music.html"),
                 podcast: resolve(__dirname, "podcast.html"),
-                parser: resolve(__dirname, "car_talk.html"),
             },
         },
     },
