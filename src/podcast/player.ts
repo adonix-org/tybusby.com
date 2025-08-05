@@ -174,10 +174,8 @@ export class Player {
 
             // A new track was selected
             this.audioPlayer.pause();
-            const newIndex = parseInt(track.dataset.index || "0");
-            this.episodeIndex = newIndex;
+            this.episodeIndex = parseInt(track.dataset.index || "0");
             this.newTrack();
-            console.log(this.isPlaying);
             this.audioPlayer.play();
         }
     }
