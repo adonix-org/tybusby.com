@@ -69,6 +69,7 @@ export class Player {
             await this.loadSeason();
             this.episodeIndex = 0;
             this.newTrack();
+            this.audioPlayer.pause();
         });
     }
 
@@ -172,9 +173,12 @@ export class Player {
             }
 
             // A new track was selected
+            this.audioPlayer.pause();
             const newIndex = parseInt(track.dataset.index || "0");
             this.episodeIndex = newIndex;
             this.newTrack();
+            console.log(this.isPlaying);
+            this.audioPlayer.play();
         }
     }
 
@@ -194,6 +198,7 @@ export class Player {
         const track = this.playlist?.[this.episodeIndex];
         if (track) {
             this.audioPlayer.src = track.url;
+            this.audioPlayer.load();
             this.setMetaData(track);
         }
     }
@@ -236,6 +241,7 @@ export class Player {
             this.episodeIndex = 0;
         }
         this.newTrack();
+        this.audioPlayer.play();
     }
 
     private previousTrack(): void {
