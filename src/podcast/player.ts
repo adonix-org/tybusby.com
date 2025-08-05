@@ -20,13 +20,13 @@ import { PODCAST_256X256_JPG } from "./image";
 import { MetaData, Podcast } from "./podcast";
 
 export class Player {
-    private readonly podcast: Podcast = new Podcast();
+    private readonly podcast = new Podcast();
     private readonly selectSeason: HTMLSelectElement;
     private readonly audioPlayer: HTMLAudioElement;
     private readonly episodeList: HTMLDivElement;
+    private playlist?: MetaData[];
     private episodeIndex = 0;
     private currentTime = 0;
-    private playlist?: MetaData[];
     private isPlaying = false;
 
     public static async create() {
@@ -45,7 +45,7 @@ export class Player {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
             this.episodeIndex = 0;
-            this.selectTrack();
+            this.newTrack();
         });
 
         this.audioPlayer.addEventListener("timeupdate", () => {
@@ -88,44 +88,23 @@ export class Player {
         await this.loadSeason();
 
         this.episodeList.addEventListener("click", (e) => {
-            const target = e.target as HTMLElement;
-            const episode = target.closest(".episode-row") as HTMLElement;
-            if (!episode) return;
-
-            const newIndex = parseInt(episode.dataset.index || "0");
-
-            // Toggle Play/Pause
-            if (this.episodeIndex === newIndex) {
-                this.toggle();
-                return;
+            if (e.target && e.target instanceof Element) {
+                this.selectTrack(e.target.closest(".episode-row"));
             }
-
-            this.episodeIndex = newIndex;
-            this.selectTrack();
         });
 
         document.addEventListener("keydown", (e) => {
             switch (e.key) {
                 case "Enter":
                     e.preventDefault();
-                    const target = e.target;
+                    let track = this.getCurrentTrack();
                     if (
-                        target instanceof HTMLElement &&
-                        target.classList.contains("episode-row")
+                        e.target instanceof HTMLElement &&
+                        e.target.classList.contains("episode-row")
                     ) {
-                        const newIndex = parseInt(target.dataset.index || "0");
-                        if (newIndex !== this.episodeIndex) {
-                            // A different track had focus on Enter
-                            this.episodeIndex = newIndex;
-                            this.selectTrack();
-                            return;
-                        }
+                        track = e.target;
                     }
-
-                    if (this.getCurrentTrack()) {
-                        this.toggle();
-                    }
-
+                    this.selectTrack(track);
                     break;
 
                 case "Escape":
@@ -146,7 +125,7 @@ export class Player {
         });
 
         this.episodeIndex = playerState.episode;
-        this.selectTrack();
+        this.newTrack();
         this.audioPlayer.currentTime = playerState.time;
         this.audioPlayer.onplaying = () => {
             this.isPlaying = true;
@@ -158,6 +137,45 @@ export class Player {
         getElement(".podcast-player").classList.add("loaded");
 
         return this;
+    }
+
+    private selectTrack(track: Element | EventTarget | null) {
+        if (
+            track &&
+            track instanceof HTMLElement &&
+            track.classList.contains("episode-row")
+        ) {
+            const currentTrack = this.getCurrentTrack();
+            if (currentTrack && currentTrack === track) {
+                this.toggle();
+                return;
+            }
+
+            // A new track was selected
+            const newIndex = parseInt(track.dataset.index || "0");
+            this.episodeIndex = newIndex;
+            this.newTrack();
+        }
+    }
+
+    private newTrack(): void {
+        const existingSelection = this.getCurrentTrack();
+        if (existingSelection) {
+            existingSelection.classList.remove("selected");
+        }
+        const newSelection = getElement(
+            `.episode-row[data-index="${this.episodeIndex}"]`,
+            this.episodeList
+        );
+        if (newSelection) {
+            newSelection.classList.add("selected");
+            this.showCurrentTrack();
+        }
+        const track = this.playlist?.[this.episodeIndex];
+        if (track) {
+            this.audioPlayer.src = track.url;
+            this.setMetaData(track);
+        }
     }
 
     private toggle(): void {
@@ -182,11 +200,11 @@ export class Player {
         }
     }
 
-    private getCurrentTrack(): HTMLDivElement | undefined {
+    private getCurrentTrack(): HTMLElement | null {
         try {
-            return getElement(".selected", this.episodeList, HTMLDivElement);
+            return getElement(".selected", this.episodeList, HTMLElement);
         } catch (error) {
-            return undefined;
+            return null;
         }
     }
 
@@ -197,7 +215,7 @@ export class Player {
         } else {
             this.episodeIndex = 0;
         }
-        this.selectTrack();
+        this.newTrack();
     }
 
     private previousTrack() {
@@ -206,28 +224,7 @@ export class Player {
         } else {
             this.episodeIndex = 0;
         }
-        this.selectTrack();
-    }
-
-    public selectTrack(): void {
-        const existingSelection = this.getCurrentTrack();
-        if (existingSelection) {
-            existingSelection.classList.remove("selected");
-        }
-        const newSelection = getElement(
-            `.episode-row[data-index="${this.episodeIndex}"]`,
-            this.episodeList
-        );
-        if (newSelection) {
-            newSelection.classList.add("selected");
-            this.showCurrentTrack();
-        }
-
-        const episode = this.playlist?.[this.episodeIndex];
-        if (episode) {
-            this.audioPlayer.src = episode.url;
-            this.setMetaData(episode);
-        }
+        this.newTrack();
     }
 
     private async loadSeason(): Promise<void> {
