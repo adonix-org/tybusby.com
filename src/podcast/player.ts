@@ -24,12 +24,13 @@ export class Player {
     private readonly selectSeason: HTMLSelectElement;
     private readonly audioPlayer: HTMLAudioElement;
     private readonly episodeList: HTMLDivElement;
+
     private playlist?: MetaData[];
     private episodeIndex = 0;
     private currentTime = 0;
     private isPlaying = false;
 
-    public static async create() {
+    public static async create(): Promise<Player> {
         return await new Player().init();
     }
 
@@ -62,7 +63,7 @@ export class Player {
         return this;
     }
 
-    private selectEvent() {
+    private selectEvent(): void {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
             this.episodeIndex = 0;
@@ -70,7 +71,7 @@ export class Player {
         });
     }
 
-    private clickEvent() {
+    private clickEvent(): void {
         this.episodeList.addEventListener("click", (e) => {
             if (e.target && e.target instanceof Element) {
                 this.selectTrack(e.target.closest(".episode-row"));
@@ -78,7 +79,7 @@ export class Player {
         });
     }
 
-    private scrollEvent() {
+    private scrollEvent(): void {
         let scrollTimeout: number | undefined;
         let returnTimeout: number | undefined;
         this.episodeList.addEventListener("scroll", () => {
@@ -93,7 +94,7 @@ export class Player {
         });
     }
 
-    private keyboardEvents() {
+    private keyboardEvents(): void {
         document.addEventListener("keydown", (e) => {
             switch (e.key) {
                 case "Enter":
@@ -126,7 +127,7 @@ export class Player {
         });
     }
 
-    private audioEvents() {
+    private audioEvents(): void {
         this.audioPlayer.onplaying = () => {
             this.isPlaying = true;
         };
@@ -150,7 +151,9 @@ export class Player {
             const track = this.getCurrentTrack();
             if (track) {
                 const duration = getElement(".episode-length", track);
-                duration.textContent = formatTime(this.audioPlayer.duration);
+                duration.textContent = `${this.formatDuration(
+                    this.audioPlayer.duration
+                )}`;
             }
         };
     }
@@ -203,7 +206,7 @@ export class Player {
         }
     }
 
-    private showCurrentTrack() {
+    private showCurrentTrack(): void {
         const currentTrack = this.getCurrentTrack();
         if (currentTrack) {
             currentTrack.scrollIntoView({
@@ -224,7 +227,7 @@ export class Player {
         }
     }
 
-    private nextTrack() {
+    private nextTrack(): void {
         const length = this.playlist?.length;
         if (length && this.episodeIndex + 1 < length) {
             this.episodeIndex = this.episodeIndex + 1;
@@ -234,7 +237,7 @@ export class Player {
         this.newTrack();
     }
 
-    private previousTrack() {
+    private previousTrack(): void {
         if (this.episodeIndex - 1 > 0) {
             this.episodeIndex = this.episodeIndex - 1;
         } else {
@@ -279,11 +282,11 @@ export class Player {
         this.playlist.forEach((track, i) => {
             const row = getTemplateRoot("episode-template");
             getElement(".episode-title", row).textContent = track.title;
-            getElement(".episode-album", row).textContent = formatAlbum(
+            getElement(".episode-album", row).textContent = this.formatAlbum(
                 track.album
             );
             getElement(".episode-length", row).textContent =
-                track.seconds === 0 ? "--:--" : formatTime(track.seconds);
+                this.formatDuration(track.seconds);
             row.dataset.index = String(i);
             this.episodeList.appendChild(row);
         });
@@ -299,7 +302,7 @@ export class Player {
         }
     }
 
-    private saveState(currentTime: number) {
+    private saveState(currentTime: number): void {
         const state: SaveState = {
             season: this.selectSeason.selectedIndex,
             episode: this.episodeIndex,
@@ -319,27 +322,30 @@ export class Player {
             time: 0,
         };
     }
+
+    private formatAlbum(album: string): string {
+        const carMatch = album.match(/\bCar Talk\b( .+)?/);
+        if (!carMatch) return album;
+
+        let result = "Car Talk";
+        if (carMatch[1]) {
+            result += " ·" + carMatch[1];
+        }
+        return result.trim();
+    }
+
+    private formatDuration(seconds: number): string {
+        if (seconds == 0) {
+            return `⏱️ --:--`;
+        }
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds) % 60;
+        return `⏱️ ${minutes}:${secs.toString().padStart(2, "0")}`;
+    }
 }
 
 interface SaveState {
     season: number;
     episode: number;
     time: number;
-}
-
-function formatAlbum(album: string): string {
-    const carMatch = album.match(/\bCar Talk\b( .+)?/);
-    if (!carMatch) return album;
-
-    let result = "Car Talk";
-    if (carMatch[1]) {
-        result += " ·" + carMatch[1];
-    }
-    return result.trim();
-}
-
-function formatTime(seconds: number): string {
-    const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds) % 60;
-    return `${minutes}:${secs.toString().padStart(2, "0")}`;
 }
