@@ -18,6 +18,7 @@ import { getElement } from "../elements";
 import { getTemplateRoot } from "../elements";
 import { PODCAST_256X256_JPG } from "./image";
 import { MetaData, Podcast } from "./podcast";
+import { DateTime } from "luxon";
 
 export class Player {
     private readonly podcast = new Podcast();
@@ -246,12 +247,12 @@ export class Player {
         this.newTrack();
     }
 
-    private setMetaData(data: MetaData): void {
+    private setMetaData(track: MetaData): void {
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: data.title,
-                artist: data.artist ?? "Unknown Artist",
-                album: data.album ?? "Podcast",
+                title: track.title,
+                artist: track.artist ?? "Unknown Artist",
+                album: this.formatAlbum(track) ?? "Podcast",
                 artwork: [
                     {
                         src: `data:image/jpeg;base64,${PODCAST_256X256_JPG}`,
@@ -282,9 +283,9 @@ export class Player {
         this.playlist.forEach((track, i) => {
             const row = getTemplateRoot("episode-template");
             getElement(".episode-title", row).textContent = track.title;
-            getElement(".episode-album", row).textContent = this.formatAlbum(
-                track.album
-            );
+            getElement(".episode-album", row).textContent = `${
+                track.artist
+            } · ${this.formatAlbum(track)}`;
             getElement(".episode-length", row).textContent =
                 this.formatDuration(track.seconds);
             row.dataset.index = String(i);
@@ -323,15 +324,8 @@ export class Player {
         };
     }
 
-    private formatAlbum(album: string): string {
-        const carMatch = album.match(/\bCar Talk\b( .+)?/);
-        if (!carMatch) return album;
-
-        let result = "Car Talk";
-        if (carMatch[1]) {
-            result += " ·" + carMatch[1];
-        }
-        return result.trim();
+    private formatAlbum(track: MetaData): string {
+        return `${DateTime.fromISO(track.date).toFormat("MMMM d, yyyy")}`;
     }
 
     private formatDuration(seconds: number): string {
