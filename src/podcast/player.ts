@@ -205,9 +205,8 @@ export class Player {
             getElement(".episode-album", row).textContent = formatAlbum(
                 track.album
             );
-            getElement(".episode-length", row).textContent = formatTime(
-                track.seconds
-            );
+            getElement(".episode-length", row).textContent =
+                track.seconds === 0 ? "--:--" : formatTime(track.seconds);
             row.dataset.index = String(i);
             this.episodeList.appendChild(row);
         });

@@ -18,10 +18,12 @@ export interface MetaData {
     url: string;
     filename: string;
     title: string;
+    description: string;
     artist: string;
     artists: string[];
     album: string;
     year: number;
+    date: string;
     seconds: number;
     genre: string[];
     channels: number;
