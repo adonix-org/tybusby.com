@@ -48,17 +48,6 @@ export class Player {
             this.newTrack();
         });
 
-        this.audioPlayer.addEventListener("timeupdate", () => {
-            const currentTime = Math.floor(this.audioPlayer.currentTime);
-            if (
-                currentTime > this.currentTime + 1 ||
-                currentTime < this.currentTime
-            ) {
-                this.currentTime = currentTime;
-                this.saveState(this.audioPlayer.currentTime);
-            }
-        });
-
         let scrollTimeout: number | undefined;
         let returnTimeout: number | undefined;
         this.episodeList.addEventListener("scroll", () => {
@@ -127,11 +116,29 @@ export class Player {
         this.episodeIndex = playerState.episode;
         this.newTrack();
         this.audioPlayer.currentTime = playerState.time;
+
         this.audioPlayer.onplaying = () => {
             this.isPlaying = true;
         };
         this.audioPlayer.onpause = () => {
             this.isPlaying = false;
+        };
+        this.audioPlayer.addEventListener("timeupdate", () => {
+            const currentTime = Math.floor(this.audioPlayer.currentTime);
+            if (
+                currentTime > this.currentTime + 1 ||
+                currentTime < this.currentTime
+            ) {
+                this.currentTime = currentTime;
+                this.saveState(this.audioPlayer.currentTime);
+            }
+        });
+        this.audioPlayer.onloadedmetadata = () => {
+            const track = this.getCurrentTrack();
+            if (track) {
+                const duration = getElement(".episode-length", track);
+                duration.textContent = formatTime(this.audioPlayer.duration);
+            }
         };
 
         getElement(".podcast-player").classList.add("loaded");
