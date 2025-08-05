@@ -27,6 +27,7 @@ export class Player {
     private episodeIndex = 0;
     private currentTime = 0;
     private playlist?: MetaData[];
+    private isPlaying = false;
 
     public static async create() {
         return await new Player().init();
@@ -85,12 +86,23 @@ export class Player {
         this.selectSeason.selectedIndex = playerState.season;
 
         await this.loadSeason();
+
         this.episodeList.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
             const episode = target.closest(".episode-row") as HTMLElement;
             if (!episode) return;
 
-            this.episodeIndex = parseInt(episode.dataset.index || "0");
+            const newIndex = parseInt(episode.dataset.index || "0");
+
+            console.log(this.episodeIndex, newIndex);
+
+            // Toggle Play/Pause
+            if (this.episodeIndex === newIndex) {
+                this.toggle();
+                return;
+            }
+
+            this.episodeIndex = newIndex;
             this.selectTrack();
         });
 
@@ -101,18 +113,17 @@ export class Player {
                     const target = e.target;
                     if (!(target instanceof HTMLElement)) return;
                     if (!target.classList.contains("episode-row")) return;
-                    const index = parseInt(target.dataset.index || "0");
+
+                    const newIndex = parseInt(target.dataset.index || "0");
 
                     // Toggle Play/Pause
-                    if (this.episodeIndex === index) {
-                        this.audioPlayer.paused
-                            ? this.audioPlayer.play()
-                            : this.audioPlayer.pause();
+                    if (this.episodeIndex === newIndex) {
+                        this.toggle();
                         return;
                     }
 
                     // A different track had focus on Enter
-                    this.episodeIndex = index;
+                    this.episodeIndex = newIndex;
                     this.selectTrack();
                     break;
 
@@ -136,23 +147,52 @@ export class Player {
         this.episodeIndex = playerState.episode;
         this.selectTrack();
         this.audioPlayer.currentTime = playerState.time;
+        this.isPlaying = !this.audioPlayer.paused;
 
         getElement(".podcast-player").classList.add("loaded");
 
         return this;
     }
 
+    private toggle(): void {
+        console.log(this.isPlaying);
+        if (this.isPlaying) {
+            this.audioPlayer.pause();
+            this.isPlaying = false;
+        } else {
+            const promise = this.audioPlayer.play();
+            if (promise) {
+                promise
+                    .then(() => {
+                        this.isPlaying = true;
+                    })
+                    .catch(() => {
+                        this.audioPlayer.pause();
+                        this.isPlaying = false;
+                    });
+            }
+        }
+    }
+
     private showCurrentTrack() {
-        const selected = getElement(".selected", this.episodeList, HTMLElement);
-        if (selected) {
-            selected.scrollIntoView({
+        const currentTrack = this.getCurrentTrack();
+        if (currentTrack) {
+            currentTrack.scrollIntoView({
                 behavior: "smooth",
                 block: "nearest",
             });
+            requestAnimationFrame(() => {
+                currentTrack.focus({ preventScroll: true });
+            });
         }
-        requestAnimationFrame(() => {
-            selected.focus({ preventScroll: true });
-        });
+    }
+
+    private getCurrentTrack(): HTMLDivElement | undefined {
+        try {
+            return getElement(".selected", this.episodeList, HTMLDivElement);
+        } catch (error) {
+            return undefined;
+        }
     }
 
     private nextTrack() {
@@ -175,16 +215,16 @@ export class Player {
     }
 
     public selectTrack(): void {
-        const previouslySelected = this.episodeList.querySelector(".selected");
-        if (previouslySelected) {
-            previouslySelected.classList.remove("selected");
+        const existingSelection = this.getCurrentTrack();
+        if (existingSelection) {
+            existingSelection.classList.remove("selected");
         }
-        const option = getElement(
+        const newSelection = getElement(
             `.episode-row[data-index="${this.episodeIndex}"]`,
             this.episodeList
         );
-        if (option) {
-            option.classList.add("selected");
+        if (newSelection) {
+            newSelection.classList.add("selected");
             this.showCurrentTrack();
         }
 

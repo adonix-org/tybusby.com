@@ -59,7 +59,7 @@ main {
 .episode-row img {
     width: 70px;
     height: auto;
-    border: 5px solid white;
+    border: 3px solid white;
     border-radius: 50%;
     margin: 0.5rem;
 }
