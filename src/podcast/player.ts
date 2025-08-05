@@ -42,12 +42,43 @@ export class Player {
     private async init(): Promise<Player> {
         const playerState = this.loadState();
 
+        this.selectEvent();
+        this.clickEvent();
+        this.scrollEvent();
+        this.audioEvents();
+        this.keyboardEvents();
+
+        await this.loadSeasons();
+        this.selectSeason.selectedIndex = playerState.season;
+
+        await this.loadSeason();
+        this.episodeIndex = playerState.episode;
+
+        this.newTrack();
+        this.audioPlayer.currentTime = playerState.time;
+
+        getElement(".podcast-player").classList.add("loaded");
+
+        return this;
+    }
+
+    private selectEvent() {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
             this.episodeIndex = 0;
             this.newTrack();
         });
+    }
 
+    private clickEvent() {
+        this.episodeList.addEventListener("click", (e) => {
+            if (e.target && e.target instanceof Element) {
+                this.selectTrack(e.target.closest(".episode-row"));
+            }
+        });
+    }
+
+    private scrollEvent() {
         let scrollTimeout: number | undefined;
         let returnTimeout: number | undefined;
         this.episodeList.addEventListener("scroll", () => {
@@ -60,28 +91,9 @@ export class Player {
                 }, 5000);
             }, 200);
         });
+    }
 
-        this.audioPlayer.addEventListener("ended", () => {
-            this.nextTrack();
-        });
-
-        const seasons = await this.podcast.getSeasons();
-        for (const season of seasons) {
-            const option = document.createElement("option");
-            option.textContent = season;
-            option.value = season;
-            this.selectSeason.appendChild(option);
-        }
-        this.selectSeason.selectedIndex = playerState.season;
-
-        await this.loadSeason();
-
-        this.episodeList.addEventListener("click", (e) => {
-            if (e.target && e.target instanceof Element) {
-                this.selectTrack(e.target.closest(".episode-row"));
-            }
-        });
-
+    private keyboardEvents() {
         document.addEventListener("keydown", (e) => {
             switch (e.key) {
                 case "Enter":
@@ -112,18 +124,19 @@ export class Player {
                     break;
             }
         });
+    }
 
-        this.episodeIndex = playerState.episode;
-        this.newTrack();
-        this.audioPlayer.currentTime = playerState.time;
-
+    private audioEvents() {
         this.audioPlayer.onplaying = () => {
             this.isPlaying = true;
         };
         this.audioPlayer.onpause = () => {
             this.isPlaying = false;
         };
-        this.audioPlayer.addEventListener("timeupdate", () => {
+        this.audioPlayer.onended = () => {
+            this.nextTrack();
+        };
+        this.audioPlayer.ontimeupdate = () => {
             const currentTime = Math.floor(this.audioPlayer.currentTime);
             if (
                 currentTime > this.currentTime + 1 ||
@@ -132,7 +145,7 @@ export class Player {
                 this.currentTime = currentTime;
                 this.saveState(this.audioPlayer.currentTime);
             }
-        });
+        };
         this.audioPlayer.onloadedmetadata = () => {
             const track = this.getCurrentTrack();
             if (track) {
@@ -140,10 +153,6 @@ export class Player {
                 duration.textContent = formatTime(this.audioPlayer.duration);
             }
         };
-
-        getElement(".podcast-player").classList.add("loaded");
-
-        return this;
     }
 
     private selectTrack(track: Element | EventTarget | null) {
@@ -154,7 +163,7 @@ export class Player {
         ) {
             const currentTrack = this.getCurrentTrack();
             if (currentTrack && currentTrack === track) {
-                this.toggle();
+                this.togglePlayback();
                 return;
             }
 
@@ -185,7 +194,7 @@ export class Player {
         }
     }
 
-    private toggle(): void {
+    private togglePlayback(): void {
         if (this.isPlaying) {
             this.audioPlayer.pause();
             this.isPlaying = false;
@@ -234,6 +243,35 @@ export class Player {
         this.newTrack();
     }
 
+    private setMetaData(data: MetaData): void {
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: data.title,
+                artist: data.artist ?? "Unknown Artist",
+                album: data.album ?? "Podcast",
+                artwork: [
+                    {
+                        src: `data:image/jpeg;base64,${PODCAST_256X256_JPG}`,
+                        sizes: "256x256",
+                        type: "image/png",
+                    },
+                ],
+            });
+            navigator.mediaSession.setActionHandler("play", () => {
+                this.audioPlayer.play();
+            });
+            navigator.mediaSession.setActionHandler("pause", () => {
+                this.audioPlayer.pause();
+            });
+            navigator.mediaSession.setActionHandler("nexttrack", () => {
+                this.nextTrack();
+            });
+            navigator.mediaSession.setActionHandler("previoustrack", () => {
+                this.previousTrack();
+            });
+        }
+    }
+
     private async loadSeason(): Promise<void> {
         const season = this.selectSeason.value;
         this.playlist = await this.podcast.getPlaylist(season);
@@ -251,33 +289,13 @@ export class Player {
         });
     }
 
-    private setMetaData(data: MetaData): void {
-        if ("mediaSession" in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: data.title,
-                artist: data.artist ?? "Unknown Artist",
-                album: data.album ?? "Podcast",
-                artwork: [
-                    {
-                        src: `data:image/jpeg;base64,${PODCAST_256X256_JPG}`,
-                        sizes: "256x256",
-                        type: "image/png",
-                    },
-                ],
-            });
-
-            navigator.mediaSession.setActionHandler("play", () => {
-                this.audioPlayer.play();
-            });
-            navigator.mediaSession.setActionHandler("pause", () => {
-                this.audioPlayer.pause();
-            });
-            navigator.mediaSession.setActionHandler("nexttrack", () => {
-                this.nextTrack();
-            });
-            navigator.mediaSession.setActionHandler("previoustrack", () => {
-                this.previousTrack();
-            });
+    private async loadSeasons(): Promise<void> {
+        const seasons = await this.podcast.getSeasons();
+        for (const season of seasons) {
+            const option = document.createElement("option");
+            option.textContent = season;
+            option.value = season;
+            this.selectSeason.appendChild(option);
         }
     }
 
