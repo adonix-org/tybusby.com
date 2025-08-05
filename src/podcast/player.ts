@@ -105,7 +105,6 @@ export class Player {
         });
 
         document.addEventListener("keydown", (e) => {
-            console.log(e.key);
             switch (e.key) {
                 case "Enter":
                     e.preventDefault();
@@ -154,7 +153,7 @@ export class Player {
         };
         this.audioPlayer.onpause = () => {
             this.isPlaying = false;
-        }
+        };
 
         getElement(".podcast-player").classList.add("loaded");
 
