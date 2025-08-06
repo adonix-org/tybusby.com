@@ -29,7 +29,6 @@ export class Player {
     private playlist?: MetaData[];
     private episodeIndex = 0;
     private currentTime = 0;
-    private isPlaying = false;
     private focusIndex = 0;
 
     public static async create(): Promise<Player> {
@@ -161,12 +160,6 @@ export class Player {
     }
 
     private audioEvents(): void {
-        this.audioPlayer.onplaying = () => {
-            this.isPlaying = true;
-        };
-        this.audioPlayer.onpause = () => {
-            this.isPlaying = false;
-        };
         this.audioPlayer.onended = () => {
             this.nextTrack();
         };
@@ -189,6 +182,39 @@ export class Player {
                 )}`;
             }
         };
+    }
+
+    private mediaEvents(track: MetaData): void {
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: track.title,
+                artist: track.artist ?? "Unknown Artist",
+                album: this.formatAlbum(track) ?? "Podcast",
+                artwork: [
+                    {
+                        src: `data:image/jpeg;base64,${PODCAST_256X256_JPG}`,
+                        sizes: "256x256",
+                        type: "image/png",
+                    },
+                ],
+            });
+            navigator.mediaSession.setActionHandler("play", () => {
+                console.log("media play");
+                this.audioPlayer.play();
+            });
+            navigator.mediaSession.setActionHandler("pause", () => {
+                console.log("media pause");
+                this.audioPlayer.pause();
+            });
+            navigator.mediaSession.setActionHandler("nexttrack", () => {
+                console.log("media next track");
+                this.nextTrack();
+            });
+            navigator.mediaSession.setActionHandler("previoustrack", () => {
+                console.log("media previous track");
+                this.previousTrack();
+            });
+        }
     }
 
     private selectTrack(track: Element | EventTarget | null) {
@@ -230,16 +256,15 @@ export class Player {
         if (track) {
             this.audioPlayer.src = track.url;
             this.audioPlayer.load();
-            this.setMetaData(track);
+            this.mediaEvents(track);
         }
     }
 
     private togglePlayback(): void {
-        if (this.isPlaying) {
-            this.audioPlayer.pause();
-            this.isPlaying = false;
-        } else {
+        if (this.audioPlayer.paused) {
             this.audioPlayer.play();
+        } else {
+            this.audioPlayer.pause();
         }
     }
 
@@ -261,53 +286,21 @@ export class Player {
         }
     }
 
-    private nextTrack(): void {
-        const length = this.playlist?.length;
-        if (length && this.episodeIndex + 1 < length) {
-            this.episodeIndex = this.episodeIndex + 1;
-        } else {
-            this.episodeIndex = 0;
-        }
+    private changeTrack(offset: number): void {
+        const length = this.playlist?.length ?? 0;
+        if (length === 0) return;
+
+        this.episodeIndex = (this.episodeIndex + offset + length) % length;
         this.newTrack();
         this.audioPlayer.play();
     }
 
-    private previousTrack(): void {
-        if (this.episodeIndex - 1 > 0) {
-            this.episodeIndex = this.episodeIndex - 1;
-        } else {
-            this.episodeIndex = 0;
-        }
-        this.newTrack();
+    private nextTrack(): void {
+        this.changeTrack(1);
     }
 
-    private setMetaData(track: MetaData): void {
-        if ("mediaSession" in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: track.title,
-                artist: track.artist ?? "Unknown Artist",
-                album: this.formatAlbum(track) ?? "Podcast",
-                artwork: [
-                    {
-                        src: `data:image/jpeg;base64,${PODCAST_256X256_JPG}`,
-                        sizes: "256x256",
-                        type: "image/png",
-                    },
-                ],
-            });
-            navigator.mediaSession.setActionHandler("play", () => {
-                this.audioPlayer.play();
-            });
-            navigator.mediaSession.setActionHandler("pause", () => {
-                this.audioPlayer.pause();
-            });
-            navigator.mediaSession.setActionHandler("nexttrack", () => {
-                this.nextTrack();
-            });
-            navigator.mediaSession.setActionHandler("previoustrack", () => {
-                this.previousTrack();
-            });
-        }
+    private previousTrack(): void {
+        this.changeTrack(-1);
     }
 
     private async loadSeason(): Promise<void> {
