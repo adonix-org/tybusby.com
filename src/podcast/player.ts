@@ -217,9 +217,6 @@ export class Player {
                 behavior: "smooth",
                 block: "nearest",
             });
-            requestAnimationFrame(() => {
-                currentTrack.focus({ preventScroll: true });
-            });
         }
     }
 
