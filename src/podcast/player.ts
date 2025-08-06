@@ -21,6 +21,8 @@ import { MetaData, Podcast } from "./podcast";
 import { DateTime } from "luxon";
 
 export class Player {
+    private static readonly SAVED_STATE_KEY = "adonix.player.resume";
+
     private readonly podcast = new Podcast();
     private readonly selectSeason: HTMLSelectElement;
     private readonly audioPlayer: HTMLAudioElement;
@@ -44,10 +46,11 @@ export class Player {
     private async init(): Promise<Player> {
         const playerState = this.loadState();
 
-        this.selectEvent();
-        this.clickEvent();
-        this.scrollEvent();
+        this.selectEvents();
+        this.clickEvents();
+        this.scrollEvents();
         this.audioEvents();
+        this.mediaEvents();
         this.keyboardEvents();
 
         await this.loadSeasons();
@@ -58,14 +61,14 @@ export class Player {
         this.focusIndex = this.episodeIndex;
 
         this.newTrack();
-        this.audioPlayer.currentTime = playerState.time;
+        this.audioPlayer.currentTime = playerState.seconds;
 
         getElement(".podcast-player").classList.add("loaded");
 
         return this;
     }
 
-    private selectEvent(): void {
+    private selectEvents(): void {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
             this.episodeIndex = 0;
@@ -75,7 +78,7 @@ export class Player {
         });
     }
 
-    private clickEvent(): void {
+    private clickEvents(): void {
         this.episodeList.addEventListener("click", (e) => {
             if (e.target && e.target instanceof Element) {
                 this.selectTrack(e.target.closest(".episode-row"));
@@ -83,7 +86,7 @@ export class Player {
         });
     }
 
-    private scrollEvent(): void {
+    private scrollEvents(): void {
         let scrollTimeout: number | undefined;
         let returnTimeout: number | undefined;
         this.episodeList.addEventListener("scroll", () => {
@@ -170,7 +173,7 @@ export class Player {
                 currentTime < this.currentTime
             ) {
                 this.currentTime = currentTime;
-                this.saveState(this.audioPlayer.currentTime);
+                this.saveState();
             }
         };
         this.audioPlayer.onloadedmetadata = () => {
@@ -184,12 +187,12 @@ export class Player {
         };
     }
 
-    private mediaEvents(track: MetaData): void {
+    private setMetaData(track: MetaData) {
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
                 artist: track.artist ?? "Unknown Artist",
-                album: this.formatAlbum(track) ?? "Podcast",
+                album: this.formatAlbum(track) ?? "Unknown Album",
                 artwork: [
                     {
                         src: `data:image/jpeg;base64,${PODCAST_256X256_JPG}`,
@@ -198,6 +201,11 @@ export class Player {
                     },
                 ],
             });
+        }
+    }
+
+    private mediaEvents(): void {
+        if ("mediaSession" in navigator) {
             navigator.mediaSession.setActionHandler("play", () => {
                 this.audioPlayer.play();
             });
@@ -252,7 +260,8 @@ export class Player {
         if (track) {
             this.audioPlayer.src = track.url;
             this.audioPlayer.load();
-            this.mediaEvents(track);
+            this.setMetaData(track);
+            this.saveState();
         }
     }
 
@@ -326,25 +335,29 @@ export class Player {
         }
     }
 
-    private saveState(currentTime: number): void {
+    private saveState(): void {
         const state: SaveState = {
             season: this.selectSeason.selectedIndex,
             episode: this.episodeIndex,
-            time: currentTime,
+            seconds: this.audioPlayer.currentTime,
         };
-        localStorage.setItem("playlist-state", JSON.stringify(state));
+        localStorage.setItem(Player.SAVED_STATE_KEY, JSON.stringify(state));
     }
 
     private loadState(): SaveState {
-        const state = localStorage.getItem("playlist-state");
-        if (state) {
-            return JSON.parse(state) as SaveState;
-        }
-        return {
+        const fallback: SaveState = {
             season: 0,
             episode: 0,
-            time: 0,
+            seconds: 0,
         };
+        const state = localStorage.getItem(Player.SAVED_STATE_KEY);
+        if (!state) return fallback;
+        try {
+            return JSON.parse(state) as SaveState;
+        } catch (error) {
+            localStorage.removeItem(Player.SAVED_STATE_KEY);
+            return fallback;
+        }
     }
 
     private formatAlbum(track: MetaData): string {
@@ -364,5 +377,5 @@ export class Player {
 interface SaveState {
     season: number;
     episode: number;
-    time: number;
+    seconds: number;
 }
