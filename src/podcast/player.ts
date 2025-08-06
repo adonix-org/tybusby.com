@@ -199,19 +199,15 @@ export class Player {
                 ],
             });
             navigator.mediaSession.setActionHandler("play", () => {
-                console.log("media play");
                 this.audioPlayer.play();
             });
             navigator.mediaSession.setActionHandler("pause", () => {
-                console.log("media pause");
                 this.audioPlayer.pause();
             });
             navigator.mediaSession.setActionHandler("nexttrack", () => {
-                console.log("media next track");
                 this.nextTrack();
             });
             navigator.mediaSession.setActionHandler("previoustrack", () => {
-                console.log("media previous track");
                 this.previousTrack();
             });
         }
