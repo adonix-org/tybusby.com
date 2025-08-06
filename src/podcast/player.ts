@@ -30,6 +30,7 @@ export class Player {
     private episodeIndex = 0;
     private currentTime = 0;
     private isPlaying = false;
+    private focusIndex = 0;
 
     public static async create(): Promise<Player> {
         return await new Player().init();
@@ -55,6 +56,7 @@ export class Player {
 
         await this.loadSeason();
         this.episodeIndex = playerState.episode;
+        this.focusIndex = this.episodeIndex;
 
         this.newTrack();
         this.audioPlayer.currentTime = playerState.time;
@@ -68,6 +70,7 @@ export class Player {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
             this.episodeIndex = 0;
+            this.focusIndex = 0;
             this.newTrack();
             this.audioPlayer.pause();
         });
@@ -125,8 +128,36 @@ export class Player {
                     e.preventDefault();
                     this.audioPlayer.currentTime -= 30;
                     break;
+
+                case "ArrowUp":
+                    e.preventDefault();
+                    this.focusIndex--;
+                    this.setTrackFocus();
+                    break;
+
+                case "ArrowDown":
+                    e.preventDefault();
+                    this.focusIndex++;
+                    this.setTrackFocus();
+                    break;
             }
         });
+    }
+
+    private setTrackFocus() {
+        if (!this.playlist) return;
+
+        const tracks = Array.from(document.querySelectorAll(".episode-row"));
+        if (this.focusIndex < 0) {
+            this.focusIndex = this.playlist.length - 1;
+        } else if (this.focusIndex >= this.playlist.length) {
+            this.focusIndex = 0;
+        }
+
+        const track = tracks[this.focusIndex];
+        if (track instanceof HTMLElement) {
+            track.focus();
+        }
     }
 
     private audioEvents(): void {
@@ -177,6 +208,8 @@ export class Player {
             this.episodeIndex = parseInt(track.dataset.index || "0");
             this.newTrack();
             this.audioPlayer.play();
+
+            this.focusIndex = this.episodeIndex;
         }
     }
 
