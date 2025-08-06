@@ -52,6 +52,7 @@ export class Player {
         this.audioEvents();
         this.mediaEvents();
         this.keyboardEvents();
+        this.copyEvents();
 
         await this.loadSeasons();
         this.selectSeason.selectedIndex = playerState.season;
@@ -146,22 +147,6 @@ export class Player {
         });
     }
 
-    private setTrackFocus() {
-        if (!this.playlist) return;
-
-        const tracks = Array.from(document.querySelectorAll(".episode-row"));
-        if (this.focusIndex < 0) {
-            this.focusIndex = this.playlist.length - 1;
-        } else if (this.focusIndex >= this.playlist.length) {
-            this.focusIndex = 0;
-        }
-
-        const track = tracks[this.focusIndex];
-        if (track instanceof HTMLElement) {
-            track.focus();
-        }
-    }
-
     private audioEvents(): void {
         this.audioPlayer.onended = () => {
             this.nextTrack();
@@ -187,6 +172,41 @@ export class Player {
         };
     }
 
+    private copyEvents(): void {
+        document.addEventListener("copy", (event) => {
+            const state: SaveState = this.getState(); // however you get it
+            const url = new URL(location.href);
+            url.searchParams.set("season", String(state.season));
+            url.searchParams.set("episode", String(state.episode));
+            url.searchParams.set("seconds", String(state.seconds));
+
+            const shareUrl = url.toString();
+
+            if (event.clipboardData) {
+                event.clipboardData.setData("text/plain", shareUrl);
+                event.preventDefault();
+                console.log("Copied custom URL:", shareUrl);
+            }
+        });
+    }
+
+    private mediaEvents(): void {
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.setActionHandler("play", () => {
+                this.audioPlayer.play();
+            });
+            navigator.mediaSession.setActionHandler("pause", () => {
+                this.audioPlayer.pause();
+            });
+            navigator.mediaSession.setActionHandler("nexttrack", () => {
+                this.nextTrack();
+            });
+            navigator.mediaSession.setActionHandler("previoustrack", () => {
+                this.previousTrack();
+            });
+        }
+    }
+
     private setMetaData(track: MetaData) {
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
@@ -204,20 +224,19 @@ export class Player {
         }
     }
 
-    private mediaEvents(): void {
-        if ("mediaSession" in navigator) {
-            navigator.mediaSession.setActionHandler("play", () => {
-                this.audioPlayer.play();
-            });
-            navigator.mediaSession.setActionHandler("pause", () => {
-                this.audioPlayer.pause();
-            });
-            navigator.mediaSession.setActionHandler("nexttrack", () => {
-                this.nextTrack();
-            });
-            navigator.mediaSession.setActionHandler("previoustrack", () => {
-                this.previousTrack();
-            });
+    private setTrackFocus() {
+        if (!this.playlist) return;
+
+        const tracks = Array.from(document.querySelectorAll(".episode-row"));
+        if (this.focusIndex < 0) {
+            this.focusIndex = this.playlist.length - 1;
+        } else if (this.focusIndex >= this.playlist.length) {
+            this.focusIndex = 0;
+        }
+
+        const track = tracks[this.focusIndex];
+        if (track instanceof HTMLElement) {
+            track.focus();
         }
     }
 
@@ -335,13 +354,19 @@ export class Player {
         }
     }
 
-    private saveState(): void {
-        const state: SaveState = {
+    private getState(): SaveState {
+        return {
             season: this.selectSeason.selectedIndex,
             episode: this.episodeIndex,
             seconds: this.audioPlayer.currentTime,
         };
-        localStorage.setItem(Player.SAVED_STATE_KEY, JSON.stringify(state));
+    }
+
+    private saveState(): void {
+        localStorage.setItem(
+            Player.SAVED_STATE_KEY,
+            JSON.stringify(this.getState())
+        );
     }
 
     private loadState(): SaveState {
@@ -350,14 +375,56 @@ export class Player {
             episode: 0,
             seconds: 0,
         };
-        const state = localStorage.getItem(Player.SAVED_STATE_KEY);
-        if (!state) return fallback;
+
+        let state = this.loadStateUrl();
+        if (state) {
+            history.replaceState({}, "", location.pathname);
+            return state;
+        }
+
+        const raw = localStorage.getItem(Player.SAVED_STATE_KEY);
+        if (!raw) return fallback;
+
         try {
-            return JSON.parse(state) as SaveState;
-        } catch (error) {
+            const parsed = JSON.parse(raw);
+            if (
+                typeof parsed === "object" &&
+                parsed !== null &&
+                typeof parsed.season === "number" &&
+                typeof parsed.episode === "number" &&
+                typeof parsed.seconds === "number"
+            ) {
+                return parsed as SaveState;
+            } else {
+                localStorage.removeItem(Player.SAVED_STATE_KEY);
+                return fallback;
+            }
+        } catch {
             localStorage.removeItem(Player.SAVED_STATE_KEY);
             return fallback;
         }
+    }
+
+    private loadStateUrl(): SaveState | null {
+        const url = new URL(document.URL);
+
+        const seasonStr = url.searchParams.get("season");
+        const episodeStr = url.searchParams.get("episode");
+        const secondsStr = url.searchParams.get("seconds");
+
+        if (!seasonStr || !episodeStr || !secondsStr) {
+            return null;
+        }
+
+        const season = parseInt(seasonStr, 10);
+        const episode = parseInt(episodeStr, 10);
+        const seconds = parseInt(secondsStr, 10);
+
+        if (isNaN(season) || isNaN(episode) || isNaN(seconds)) {
+            return null;
+        }
+
+        return { season, episode, seconds };
     }
 
     private formatAlbum(track: MetaData): string {
