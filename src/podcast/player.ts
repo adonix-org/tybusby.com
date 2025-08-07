@@ -427,7 +427,7 @@ export class Player {
 
     private formatAlbum(track: MetaData): string {
         return `${track.album} · ${DateTime.fromISO(track.date).toFormat(
-            "MMMM d, yyyy"
+            "MMM d, yyyy"
         )}`;
     }
 
