@@ -213,7 +213,7 @@ export class Player {
                 artist: track.artist,
                 artwork: [
                     {
-                        src: "https://www.tybusby.com/img/512x512.jpg",
+                        src: "https://cartalk.adonix.org/cover-art.jpg",
                         sizes: "512x512",
                         type: "image/jpeg",
                     },

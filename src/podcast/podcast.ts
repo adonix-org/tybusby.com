@@ -44,7 +44,7 @@ export class HTTPError extends Error {
 export class Podcast {
     private static readonly VERSION = "v1";
 
-    private static readonly BASE = `https://cartalk.adonix.org`;
+    private static readonly BASE = `https://podcast.adonix.org`;
     private static readonly API = new URL(
         `${Podcast.BASE}/api/${Podcast.VERSION}/seasons`
     );
@@ -55,7 +55,6 @@ export class Podcast {
 
     public async getPlaylist(season: string): Promise<MetaData[]> {
         const url = new URL(`${Podcast.API.toString()}/${season}`);
-        console.log(url.pathname);
         return await this.get<MetaData[]>(url);
     }
 
