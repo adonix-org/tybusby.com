@@ -210,12 +210,12 @@ export class Player {
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
-                artist: track.artist ?? "Unknown Artist",
                 album: this.formatAlbum(track) ?? "Unknown Album",
+                artist: track.artist ?? "Unknown Artist",
                 artwork: [
                     {
                         src: `data:image/jpeg;base64,${PODCAST_1024x1024_JPG}`,
-                        sizes: "256x256",
+                        sizes: "1024x1024",
                         type: "image/png",
                     },
                 ],
@@ -334,7 +334,7 @@ export class Player {
             const row = getTemplateRoot("episode-template");
             getElement(".episode-title", row).textContent = track.title;
             getElement(".episode-album", row).textContent = `${
-                track.artist
+                track.album
             } · ${this.formatAlbum(track)}`;
             getElement(".episode-length", row).textContent =
                 this.formatDuration(track.seconds);
