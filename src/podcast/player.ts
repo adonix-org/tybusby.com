@@ -210,7 +210,7 @@ export class Player {
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
-                album: this.formatAlbum(track) ?? "Unknown Album",
+                album: track.album ?? "Unknown Album",
                 artist: track.artist ?? "Unknown Artist",
                 artwork: [
                     {
@@ -333,9 +333,8 @@ export class Player {
         this.playlist.forEach((track, i) => {
             const row = getTemplateRoot("episode-template");
             getElement(".episode-title", row).textContent = track.title;
-            getElement(".episode-album", row).textContent = `${
-                track.album
-            } · ${this.formatAlbum(track)}`;
+            getElement(".episode-album", row).textContent =
+                this.formatAlbum(track);
             getElement(".episode-length", row).textContent =
                 this.formatDuration(track.seconds);
             row.dataset.index = String(i);
@@ -427,7 +426,9 @@ export class Player {
     }
 
     private formatAlbum(track: MetaData): string {
-        return `${DateTime.fromISO(track.date).toFormat("MMMM d, yyyy")}`;
+        return `${track.album} · ${DateTime.fromISO(track.date).toFormat(
+            "MMMM d, yyyy"
+        )}`;
     }
 
     private formatDuration(seconds: number): string {
