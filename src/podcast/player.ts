@@ -16,6 +16,7 @@
 
 import { getElement } from "../elements";
 import { getTemplateRoot } from "../elements";
+import { PODCAST_1024x1024_JPG } from "./image";
 import { MetaData, Podcast } from "./podcast";
 import { DateTime } from "luxon";
 
@@ -213,9 +214,9 @@ export class Player {
                 artist: track.artist,
                 artwork: [
                     {
-                        src: "/img/1024x1024.jpg",
+                        src: `data:image/jpeg;base64,${PODCAST_1024x1024_JPG}`,
                         sizes: "1024x1024",
-                        type: "image/png",
+                        type: "image/jpeg",
                     },
                 ],
             });
