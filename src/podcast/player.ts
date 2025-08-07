@@ -210,8 +210,8 @@ export class Player {
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
-                album: track.album ?? "Unknown Album",
-                artist: track.artist ?? "Unknown Artist",
+                album: this.formatAlbum(track),
+                artist: track.artist,
                 artwork: [
                     {
                         src: `data:image/jpeg;base64,${PODCAST_1024x1024_JPG}`,
