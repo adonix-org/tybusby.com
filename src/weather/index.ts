@@ -25,7 +25,7 @@ import { Spinner } from "../spinner";
 import { getElementById } from "../elements";
 
 //NationalWeatherService.origin = "http://localhost:8787";
-NationalWeatherService.origin = "https://nws.tybusby.com";
+NationalWeatherService.origin = "https://nws.adonix.org";
 
 /**
  * latitude, longitude
