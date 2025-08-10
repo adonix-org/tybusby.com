@@ -233,7 +233,7 @@ export class Player {
         if (!track) return;
         let currentTrack = this.getCurrentTrack();
         if (currentTrack) {
-            currentTrack.element.classList.remove(".selected");
+            currentTrack.element.classList.remove("selected");
         }
 
         track.element.classList.add("selected");
