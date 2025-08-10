@@ -15,9 +15,8 @@
  */
 
 import { getElement } from "../elements";
-import { getTemplateRoot } from "../elements";
-import { MetaData, Podcast } from "./podcast";
-import { DateTime } from "luxon";
+import { Podcast } from "./podcast";
+import { Track } from "./track";
 
 export class Player {
     private static readonly SAVED_STATE_KEY = "adonix.player.resume";
@@ -25,10 +24,8 @@ export class Player {
     private readonly podcast = new Podcast();
     private readonly selectSeason: HTMLSelectElement;
     private readonly audioPlayer: HTMLAudioElement;
-    private readonly episodeList: HTMLDivElement;
+    private readonly trackList: HTMLDivElement;
 
-    private playlist?: MetaData[];
-    private episodeIndex = 0;
     private currentTime = 0;
     private focusIndex = 0;
 
@@ -38,7 +35,7 @@ export class Player {
 
     private constructor() {
         this.selectSeason = getElement(".select-season");
-        this.episodeList = getElement(".select-episode");
+        this.trackList = getElement(".select-episode");
         this.audioPlayer = getElement(".audio-player");
     }
 
@@ -57,10 +54,10 @@ export class Player {
         this.selectSeason.selectedIndex = playerState.season;
 
         await this.loadSeason();
-        this.episodeIndex = playerState.episode;
-        this.focusIndex = this.episodeIndex;
+        this.newTrack(this.getTrack(playerState.episode));
 
-        this.newTrack();
+        this.focusIndex = playerState.episode;
+
         this.audioPlayer.currentTime = playerState.seconds;
 
         getElement(".podcast-player").classList.add("loaded");
@@ -71,17 +68,20 @@ export class Player {
     private selectEvents(): void {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
-            this.episodeIndex = 0;
+            this.newTrack(this.getTrack(0));
             this.focusIndex = 0;
-            this.newTrack();
             this.audioPlayer.pause();
         });
     }
 
     private clickEvents(): void {
-        this.episodeList.addEventListener("click", (e) => {
+        this.trackList.addEventListener("click", (e) => {
             if (e.target && e.target instanceof Element) {
-                this.selectTrack(e.target.closest(".episode-row"));
+                this.selectTrack(
+                    Track.fromElement(
+                        e.target.closest(".track-row") ?? undefined
+                    )
+                );
             }
         });
     }
@@ -89,13 +89,13 @@ export class Player {
     private scrollEvents(): void {
         let scrollTimeout: number | undefined;
         let returnTimeout: number | undefined;
-        this.episodeList.addEventListener("scroll", () => {
+        this.trackList.addEventListener("scroll", () => {
             clearTimeout(scrollTimeout);
             clearTimeout(returnTimeout);
 
             scrollTimeout = window.setTimeout(() => {
                 returnTimeout = window.setTimeout(() => {
-                    this.showCurrentTrack();
+                    this.getCurrentTrack()?.show();
                 }, 5000);
             }, 200);
         });
@@ -106,19 +106,17 @@ export class Player {
             switch (e.key) {
                 case "Enter":
                     e.preventDefault();
-                    let track = this.getCurrentTrack();
                     if (
                         e.target instanceof HTMLElement &&
-                        e.target.classList.contains("episode-row")
+                        e.target.classList.contains("track-row")
                     ) {
-                        track = e.target;
+                        this.selectTrack(Track.fromElement(e.target));
                     }
-                    this.selectTrack(track);
                     break;
 
                 case "Escape":
                     e.preventDefault();
-                    this.showCurrentTrack();
+                    this.getCurrentTrack()?.show();
                     break;
 
                 case "ArrowRight":
@@ -163,10 +161,7 @@ export class Player {
         this.audioPlayer.onloadedmetadata = () => {
             const track = this.getCurrentTrack();
             if (track) {
-                const duration = getElement(".episode-length", track);
-                duration.textContent = `${this.formatDuration(
-                    this.audioPlayer.duration
-                )}`;
+                track.formatDuration(this.audioPlayer.duration);
             }
         };
     }
@@ -205,80 +200,53 @@ export class Player {
         }
     }
 
-    private setMetaData(track: MetaData) {
-        if ("mediaSession" in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: track.title,
-                album: this.formatAlbum(track),
-                artist: track.artist,
-                artwork: [
-                    {
-                        src: "https://cartalk.adonix.org/cover-art.jpg",
-                        sizes: "512x512",
-                        type: "image/jpeg",
-                    },
-                ],
-            });
-        }
-    }
-
     private setTrackFocus() {
-        if (!this.playlist) return;
-
-        const tracks = Array.from(document.querySelectorAll(".episode-row"));
+        const rows = this.getRows();
         if (this.focusIndex < 0) {
-            this.focusIndex = this.playlist.length - 1;
-        } else if (this.focusIndex >= this.playlist.length) {
+            this.focusIndex = rows.length - 1;
+        } else if (this.focusIndex >= rows.length) {
             this.focusIndex = 0;
         }
 
-        const track = tracks[this.focusIndex];
-        if (track instanceof HTMLElement) {
-            track.focus();
-        }
+        const row = rows[this.focusIndex];
+        row?.focus();
     }
 
-    private selectTrack(track: Element | EventTarget | null) {
-        if (
-            track &&
-            track instanceof HTMLElement &&
-            track.classList.contains("episode-row")
-        ) {
-            const currentTrack = this.getCurrentTrack();
-            if (currentTrack && currentTrack === track) {
-                this.togglePlayback();
-                return;
-            }
+    private selectTrack(track: Track | undefined): void {
+        if (!track) return;
 
-            // A new track was selected
-            this.audioPlayer.pause();
-            this.episodeIndex = parseInt(track.dataset.index || "0");
-            this.newTrack();
-            this.audioPlayer.play();
-
-            this.focusIndex = this.episodeIndex;
+        // The same track was selected.
+        if (track === this.getCurrentTrack()) {
+            this.togglePlayback();
+            return;
         }
+
+        // A new track was selected
+        this.audioPlayer.pause();
+        this.newTrack(track);
+        this.audioPlayer.play();
+
+        this.focusIndex = this.getRowIndex(track.element);
     }
 
-    private newTrack(): void {
-        const existingSelection = this.getCurrentTrack();
-        if (existingSelection) {
-            existingSelection.classList.remove("selected");
+    private newTrack(track: Track | undefined): void {
+        if (!track) return;
+        let currentTrack = this.getCurrentTrack();
+        if (currentTrack) {
+            currentTrack.element.classList.remove(".selected");
         }
-        const newSelection = getElement(
-            `.episode-row[data-index="${this.episodeIndex}"]`,
-            this.episodeList
-        );
-        if (newSelection) {
-            newSelection.classList.add("selected");
-            this.showCurrentTrack();
-        }
-        const track = this.playlist?.[this.episodeIndex];
-        if (track) {
-            this.audioPlayer.src = track.url;
-            this.audioPlayer.load();
-            this.setMetaData(track);
-            this.saveState();
+
+        track.element.classList.add("selected");
+        track.show();
+        this.audioPlayer.src = track.getUrl();
+        this.audioPlayer.load();
+        this.setMetaData(track);
+        this.saveState();
+    }
+
+    private setMetaData(track: Track) {
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = track.getMetaData();
         }
     }
 
@@ -290,31 +258,54 @@ export class Player {
         }
     }
 
-    private showCurrentTrack(): void {
-        const currentTrack = this.getCurrentTrack();
-        if (currentTrack) {
-            currentTrack.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-            });
-        }
+    private getRows(): HTMLElement[] {
+        return Array.from(this.trackList.querySelectorAll(".track-row"));
     }
 
-    private getCurrentTrack(): HTMLElement | null {
-        try {
-            return getElement(".selected", this.episodeList, HTMLElement);
-        } catch (error) {
-            return null;
+    private getRow(index: number): HTMLElement | undefined {
+        return this.getRows()[index];
+    }
+
+    private getTrack(index: number): Track | undefined {
+        return Track.fromElement(this.getRow(index));
+    }
+
+    private getRowIndex(element: HTMLElement | undefined): number {
+        if (!element) return -1;
+        return this.getRows().indexOf(element);
+    }
+
+    private getTrackIndex(track: Track | undefined) {
+        return this.getRowIndex(track?.element);
+    }
+
+    private getCurrentTrack(): Track | undefined {
+        const current = this.getCurrentElement();
+        if (current) {
+            return Track.fromElement(current);
         }
+        return undefined;
+    }
+
+    private getCurrentElement(): HTMLElement | undefined {
+        const current = this.trackList.querySelector(".selected");
+        if (current && current instanceof HTMLElement) {
+            return current;
+        }
+        return undefined;
     }
 
     private changeTrack(offset: number): void {
-        const length = this.playlist?.length ?? 0;
-        if (length === 0) return;
+        const rows = this.getRows();
+        if (rows.length === 0) return;
 
-        this.episodeIndex = (this.episodeIndex + offset + length) % length;
-        this.newTrack();
-        this.audioPlayer.play();
+        const current = this.getCurrentElement();
+        if (current) {
+            const index = rows.indexOf(current);
+            const trackIndex = (index + offset + length) % length;
+            this.newTrack(this.getTrack(trackIndex));
+            this.audioPlayer.play();
+        }
     }
 
     private nextTrack(): void {
@@ -327,17 +318,12 @@ export class Player {
 
     private async loadSeason(): Promise<void> {
         const season = this.selectSeason.value;
-        this.playlist = await this.podcast.getPlaylist(season);
-        this.episodeList.innerHTML = "";
-        this.playlist.forEach((track, i) => {
-            const row = getTemplateRoot("episode-template");
-            getElement(".episode-title", row).textContent = track.title;
-            getElement(".episode-album", row).textContent =
-                this.formatAlbum(track);
-            getElement(".episode-length", row).textContent =
-                this.formatDuration(track.seconds);
-            row.dataset.index = String(i);
-            this.episodeList.appendChild(row);
+        const playlist = await this.podcast.getPlaylist(season);
+
+        this.trackList.innerHTML = "";
+
+        playlist.forEach((episode) => {
+            new Track(this.trackList, episode);
         });
     }
 
@@ -354,7 +340,7 @@ export class Player {
     private getState(): SaveState {
         return {
             season: this.selectSeason.selectedIndex,
-            episode: this.episodeIndex,
+            episode: this.getTrackIndex(this.getCurrentTrack()),
             seconds: this.audioPlayer.currentTime,
         };
     }
@@ -422,21 +408,6 @@ export class Player {
         }
 
         return { season, episode, seconds };
-    }
-
-    private formatAlbum(track: MetaData): string {
-        return `${track.album} · ${DateTime.fromISO(track.date).toFormat(
-            "MMM d, yyyy"
-        )}`;
-    }
-
-    private formatDuration(seconds: number): string {
-        if (seconds == 0) {
-            return `⏱️ --:--`;
-        }
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds) % 60;
-        return `⏱️ ${minutes}:${secs.toString().padStart(2, "0")}`;
     }
 }
 

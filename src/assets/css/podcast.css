@@ -25,7 +25,7 @@ main {
     border-radius: 5px;
 }
 
-.select-episode {
+.select-track {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -36,7 +36,7 @@ main {
     flex-grow: 1;
 }
 
-.episode-row {
+.track-row {
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -46,7 +46,7 @@ main {
     min-height: 110px;
 }
 
-.episode-container {
+.track-container {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
@@ -56,7 +56,7 @@ main {
     justify-content: center;
 }
 
-.episode-row img {
+.track-row img {
     width: 70px;
     height: auto;
     border: 3px solid white;
@@ -64,11 +64,11 @@ main {
     margin: 0.5rem;
 }
 
-.episode-row:hover {
+.track-row:hover {
     background-color: lightgray;
 }
 
-.episode-row .episode-title {
+.track-row .track-title {
     font-weight: bold;
     font-size: 14pt;
     display: -webkit-box;
@@ -79,24 +79,24 @@ main {
     text-overflow: ellipsis;
 }
 
-.episode-row .episode-album {
+.track-row .track-album {
     white-space: nowrap;
     color: rgb(59, 59, 59);
 }
 
-.episode-row .episode-length {
+.track-row .track-length {
     color: rgb(59, 59, 59);
 }
 
-.episode-row.selected .episode-album {
+.track-row.selected .track-album {
     color: white;
 }
 
-.episode-row.selected .episode-length {
+.track-row.selected .track-length {
     color: white;
 }
 
-.episode-row.selected {
+.track-row.selected {
     background-color: rgb(44 85 139);
     color: white;
 }
