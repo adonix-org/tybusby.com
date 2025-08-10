@@ -198,28 +198,26 @@ export class Player {
         }
     }
 
-    private setTrackFocus(
-        offset: number,
-        preventScroll: boolean = false
-    ): void {
-        let element = this.getCurrentElement();
+    private setTrackFocus(offset: number, preventScroll = false): void {
         const active = document.activeElement;
-        if (
-            active &&
+        const element =
             active instanceof HTMLElement &&
             active.classList.contains("track-row")
-        ) {
-            element = active;
-        }
+                ? active
+                : this.getCurrentElement();
+
+        if (!element) return;
 
         const track = Track.fromElement(element);
-        if (track) {
-            const rows = this.getRows();
-            const index =
-                (((track.index + offset) % rows.length) + rows.length) %
-                rows.length;
-            rows[index]?.focus({ preventScroll });
-        }
+        if (!track) return;
+
+        const rows = this.getRows();
+        if (rows.length === 0) return;
+
+        const newIndex =
+            (((track.index + offset) % rows.length) + rows.length) %
+            rows.length;
+        rows[newIndex]?.focus({ preventScroll });
     }
 
     private selectTrack(track: Track | undefined): void {
