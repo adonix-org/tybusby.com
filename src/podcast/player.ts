@@ -95,8 +95,9 @@ export class Player {
                 returnTimeout = window.setTimeout(() => {
                     const track = this.getCurrentTrack();
                     if (track) {
-                        track.show();
                         this.focusIndex = track.index;
+                        this.setTrackFocus(true);
+                        track.show();
                     }
                 }, 5000);
             }, 200);
@@ -202,14 +203,11 @@ export class Player {
         }
     }
 
-    private setTrackFocus() {
+    private setTrackFocus(preventScroll: boolean = false) {
         const rows = this.getRows();
-        if (this.focusIndex < 0) {
-            this.focusIndex = rows.length - 1;
-        } else if (this.focusIndex >= rows.length) {
-            this.focusIndex = 0;
-        }
-        rows[this.focusIndex]?.focus();
+        this.focusIndex =
+            ((this.focusIndex % rows.length) + rows.length) % rows.length;
+        rows[this.focusIndex]?.focus({ preventScroll });
     }
 
     private selectTrack(track: Track | undefined): void {
@@ -235,8 +233,8 @@ export class Player {
             currentTrack.element.classList.remove("selected");
         }
 
-        this.focusIndex = track.index;
         track.element.classList.add("selected");
+        this.focusIndex = track.index;
         track.show();
 
         this.audioPlayer.src = track.getUrl();
