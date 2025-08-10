@@ -35,7 +35,7 @@ export class Player {
 
     private constructor() {
         this.selectSeason = getElement(".select-season");
-        this.trackList = getElement(".select-episode");
+        this.trackList = getElement(".select-track");
         this.audioPlayer = getElement(".audio-player");
     }
 
@@ -111,6 +111,9 @@ export class Player {
                         e.target.classList.contains("track-row")
                     ) {
                         this.selectTrack(Track.fromElement(e.target));
+                    } else {
+                        // Accept Enter for any target
+                        this.selectTrack(this.getCurrentTrack());
                     }
                     break;
 
@@ -231,6 +234,7 @@ export class Player {
 
     private newTrack(track: Track | undefined): void {
         if (!track) return;
+
         let currentTrack = this.getCurrentTrack();
         if (currentTrack) {
             currentTrack.element.classList.remove("selected");
@@ -238,6 +242,7 @@ export class Player {
 
         track.element.classList.add("selected");
         track.show();
+
         this.audioPlayer.src = track.getUrl();
         this.audioPlayer.load();
         this.setMetaData(track);
