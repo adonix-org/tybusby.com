@@ -27,7 +27,6 @@ export class Player {
     private readonly trackList: HTMLDivElement;
 
     private currentTime = 0;
-    private focusIndex = 0;
 
     public static async create(): Promise<Player> {
         return await new Player().init();
@@ -67,7 +66,6 @@ export class Player {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
             this.newTrack(this.getTrack(0));
-            this.focusIndex = 0;
             this.audioPlayer.pause();
         });
     }
@@ -95,8 +93,7 @@ export class Player {
                 returnTimeout = window.setTimeout(() => {
                     const track = this.getCurrentTrack();
                     if (track) {
-                        this.focusIndex = track.index;
-                        this.setTrackFocus(true);
+                        track.element.focus({ preventScroll: true });
                         track.show();
                     }
                 }, 5000);
@@ -137,14 +134,12 @@ export class Player {
 
                 case "ArrowUp":
                     e.preventDefault();
-                    this.focusIndex--;
-                    this.setTrackFocus();
+                    this.setTrackFocus(-1);
                     break;
 
                 case "ArrowDown":
                     e.preventDefault();
-                    this.focusIndex++;
-                    this.setTrackFocus();
+                    this.setTrackFocus(1);
                     break;
             }
         });
@@ -203,11 +198,28 @@ export class Player {
         }
     }
 
-    private setTrackFocus(preventScroll: boolean = false) {
-        const rows = this.getRows();
-        this.focusIndex =
-            ((this.focusIndex % rows.length) + rows.length) % rows.length;
-        rows[this.focusIndex]?.focus({ preventScroll });
+    private setTrackFocus(
+        offset: number,
+        preventScroll: boolean = false
+    ): void {
+        let element = this.getCurrentElement();
+        const active = document.activeElement;
+        if (
+            active &&
+            active instanceof HTMLElement &&
+            active.classList.contains("track-row")
+        ) {
+            element = active;
+        }
+
+        const track = Track.fromElement(element);
+        if (track) {
+            const rows = this.getRows();
+            const index =
+                (((track.index + offset) % rows.length) + rows.length) %
+                rows.length;
+            rows[index]?.focus({ preventScroll });
+        }
     }
 
     private selectTrack(track: Track | undefined): void {
@@ -234,7 +246,6 @@ export class Player {
         }
 
         track.element.classList.add("selected");
-        this.focusIndex = track.index;
         track.show();
 
         this.audioPlayer.src = track.getUrl();
