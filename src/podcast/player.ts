@@ -56,8 +56,6 @@ export class Player {
         await this.loadSeason();
         this.newTrack(this.getTrack(playerState.episode));
 
-        this.focusIndex = playerState.episode;
-
         this.audioPlayer.currentTime = playerState.seconds;
 
         getElement(".podcast-player").classList.add("loaded");
@@ -227,8 +225,6 @@ export class Player {
         this.audioPlayer.pause();
         this.newTrack(track);
         this.audioPlayer.play();
-
-        this.focusIndex = track.index;
     }
 
     private newTrack(track: Track | undefined): void {
@@ -239,6 +235,7 @@ export class Player {
             currentTrack.element.classList.remove("selected");
         }
 
+        this.focusIndex = track.index;
         track.element.classList.add("selected");
         track.show();
 
