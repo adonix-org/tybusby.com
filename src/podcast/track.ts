@@ -22,30 +22,32 @@ const elementToTrack = new WeakMap<Element, Track>();
 
 export class Track {
     private static readonly TEMPLATE_ID = "track-template";
-    private readonly row: HTMLElement;
+    private readonly _element: HTMLElement;
 
     constructor(parent: Element, private readonly data: MetaData) {
-        this.row = getTemplateRoot(Track.TEMPLATE_ID);
-        elementToTrack.set(this.row, this);
+        this._element = getTemplateRoot(Track.TEMPLATE_ID);
 
-        getElement(".track-title", this.row).textContent = this.data.title;
-        getElement(".track-album", this.row).textContent = this.formatAlbum();
-        getElement(".track-length", this.row).textContent =
-            this.formatDuration();
-
-        parent.appendChild(this.row);
+        elementToTrack.set(this.element, this);
+        this.setTitle().setAlbum().setDuration();
+        parent.appendChild(this.element);
     }
 
     public get element(): HTMLElement {
-        return this.row;
+        return this._element;
     }
 
     public static fromElement(element?: Element): Track | undefined {
         return element ? elementToTrack.get(element) : undefined;
     }
 
+    public get index(): number {
+        return Array.from(this.element.parentElement?.children ?? []).indexOf(
+            this.element
+        );
+    }
+
     public show(): void {
-        this.row.scrollIntoView({
+        this.element.scrollIntoView({
             behavior: "smooth",
             block: "nearest",
         });
@@ -55,13 +57,30 @@ export class Track {
         return this.data.url;
     }
 
-    protected formatAlbum(): string {
-        return `${this.data.album} · ${DateTime.fromISO(
-            this.data.date
-        ).toFormat("MMM d, yyyy")}`;
+    public setTitle(title: string = this.data.title): Track {
+        getElement(".track-title", this.element).textContent = title;
+        return this;
     }
 
-    public formatDuration(seconds: number = this.data.seconds): string {
+    public setAlbum(album: string = this.data.album): Track {
+        getElement(".track-album", this.element).textContent =
+            this.formatAlbum(album);
+        return this;
+    }
+
+    public setDuration(seconds: number = this.data.seconds): Track {
+        getElement(".track-length", this.element).textContent =
+            this.formatDuration(seconds);
+        return this;
+    }
+
+    private formatAlbum(album: string): string {
+        return `${album} · ${DateTime.fromISO(this.data.date).toFormat(
+            "MMM d, yyyy"
+        )}`;
+    }
+
+    private formatDuration(seconds: number): string {
         if (seconds == 0) {
             return `⏱️ --:--`;
         }
@@ -73,7 +92,7 @@ export class Track {
     public getMetaData(): MediaMetadata {
         return new MediaMetadata({
             title: this.data.title,
-            album: this.formatAlbum(),
+            album: this.formatAlbum(this.data.album),
             artist: this.data.artist,
             artwork: [
                 {

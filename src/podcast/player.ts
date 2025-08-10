@@ -95,7 +95,11 @@ export class Player {
 
             scrollTimeout = window.setTimeout(() => {
                 returnTimeout = window.setTimeout(() => {
-                    this.getCurrentTrack()?.show();
+                    const track = this.getCurrentTrack();
+                    if (track) {
+                        track.show();
+                        this.focusIndex = track.index;
+                    }
                 }, 5000);
             }, 200);
         });
@@ -112,7 +116,7 @@ export class Player {
                     ) {
                         this.selectTrack(Track.fromElement(e.target));
                     } else {
-                        // Accept Enter for any target
+                        // Accept Enter even without focus
                         this.selectTrack(this.getCurrentTrack());
                     }
                     break;
@@ -162,15 +166,12 @@ export class Player {
             }
         };
         this.audioPlayer.onloadedmetadata = () => {
-            const track = this.getCurrentTrack();
-            if (track) {
-                track.formatDuration(this.audioPlayer.duration);
-            }
+            this.getCurrentTrack()?.setDuration(this.audioPlayer.duration);
         };
     }
 
     private copyEvents(): void {
-        document.addEventListener("copy", (event) => {
+        document.addEventListener("copy", (e) => {
             const state: SaveState = this.getState(); // however you get it
             const url = new URL(location.href);
             url.searchParams.set("season", String(state.season));
@@ -179,9 +180,9 @@ export class Player {
 
             const shareUrl = url.toString();
 
-            if (event.clipboardData) {
-                event.clipboardData.setData("text/plain", shareUrl);
-                event.preventDefault();
+            if (e.clipboardData) {
+                e.preventDefault();
+                e.clipboardData.setData("text/plain", shareUrl);
             }
         });
     }
@@ -210,9 +211,7 @@ export class Player {
         } else if (this.focusIndex >= rows.length) {
             this.focusIndex = 0;
         }
-
-        const row = rows[this.focusIndex];
-        row?.focus();
+        rows[this.focusIndex]?.focus();
     }
 
     private selectTrack(track: Track | undefined): void {
@@ -229,7 +228,7 @@ export class Player {
         this.newTrack(track);
         this.audioPlayer.play();
 
-        this.focusIndex = this.getRowIndex(track.element);
+        this.focusIndex = track.index;
     }
 
     private newTrack(track: Track | undefined): void {
@@ -275,15 +274,6 @@ export class Player {
         return Track.fromElement(this.getRow(index));
     }
 
-    private getRowIndex(element: HTMLElement | undefined): number {
-        if (!element) return -1;
-        return this.getRows().indexOf(element);
-    }
-
-    private getTrackIndex(track: Track | undefined) {
-        return this.getRowIndex(track?.element);
-    }
-
     private getCurrentTrack(): Track | undefined {
         const current = this.getCurrentElement();
         if (current) {
@@ -304,11 +294,11 @@ export class Player {
         const rows = this.getRows();
         if (rows.length === 0) return;
 
-        const current = this.getCurrentElement();
+        const current = this.getCurrentTrack();
         if (current) {
-            const index = rows.indexOf(current);
-            const trackIndex = (index + offset + length) % length;
-            this.newTrack(this.getTrack(trackIndex));
+            const newIndex =
+                (current.index + offset + rows.length) % rows.length;
+            this.newTrack(this.getTrack(newIndex));
             this.audioPlayer.play();
         }
     }
@@ -345,7 +335,7 @@ export class Player {
     private getState(): SaveState {
         return {
             season: this.selectSeason.selectedIndex,
-            episode: this.getTrackIndex(this.getCurrentTrack()),
+            episode: this.getCurrentTrack()?.index ?? 0,
             seconds: this.audioPlayer.currentTime,
         };
     }
