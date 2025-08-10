@@ -64,7 +64,7 @@ class ProductDialog {
     }
 
     private linkify(text: string): string {
-        const regex = /\bwww\.weather\.gov\/[^\s]+/g;
+        const regex = /(?:www\.)?weather\.gov\/[^\s.,;:!?")]+/gi;
         return text.replace(regex, (match) => {
             const href = `https://${match}`;
             return `<a href="${href}" target="_blank" rel="noopener noreferrer">${match}</a>`;
