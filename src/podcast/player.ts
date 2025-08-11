@@ -95,7 +95,7 @@ export class Player {
             if (track && navigator.share) {
                 try {
                     await navigator.share({
-                        text: `\n${track.data.title}\n\n${track.data.description}\n\n`,
+                        text: `${track.data.title}\n\n${track.data.description}`,
                         url: this.getUrl().toString(),
                     });
                 } catch (err) {
