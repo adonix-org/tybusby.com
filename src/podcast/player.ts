@@ -62,6 +62,15 @@ export class Player {
         return this;
     }
 
+    private getUrl(): URL {
+        const state: SaveState = this.getState();
+        const url = new URL(location.href);
+        url.searchParams.set("season", String(state.season));
+        url.searchParams.set("episode", String(state.episode));
+        url.searchParams.set("seconds", String(state.seconds));
+        return url;
+    }
+
     private selectEvents(): void {
         this.selectSeason.addEventListener("change", async () => {
             await this.loadSeason();
@@ -78,6 +87,27 @@ export class Player {
                         e.target.closest(".track-row") ?? undefined
                     )
                 );
+            }
+        });
+
+        getElement(".share-track").addEventListener("click", async () => {
+            const track = this.getCurrentTrack();
+            if (track && navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `${track.data.title}\n`,
+                        text: `\n${track.data.description}\n`,
+                        url: `${this.getUrl()}`,
+                    });
+                } catch (err) {
+                    if (err instanceof Error && err.name === "AbortError") {
+                        console.log("User canceled.");
+                        return;
+                    }
+                    console.error("Share failed:", err);
+                }
+            } else {
+                alert("Sharing not supported on this browser");
             }
         });
     }
@@ -166,17 +196,9 @@ export class Player {
 
     private copyEvents(): void {
         document.addEventListener("copy", (e) => {
-            const state: SaveState = this.getState(); // however you get it
-            const url = new URL(location.href);
-            url.searchParams.set("season", String(state.season));
-            url.searchParams.set("episode", String(state.episode));
-            url.searchParams.set("seconds", String(state.seconds));
-
-            const shareUrl = url.toString();
-
             if (e.clipboardData) {
                 e.preventDefault();
-                e.clipboardData.setData("text/plain", shareUrl);
+                e.clipboardData.setData("text/plain", this.getUrl().toString());
             }
         });
     }
@@ -250,6 +272,8 @@ export class Player {
         this.audioPlayer.load();
         this.setMetaData(track);
         this.saveState();
+
+        document.title = track.data.title;
     }
 
     private setMetaData(track: Track) {

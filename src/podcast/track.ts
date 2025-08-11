@@ -24,7 +24,7 @@ export class Track {
     private static readonly TEMPLATE_ID = "track-template";
     private readonly _element: HTMLElement;
 
-    constructor(parent: Element, private readonly data: MetaData) {
+    constructor(parent: Element, private readonly _data: MetaData) {
         this._element = getTemplateRoot(Track.TEMPLATE_ID);
 
         elementToTrack.set(this.element, this);
@@ -38,6 +38,10 @@ export class Track {
 
     public static fromElement(element?: Element): Track | undefined {
         return element ? elementToTrack.get(element) : undefined;
+    }
+
+    public get data(): MetaData {
+        return this._data;
     }
 
     public get index(): number {

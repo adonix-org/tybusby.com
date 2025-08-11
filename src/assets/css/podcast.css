@@ -18,10 +18,23 @@ main {
     visibility: visible;
 }
 
+.toolbar {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .select-season {
     border: 1px solid darkgray;
     padding: 5px;
     width: 100%;
+    border-radius: 5px;
+}
+
+button.share-track {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: white;
+    border: 1px solid darkgray;
     border-radius: 5px;
 }
 
