@@ -18,6 +18,8 @@ import { getElement } from "../elements";
 import { Podcast } from "./podcast";
 import { Track } from "./track";
 
+const SHARE_URL = "https://share.adonix.org";
+
 export class Player {
     private static readonly SAVED_STATE_KEY = "adonix.player.resume";
 
@@ -68,7 +70,7 @@ export class Player {
         const track = this.getCurrentTrack();
         if (!track) return url;
 
-        const share = new URL("https://share.adonix.org");
+        const share = new URL(SHARE_URL);
         share.searchParams.set("title", track.data.title);
         share.searchParams.set("link", url.toString());
         return share;
@@ -107,7 +109,6 @@ export class Player {
             if (track && navigator.share) {
                 try {
                     await navigator.share({
-                        text: `${track.data.title}\n\n${track.data.description}`,
                         url: this.getShareUrl().toString(),
                     });
                 } catch (err) {
