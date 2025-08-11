@@ -80,6 +80,7 @@ button.share-track {
 }
 
 .track-row img {
+    aspect-ratio: 1/1;
     width: 70px;
     height: auto;
     border: 3px solid white;
