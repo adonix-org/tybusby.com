@@ -24,10 +24,14 @@ export class Track {
     private static readonly TEMPLATE_ID = "track-template";
     private readonly _element: HTMLElement;
 
-    constructor(parent: Element, private readonly _data: MetaData) {
+    constructor(
+        private readonly parent: Element,
+        private readonly _data: MetaData
+    ) {
         this._element = getTemplateRoot(Track.TEMPLATE_ID);
 
         elementToTrack.set(this.element, this);
+
         this.setTitle().setAlbum().setDuration();
         parent.appendChild(this.element);
     }
@@ -45,9 +49,7 @@ export class Track {
     }
 
     public get index(): number {
-        return Array.from(this.element.parentElement?.children ?? []).indexOf(
-            this.element
-        );
+        return Array.from(this.parent.children).indexOf(this.element);
     }
 
     public show(): void {
