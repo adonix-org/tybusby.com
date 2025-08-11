@@ -95,9 +95,8 @@ export class Player {
             if (track && navigator.share) {
                 try {
                     await navigator.share({
-                        title: `${track.data.title}\n`,
-                        text: `\n${track.data.description}\n`,
-                        url: `${this.getUrl()}`,
+                        text: `\n${track.data.title}\n\n${track.data.description}\n\n`,
+                        url: this.getUrl().toString(),
                     });
                 } catch (err) {
                     if (err instanceof Error && err.name === "AbortError") {
@@ -248,6 +247,7 @@ export class Player {
         // The same track was selected.
         if (track === this.getCurrentTrack()) {
             this.togglePlayback();
+            track.show();
             return;
         }
 
