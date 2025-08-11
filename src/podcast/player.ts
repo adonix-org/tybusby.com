@@ -62,6 +62,18 @@ export class Player {
         return this;
     }
 
+    private getShareUrl(): URL {
+        const url = this.getUrl();
+
+        const track = this.getCurrentTrack();
+        if (!track) return url;
+
+        const share = new URL("https://share.adonix.org");
+        share.searchParams.set("title", track.data.title);
+        share.searchParams.set("link", url.toString());
+        return share;
+    }
+
     private getUrl(): URL {
         const state: SaveState = this.getState();
         const url = new URL(location.href);
@@ -96,7 +108,7 @@ export class Player {
                 try {
                     await navigator.share({
                         text: `${track.data.title}\n\n${track.data.description}`,
-                        url: this.getUrl().toString(),
+                        url: this.getShareUrl().toString(),
                     });
                 } catch (err) {
                     if (err instanceof Error && err.name === "AbortError") {
@@ -197,7 +209,10 @@ export class Player {
         document.addEventListener("copy", (e) => {
             if (e.clipboardData) {
                 e.preventDefault();
-                e.clipboardData.setData("text/plain", this.getUrl().toString());
+                e.clipboardData.setData(
+                    "text/plain",
+                    this.getShareUrl().toString()
+                );
             }
         });
     }

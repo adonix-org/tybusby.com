@@ -86,13 +86,17 @@ export class Track {
         )}`;
     }
 
+    public formatSeconds(seconds: number): string {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds) % 60;
+        return `⏱️ ${minutes}:${secs.toString().padStart(2, "0")}`;
+    }
+
     private formatDuration(seconds: number): string {
         if (seconds == 0) {
             return `⏱️ --:--`;
         }
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds) % 60;
-        return `⏱️ ${minutes}:${secs.toString().padStart(2, "0")}`;
+        return this.formatSeconds(seconds);
     }
 
     public getMetaData(): MediaMetadata {
