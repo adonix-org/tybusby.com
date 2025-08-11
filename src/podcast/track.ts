@@ -106,7 +106,7 @@ export class Track {
             artist: this.data.artist,
             artwork: [
                 {
-                    src: "https://cartalk.adonix.org/cover-art.jpg",
+                    src: "https://assets.adonix.org/img/cover-art.jpg",
                     sizes: "512x512",
                     type: "image/jpeg",
                 },
