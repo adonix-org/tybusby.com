@@ -23,7 +23,7 @@ img {
     --dark-color: rgb(204, 204, 204);
 
     /* progress bar */
-    --progress-color: rgb(255 0 51);
+    --progress-color: rgb(246 157 3);
 
     /* avatar width and height */
     --avatar-xy: 60px;
@@ -82,7 +82,7 @@ footer {
     height: calc(var(--avatar-xy) * 1.1);
     width: calc(var(--avatar-xy) * 1.1);
     border-radius: 50%;
-    border: 2px solid var(--light-border-color);
+    border: 3px solid white;
     pointer-events: none;
 }
 
