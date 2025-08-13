@@ -63,10 +63,14 @@ button.share-track {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding-top: 5px;
-    padding-bottom: 5px;
     border-bottom: 1px solid lightgray;
     min-height: 110px;
+    width: 100%;
+}
+
+.track-row:focus-visible {
+    outline: 2px solid rgb(246 157 3);
+    outline-offset: -2px;
 }
 
 .track-container {
@@ -79,13 +83,17 @@ button.share-track {
     justify-content: center;
 }
 
-.track-row img {
+.track-row .microphone {
     aspect-ratio: 1/1;
-    width: 70px;
-    height: auto;
+    width: 80px;
     border: 3px solid white;
     border-radius: 50%;
     margin: 0.5rem;
+    font-size: 35pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
 }
 
 .track-row:hover {
@@ -121,7 +129,7 @@ button.share-track {
 }
 
 .track-row.selected {
-    background-color: rgb(44 85 139);
+    background-color: #4194d1;
     color: white;
 }
 
