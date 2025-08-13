@@ -161,7 +161,11 @@ export class Player {
 
                 case "Escape":
                     e.preventDefault();
-                    this.getCurrentTrack()?.show();
+                    const track = this.getCurrentTrack();
+                    if (track) {
+                        track.element.focus({ preventScroll: true });
+                        track.show();
+                    }
                     break;
 
                 case "ArrowRight":
