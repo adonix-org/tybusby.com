@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
+import Bowser from "bowser";
 import { getElement } from "../elements";
 import { Podcast } from "./podcast";
 import { Track } from "./track";
 
-const SHARE_URL = "https://share.adonix.org";
+const SHARE_BASE = "https://share.adonix.org";
+
+const browser = Bowser.getParser(window.navigator.userAgent);
 
 export class Player {
     private static readonly SAVED_STATE_KEY = "adonix.player.resume";
@@ -70,7 +73,7 @@ export class Player {
         const track = this.getCurrentTrack();
         if (!track) return url;
 
-        const share = new URL(SHARE_URL);
+        const share = new URL("share.html", SHARE_BASE);
         share.searchParams.set("title", track.data.title);
         share.searchParams.set("link", url.toString());
         return share;
@@ -104,24 +107,37 @@ export class Player {
             }
         });
 
-        getElement(".share-track").addEventListener("click", async () => {
+        const shareButton = getElement(
+            ".share-track",
+            document,
+            HTMLButtonElement
+        );
+        shareButton.addEventListener("click", async () => {
             const track = this.getCurrentTrack();
             if (track && navigator.share) {
                 try {
-                    await navigator.share({
-                        url: this.getShareUrl().toString(),
-                    });
+                    shareButton.disabled = true;
+                    await navigator.share(this.getShareData(track));
                 } catch (err) {
                     if (err instanceof Error && err.name === "AbortError") {
-                        console.log("User canceled.");
                         return;
                     }
                     console.error("Share failed:", err);
+                } finally {
+                    shareButton.disabled = false;
                 }
             } else {
                 alert("Sharing not supported on this browser");
             }
         });
+    }
+
+    private getShareData(track: Track): ShareData {
+        const isSafari = browser.getBrowserName(true) === "safari";
+        return {
+            url: this.getShareUrl().toString(),
+            ...(isSafari ? { title: track.data.title } : {}),
+        };
     }
 
     private scrollEvents(): void {
