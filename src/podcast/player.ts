@@ -70,7 +70,7 @@ export class Player {
         const track = this.getCurrentTrack();
         if (!track) return url;
 
-        const share = new URL(SHARE_URL);
+        const share = new URL("share", SHARE_URL);
         share.searchParams.set("title", track.data.title);
         share.searchParams.set("link", url.toString());
         return share;
