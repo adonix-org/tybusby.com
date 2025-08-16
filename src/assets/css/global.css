@@ -61,6 +61,41 @@ footer {
     z-index: 1000;
 }
 
+.messages {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 0.3rem;
+    width: 100%;
+}
+
+.message {
+    display: flex;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: solid 1px lightgray;
+    gap: 0.5rem;
+}
+
+.message.error {
+    color: darkred;
+    background-color: rgb(252, 223, 223);
+}
+
+.message.info {
+    color: darkblue;
+}
+
+.message.warning {
+    color: rgb(76, 76, 76);
+    background-color: rgb(254, 254, 183);
+}
+
+.message .message-type {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 .avatar-container {
     position: relative;
 }

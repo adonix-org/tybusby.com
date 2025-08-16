@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
+import { Message } from "../message";
 import { Spinner } from "../spinner";
 import { Player } from "./player";
 
 const spinner = new Spinner();
 spinner.start();
 
-await Player.create();
-
-spinner.stop();
+try {
+    await Player.create();
+} catch (error) {
+    new Message(String(error));
+    new Message(String(error));
+} finally {
+    spinner.stop();
+}
