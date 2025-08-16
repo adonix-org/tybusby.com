@@ -133,10 +133,12 @@ export class Player {
     }
 
     private getShareData(track: Track): ShareData {
-        const isSafari = browser.getBrowserName(true) === "safari";
+        const addTitle =
+            browser.getBrowserName(true) === "safari" ||
+            browser.getOS().name === "iOS";
         return {
             url: this.getShareUrl().toString(),
-            ...(isSafari ? { title: track.data.title } : {}),
+            ...(addTitle ? { title: track.data.title } : {}),
         };
     }
 
