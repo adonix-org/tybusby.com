@@ -71,14 +71,15 @@ footer {
 
 .message {
     display: flex;
-    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+    align-items: baseline;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
     border-radius: 5px;
     border: solid 1px lightgray;
     gap: 0.5rem;
-    align-items: center;
 }
 
-.message.error {
+.message.error,
+.message.critical {
     background-color: rgb(252, 223, 223);
 }
 
@@ -86,13 +87,13 @@ footer {
     background-color: rgb(254, 254, 183);
 }
 
-.message .message-icon {
-    font-size: 16pt;
-}
-
 .message .message-type {
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.message .message-text {
+    white-space: pre-line;
 }
 
 .message button.message-close {

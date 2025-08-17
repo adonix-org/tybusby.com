@@ -16,7 +16,14 @@
 
 import { getElement } from "./elements";
 
-type MessageType = "success" | "tip" | "info" | "warning" | "error" | "debug";
+type MessageType =
+    | "success"
+    | "tip"
+    | "info"
+    | "warning"
+    | "error"
+    | "critical"
+    | "debug";
 
 const emojis: Record<MessageType, string> = {
     success: "✅",
@@ -24,6 +31,7 @@ const emojis: Record<MessageType, string> = {
     info: "ℹ️",
     warning: "⚠️",
     error: "⛔",
+    critical: "🚨",
     debug: "🔧",
 } as const;
 
@@ -49,7 +57,7 @@ export class Message {
 
         const messageText = document.createElement("div");
         messageText.classList.add("message-text");
-        messageText.innerText = text;
+        messageText.innerHTML = text;
 
         const closeButton = document.createElement("button");
         closeButton.classList.add("message-close");
