@@ -73,3 +73,4 @@ export class Message {
         element.appendChild(message);
     }
 }
+

@@ -23,6 +23,7 @@ import { ReportRender } from "./render/report";
 import { Progress } from "../progress";
 import { Spinner } from "../spinner";
 import { getElementById } from "../elements";
+import { Message } from "../message";
 
 //NationalWeatherService.origin = "http://localhost:8787";
 NationalWeatherService.origin = "https://nws.adonix.org";
@@ -69,6 +70,7 @@ Promise.all(promises).then((results) => {
     const parent = getElementById(REPORT_PARENT_ID);
     results.forEach((result, index) => {
         if (result instanceof Error) {
+            new Message(result.message);
             console.group(`coordinates[${index}]: ${result.message}`);
             console.error(result);
             console.dir(result);
@@ -97,6 +99,7 @@ try {
     const alertProduct = await new AlertAdminMessage().get();
     console.log(alertProduct?.productText);
 } catch (err) {
+    new Message(String(err));
     console.error("Failed to get alert admin product:", err);
 }
 
@@ -121,6 +124,7 @@ function startStaggeredRefresh(
                 );
                 await reportRenderer.refresh();
             } catch (err) {
+                new Message(`Error refreshing ${stationId}: ${String(err)}`);
                 console.error(`Error refreshing ${stationId}:`, err);
             } finally {
                 setTimeout(scheduleRefresh, REFRESH_RATE);
