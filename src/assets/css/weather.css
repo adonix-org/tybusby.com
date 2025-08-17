@@ -224,6 +224,12 @@
     overflow-x: auto;
 }
 
+pre {
+    font-family: monospace;
+    font-size: calc(min(10pt, 100vw / 44));
+    white-space: pre;
+}
+
 .product-dialog .bottom-fade {
     position: absolute;
     bottom: 0;

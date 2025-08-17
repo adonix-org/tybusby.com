@@ -50,7 +50,8 @@ class ProductDialog {
 
     public show(title: string, text: string): void {
         // Normalize the end of every display string.
-        this.dialogText.innerHTML = this.linkify(text.replace(/\n*$/, "\n\n"));
+        this.dialogText.innerHTML =
+            "<pre>" + this.linkify(text.replace(/\n*$/, "\n\n")) + "</pre>";
         this.dialogTitle.textContent = title;
 
         if (!this.dialog.open) {
