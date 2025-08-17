@@ -226,7 +226,7 @@
 
 pre {
     font-family: monospace;
-    font-size: calc(min(10pt, 100vw / 35));
+    font-size: calc(min(10pt, 100vw / 44));
     white-space: pre;
 }
 
