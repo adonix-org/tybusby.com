@@ -25,7 +25,11 @@ try {
     await Player.create();
 } catch (error) {
     new Message(String(error));
-    new Message(String(error));
+    new Message(String(error), "success");
+    new Message(String(error), "warning");
+    new Message(String(error), "info");
+    new Message(String(error), "tip");
+    new Message(String(error), "debug");
 } finally {
     spinner.stop();
 }
