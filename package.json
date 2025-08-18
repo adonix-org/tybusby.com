@@ -32,8 +32,8 @@
     "devDependencies": {
         "@types/geojson": "^7946.0.16",
         "@types/luxon": "^3.7.1",
-        "tsx": "^4.20.3",
+        "tsx": "^4.20.4",
         "typescript": "^5.9.2",
-        "vite": "^7.1.1"
+        "vite": "^7.1.2"
     }
 }
