@@ -6,23 +6,68 @@
 }
 
 .video-frame {
-    animation: bg-video-loading 2s ease-in-out infinite;
+    position: relative;
     aspect-ratio: 16/9;
     border: 1px solid;
     border-color: darkgray;
-    background-image: url("/img/play.png");
-    background-size: 20%;
-    background-position: center;
-    background-repeat: no-repeat;
+    cursor: pointer;
 }
 
-.video-frame.loaded {
-    animation: none;
+.video-frame iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     border: none;
 }
 
-.video-frame.timeout {
-    animation: none;
+.video-frame .video-overlay-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.2) 15%,
+        rgba(0, 0, 0, 0.07) 20%,
+        rgba(0, 0, 0, 0.01) 30%
+    );
+    pointer-events: none;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.video-frame .video-title {
+    font-family: "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 1.3;
+    padding: 1rem;
+    position: absolute;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    -webkit-font-smoothing: antialiased;
+    color: #eee;
+    z-index: 3;
+}
+
+.video-frame .video-preview {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.video-frame .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 68px;
+    height: 48px;
+    background: url("/img/play.svg") no-repeat center center;
+    background-size: contain;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 @keyframes bg-video-loading {
@@ -33,16 +78,4 @@
     50% {
         background-size: 22%;
     }
-}
-
-.video-frame > iframe {
-    border: none;
-    display: block;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-}
-
-.video-frame > iframe.loaded {
-    opacity: 1;
 }
