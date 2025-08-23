@@ -97,7 +97,6 @@ class Video extends EventEmitter<VideoEvents> {
 
     private onclick() {
         spinner.start();
-        console.log("CLICKED! " + this.video.video);
 
         const iframe = document.createElement("iframe");
         iframe.src = `${this.video.video}?autoplay=true`;
