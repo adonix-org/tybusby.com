@@ -102,7 +102,6 @@ class Video extends EventEmitter<VideoEvents> {
         this._previewImg.style.display = "block";
         this._previewImg.style.width = "100%";
 
-        // Overlay & play button
         const overlay = document.createElement("div");
         overlay.classList.add("video-overlay-top");
 
@@ -112,11 +111,6 @@ class Video extends EventEmitter<VideoEvents> {
         this._element.appendChild(this._previewImg);
         this._element.appendChild(overlay);
         this._element.appendChild(play);
-
-        // click to autoplay
-        this._element.addEventListener("click", () => {
-            if (!this._iframeLoaded) this.loadIframe(true);
-        });
     }
 
     public get element() {
@@ -136,8 +130,6 @@ class Video extends EventEmitter<VideoEvents> {
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
         iframe.referrerPolicy = "strict-origin-when-cross-origin";
-
-        // initially hidden and absolutely positioned on top of preview
         iframe.style.position = "absolute";
         iframe.style.top = "0";
         iframe.style.left = "0";
@@ -145,9 +137,10 @@ class Video extends EventEmitter<VideoEvents> {
         iframe.style.height = "100%";
         iframe.style.display = "none";
 
-        // once loaded, show iframe
         iframe.addEventListener("load", () => {
-            iframe.style.display = "block"; // seamlessly covers preview
+            setTimeout(() => {
+                iframe.style.display = "block";
+            }, 500);
         });
 
         this._element.appendChild(iframe);
