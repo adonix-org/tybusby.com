@@ -20,6 +20,7 @@
     width: 100%;
     height: 100%;
     border: none;
+    z-index: 20;
 }
 
 .video-frame .video-overlay-top {
@@ -56,6 +57,7 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+    z-index: 4;
 }
 
 .video-frame .play-button {
@@ -68,6 +70,7 @@
     background-size: contain;
     transform: translate(-50%, -50%);
     pointer-events: none;
+    z-index: 5;
 }
 
 @keyframes bg-video-loading {
