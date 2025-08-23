@@ -16,7 +16,6 @@
 import { getElementById } from "../elements";
 import { EventEmitter } from "../event";
 import { ProgressData } from "../progress";
-import { Spinner } from "../spinner";
 
 interface YouTubeVideo {
     id: string;
