@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export interface MetaData {
+export interface MetaTrack {
     url: string;
     filename: string;
     title: string;
@@ -27,6 +27,13 @@ export interface MetaData {
     seconds: number;
     genre: string[];
     channels: number;
+}
+
+export interface MetaPodcast {
+    name: string;
+    artwork: string;
+    copyright: string;
+    seasons: string[];
 }
 
 export class HTTPError extends Error {
@@ -43,34 +50,27 @@ export class HTTPError extends Error {
 
 export class Podcast {
     private static readonly VERSION = "v1";
+    private readonly api: URL;
 
-    private static readonly BASE = `https://podcast.adonix.org`;
-    private static readonly API = new URL(
-        `${Podcast.BASE}/api/${Podcast.VERSION}/seasons`
-    );
-
-    public async getSeasons(): Promise<string[]> {
-        return await this.get<string[]>();
+    constructor(private readonly base: string = "https://podcast.adonix.org") {
+        this.api = new URL(`${this.base}/api/${Podcast.VERSION}/seasons`);
     }
 
-    public async getPlaylist(season: string): Promise<MetaData[]> {
-        const url = new URL(`${Podcast.API.toString()}/${season}`);
-        return await this.get<MetaData[]>(url);
+    public async getPodcast(): Promise<MetaPodcast> {
+        return await this.get<MetaPodcast>();
     }
 
-    protected async get<T>(url: URL = Podcast.API): Promise<T> {
+    public async getSeason(season: string): Promise<MetaTrack[]> {
+        const url = new URL(`${this.api.toString()}/${season}`);
+        return await this.get<MetaTrack[]>(url);
+    }
+
+    protected async get<T>(url: URL = this.api): Promise<T> {
         let response: Response;
         try {
-            response = await fetch(url, {
-                method: "GET",
-            });
+            response = await fetch(url, { method: "GET" });
         } catch (cause) {
-            if (cause instanceof Error) {
-                throw cause;
-            }
-            throw new Error(`${String(cause)} ${url.toString()}`, {
-                cause,
-            });
+            throw new Error(`${String(cause)} ${url.toString()}`, { cause });
         }
 
         if (response.ok) {

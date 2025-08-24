@@ -379,7 +379,7 @@ export class Player {
 
     private async loadSeason(): Promise<void> {
         const season = this.selectSeason.value;
-        const playlist = await this.podcast.getPlaylist(season);
+        const playlist = await this.podcast.getSeason(season);
 
         this.trackList.innerHTML = "";
 
@@ -389,8 +389,8 @@ export class Player {
     }
 
     private async loadSeasons(): Promise<void> {
-        const seasons = await this.podcast.getSeasons();
-        for (const season of seasons) {
+        const podcast = await this.podcast.getPodcast();
+        for (const season of podcast.seasons) {
             const option = document.createElement("option");
             option.textContent = season;
             option.value = season;

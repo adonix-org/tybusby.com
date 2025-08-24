@@ -15,7 +15,7 @@
  */
 
 import { DateTime } from "luxon";
-import { MetaData } from "./podcast";
+import { MetaTrack } from "./podcast";
 import { getElement, getTemplateRoot } from "../elements";
 
 const elementToTrack = new WeakMap<Element, Track>();
@@ -26,7 +26,7 @@ export class Track {
 
     constructor(
         private readonly parent: Element,
-        private readonly _data: MetaData
+        private readonly _data: MetaTrack
     ) {
         this._element = getTemplateRoot(Track.TEMPLATE_ID);
 
@@ -44,7 +44,7 @@ export class Track {
         return element ? elementToTrack.get(element) : undefined;
     }
 
-    public get data(): MetaData {
+    public get data(): MetaTrack {
         return this._data;
     }
 
