@@ -17,8 +17,8 @@ import { getElementById } from "../elements";
 
 interface YouTubeVideo {
     id: string;
-    preview: string;
-    video: string;
+    previewImg: string;
+    url: string;
 }
 
 export class VideoGroup {
@@ -31,8 +31,8 @@ export class VideoGroup {
         ids.forEach((id) => {
             this.videos.push({
                 id,
-                preview: `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
-                video: `https://www.youtube-nocookie.com/embed/${id}`,
+                previewImg: `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
+                url: `https://www.youtube-nocookie.com/embed/${id}`,
             });
         });
     }
@@ -72,13 +72,12 @@ class Video {
     private loaded = false;
 
     constructor(private readonly video: YouTubeVideo) {
-
         this.element = document.createElement("div");
         this.element.classList.add("video-frame");
 
         const preview = document.createElement("img");
         preview.classList.add("video-preview");
-        preview.src = this.video.preview;
+        preview.src = this.video.previewImg;
 
         const overlay = document.createElement("div");
         overlay.classList.add("video-overlay-top");
@@ -97,7 +96,7 @@ class Video {
 
         const iframe = document.createElement("iframe");
         iframe.classList.add("youtube-video");
-        iframe.src = this.video.video;
+        iframe.src = this.video.url;
         iframe.title = "YouTube Video Player";
         iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";

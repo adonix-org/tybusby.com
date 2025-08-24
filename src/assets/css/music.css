@@ -8,8 +8,7 @@
 .video-frame {
     position: relative;
     aspect-ratio: 16/9;
-    border: 1px solid;
-    border-color: darkgray;
+    background-color: black;
     cursor: pointer;
 }
 
@@ -50,6 +49,7 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+    transition: opacity 250ms ease-in-out;
     z-index: 1;
 }
 
