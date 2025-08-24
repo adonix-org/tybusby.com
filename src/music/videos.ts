@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 import { getElementById } from "../elements";
-import { EventEmitter } from "../event";
-import { ProgressData } from "../progress";
 
 interface YouTubeVideo {
     id: string;
@@ -23,24 +21,12 @@ interface YouTubeVideo {
     video: string;
 }
 
-interface VideoGroupEvents {
-    start: void;
-    progress: ProgressData;
-    complete: void;
-}
-
-interface VideoEvents {
-    loaded: string;
-    timeout: void;
-}
-
-export class VideoGroup extends EventEmitter<VideoGroupEvents> {
+export class VideoGroup {
     private readonly parent: HTMLElement;
     private readonly videos: YouTubeVideo[] = [];
     private readonly elementMap = new WeakMap<HTMLElement, Video>();
 
     constructor(parentId: string, ids: string[]) {
-        super();
         this.parent = getElementById(parentId);
         ids.forEach((id) => {
             this.videos.push({
@@ -52,14 +38,12 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     }
 
     public load(): this {
-        // Render all previews
         const videoInstances = this.videos.map((v) => new Video(v));
         videoInstances.forEach((v) => {
             this.parent.appendChild(v.element);
             this.elementMap.set(v.element, v);
         });
 
-        // IntersectionObserver to load iframe when visible
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -68,7 +52,7 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
                             entry.target as HTMLElement
                         );
                         if (video) {
-                            video.loadIframe();
+                            video.load();
                             observer.unobserve(entry.target);
                         }
                     }
@@ -83,24 +67,18 @@ export class VideoGroup extends EventEmitter<VideoGroupEvents> {
     }
 }
 
-class Video extends EventEmitter<VideoEvents> {
-    private _element: HTMLElement;
-    private _iframeLoaded = false;
-    private _previewImg: HTMLImageElement;
+class Video {
+    public readonly element: HTMLElement;
+    private loaded = false;
 
     constructor(private readonly video: YouTubeVideo) {
-        super();
 
-        this._element = document.createElement("div");
-        this._element.classList.add("video-frame");
-        this._element.style.position = "relative"; // make container relative for absolute iframe
+        this.element = document.createElement("div");
+        this.element.classList.add("video-frame");
 
-        // Preview image
-        this._previewImg = document.createElement("img");
-        this._previewImg.classList.add("video-preview");
-        this._previewImg.src = this.video.preview;
-        this._previewImg.style.display = "block";
-        this._previewImg.style.width = "100%";
+        const preview = document.createElement("img");
+        preview.classList.add("video-preview");
+        preview.src = this.video.preview;
 
         const overlay = document.createElement("div");
         overlay.classList.add("video-overlay-top");
@@ -108,41 +86,30 @@ class Video extends EventEmitter<VideoEvents> {
         const play = document.createElement("div");
         play.classList.add("play-button");
 
-        this._element.appendChild(this._previewImg);
-        this._element.appendChild(overlay);
-        this._element.appendChild(play);
+        this.element.appendChild(preview);
+        this.element.appendChild(overlay);
+        this.element.appendChild(play);
     }
 
-    public get element() {
-        return this._element;
-    }
-
-    public loadIframe(autoplay = false) {
-        if (this._iframeLoaded) return;
-        this._iframeLoaded = true;
+    public load() {
+        if (this.loaded) return;
+        this.loaded = true;
 
         const iframe = document.createElement("iframe");
-        iframe.src = `${this.video.video}?enablejsapi=1${
-            autoplay ? "&autoplay=1" : ""
-        }`;
-        iframe.title = "YouTube video player";
+        iframe.classList.add("youtube-video");
+        iframe.src = this.video.video;
+        iframe.title = "YouTube Video Player";
         iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
         iframe.referrerPolicy = "strict-origin-when-cross-origin";
-        iframe.style.position = "absolute";
-        iframe.style.top = "0";
-        iframe.style.left = "0";
-        iframe.style.width = "100%";
-        iframe.style.height = "100%";
-        iframe.style.display = "none";
 
         iframe.addEventListener("load", () => {
             setTimeout(() => {
-                iframe.style.display = "block";
+                iframe.classList.add("loaded");
             }, 500);
         });
 
-        this._element.appendChild(iframe);
+        this.element.appendChild(iframe);
     }
 }

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { Progress } from "../progress";
-import { Spinner } from "../spinner";
 import { VideoGroup } from "./videos";
 
 const IDS = [
@@ -38,18 +36,4 @@ const IDS = [
     `VjfvBwYRRzM`, // ANÚNA: Suantraí/Lullaby
 ];
 
-const spinner = new Spinner();
-const progress = new Progress();
-
-new VideoGroup("music-video-grid", IDS)
-    .on("progress", (data) => {
-        progress.percent = data.percent;
-    })
-    .once("start", () => {
-        spinner.start();
-    })
-    .once("complete", function () {
-        progress.complete();
-        spinner.stop();
-    })
-    .load();
+new VideoGroup("music-video-grid", IDS).load();

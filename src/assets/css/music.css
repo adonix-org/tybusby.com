@@ -13,14 +13,20 @@
     cursor: pointer;
 }
 
-.video-frame iframe {
+.video-frame .youtube-video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border: none;
-    z-index: 20;
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
+    z-index: 10;
+}
+
+.video-frame .youtube-video.loaded {
+    opacity: 1;
 }
 
 .video-frame .video-overlay-top {
@@ -37,7 +43,6 @@
         rgba(0, 0, 0, 0.01) 30%
     );
     pointer-events: none;
-    pointer-events: none;
     z-index: 2;
 }
 
@@ -45,7 +50,8 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
-    z-index: 4;
+    cursor: default;
+    z-index: 1;
 }
 
 .video-frame .play-button {
@@ -58,15 +64,5 @@
     background-size: contain;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    z-index: 5;
-}
-
-@keyframes bg-video-loading {
-    0%,
-    100% {
-        background-size: 20%;
-    }
-    50% {
-        background-size: 22%;
-    }
+    z-index: 3;
 }
