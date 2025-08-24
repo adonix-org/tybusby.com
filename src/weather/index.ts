@@ -45,9 +45,6 @@ const coordinates: Coordinate[] = [
 
     // Waverly, IA
     [42.7382, -92.4781],
-
-    // Sheldon, IA
-    [43.1828, -95.8418],
 ];
 
 const REPORT_PARENT_ID = "weather-grid";
