@@ -79,14 +79,10 @@ class Video {
         preview.classList.add("video-preview");
         preview.src = this.video.previewImg;
 
-        const overlay = document.createElement("div");
-        overlay.classList.add("video-overlay-top");
-
         const play = document.createElement("div");
         play.classList.add("play-button");
 
         this.element.appendChild(preview);
-        this.element.appendChild(overlay);
         this.element.appendChild(play);
     }
 
