@@ -36,14 +36,21 @@ export interface MetaPodcast {
     seasons: string[];
 }
 
-export class HTTPError extends Error {
+export interface ErrorJson {
+    status: number;
+    error: string;
+    details: string;
+}
+
+export class HTTPError extends Error implements ErrorJson {
     constructor(
-        public readonly status: number,
-        public readonly statusText: string,
-        public readonly body: string,
-        public readonly url: string
+        public status: number,
+        public error: string,
+        public details: string,
+        public url: string,
+        options?: { cause?: unknown }
     ) {
-        super(body);
+        super(`${status} ${error} for ${url}`, options);
         this.name = new.target.name;
     }
 }
@@ -70,18 +77,35 @@ export class Podcast {
         try {
             response = await fetch(url, { method: "GET" });
         } catch (cause) {
-            throw new Error(`${String(cause)} ${url.toString()}`, { cause });
-        }
-
-        if (response.ok) {
-            return (await response.json()) as T;
+            throw new Error(
+                `Network error fetching ${url.toString()}: ${String(cause)}`,
+                { cause }
+            );
         }
 
         const text = await response.text();
+
+        if (response.ok) {
+            if (!text) return {} as T;
+            return JSON.parse(text) as T;
+        }
+
+        let json: ErrorJson;
+        try {
+            json = JSON.parse(text);
+        } catch (error) {
+            throw new HTTPError(
+                response.status,
+                response.statusText,
+                text,
+                url.toString(),
+                { cause: error }
+            );
+        }
         throw new HTTPError(
-            response.status,
-            response.statusText,
-            text,
+            json.status,
+            json.error,
+            json.details,
             url.toString()
         );
     }
