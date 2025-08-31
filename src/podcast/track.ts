@@ -63,18 +63,18 @@ export class Track {
         return this.data.url;
     }
 
-    public setTitle(title: string = this.data.title): Track {
+    public setTitle(title: string = this.data.title): this {
         getElement(".track-title", this.element).textContent = title;
         return this;
     }
 
-    public setAlbum(album: string = this.data.album): Track {
+    public setAlbum(album: string = this.data.album): this {
         getElement(".track-album", this.element).textContent =
             this.formatAlbum(album);
         return this;
     }
 
-    public setDuration(seconds: number = this.data.seconds): Track {
+    public setDuration(seconds: number = this.data.seconds): this {
         getElement(".track-length", this.element).textContent =
             this.formatDuration(seconds);
         return this;

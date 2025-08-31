@@ -48,13 +48,12 @@ export class AlertsRender extends BaseRender {
     private getBody(feature: AlertFeatureProduct): string {
         const product = feature.product;
         let text = "";
-        if (product && product.segments.length) {
-            product?.segments.forEach((segment) => {
+        if (product?.segments.length) {
+            product.segments.forEach((segment) => {
                 text += [product?.headline, segment.body].join("\n\n");
             });
             return text + "\n\n";
         }
-        // TODO: Remove?
         text += feature.properties.parameters.AWIPSidentifier?.[0] + "\n";
 
         text += feature.properties.event + "\n";

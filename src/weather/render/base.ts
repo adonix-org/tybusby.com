@@ -17,9 +17,7 @@
 import { WeatherReport } from "@adonix.org/nws-report";
 import { getElement, getElementById, ElementClass } from "../../elements";
 
-export interface RenderClass {
-    new (parent: Element, report: WeatherReport): BaseRender;
-}
+export type RenderClass = new (parent: Element, report: WeatherReport) => BaseRender;
 
 export abstract class BaseRender {
     constructor(

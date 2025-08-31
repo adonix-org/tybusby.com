@@ -24,7 +24,7 @@ spinner.start();
 try {
     await Player.create();
 } catch (error) {
-    new Message(String(error));
+    new Message(String(error)).show();
 } finally {
     spinner.stop();
 }

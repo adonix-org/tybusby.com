@@ -36,41 +36,51 @@ const emojis: Record<MessageType, string> = {
 } as const;
 
 export class Message {
+    public element: HTMLDivElement;
+
     constructor(
-        text: string,
-        type: MessageType = "error",
-        parent: ParentNode = document
+        private readonly text: string,
+        private readonly type: MessageType = "error",
+        private readonly parent: ParentNode = document
     ) {
-        const element = getElement(".messages", parent);
+        this.element = this.createElement();
+    }
+
+    private createElement(): HTMLDivElement {
+        const container = getElement(".messages", this.parent);
 
         const message = document.createElement("div");
-        message.classList.add("message");
-        message.classList.add(type);
+        message.classList.add("message", this.type);
 
         const messageIcon = document.createElement("div");
         messageIcon.classList.add("message-icon");
-        messageIcon.innerText = emojis[type];
+        messageIcon.innerText = emojis[this.type];
 
         const messageType = document.createElement("div");
         messageType.classList.add("message-type");
-        messageType.innerText = `${type}:`;
+        messageType.innerText = `${this.type}:`;
 
         const messageText = document.createElement("div");
         messageText.classList.add("message-text");
-        messageText.innerHTML = text;
+        messageText.innerHTML = this.text;
 
         const closeButton = document.createElement("button");
         closeButton.classList.add("message-close");
         closeButton.textContent = "✖️";
-        closeButton.addEventListener("click", () => {
-            element.removeChild(message);
-        });
+        closeButton.addEventListener("click", () => this.dismiss());
 
-        message.appendChild(messageIcon);
-        message.appendChild(messageType);
-        message.appendChild(messageText);
-        message.appendChild(closeButton);
-        element.appendChild(message);
+        message.append(messageIcon, messageType, messageText, closeButton);
+        container.appendChild(message);
+
+        return message;
+    }
+
+    public show(): void {
+        this.element.style.display = "block";
+    }
+
+    public dismiss(): void {
+        const container = this.element.parentElement;
+        if (container) container.removeChild(this.element);
     }
 }
-

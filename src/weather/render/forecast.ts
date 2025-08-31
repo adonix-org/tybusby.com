@@ -30,13 +30,11 @@ const ICON_SELECTORS = {
 } as const;
 type IconSelector = typeof ICON_SELECTORS;
 
-interface PeriodRenderClass {
-    new (
+type PeriodRenderClass = new (
         parent: Element,
         report: WeatherReport,
         period: ForecastPeriod
-    ): BaseRender;
-}
+    ) => BaseRender;
 
 export class ForecastRender extends BaseRender {
     private static readonly TEMPLATE_ID = "forecast-period-template";

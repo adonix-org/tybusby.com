@@ -53,8 +53,8 @@ $$`;
 
 function hwoFilter(body: string): boolean {
     const noHazardRegex = /no hazardous weather is expected at this time/i;
-    const dayOneRegex = /\.DAY ONE[\s\S]*?(?=\.DAYS? TWO|\Z)/;
-    const match = body.match(dayOneRegex);
+    const dayOneRegex = /\.DAY ONE[\s\S]*?(?=\.DAYS? TWO|$)/;
+    const match = RegExp(dayOneRegex).exec(body);
 
     if (!match) {
         return true;

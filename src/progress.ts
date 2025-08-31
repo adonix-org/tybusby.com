@@ -23,7 +23,7 @@ export interface ProgressData {
 }
 
 export class Progress {
-    private _element: HTMLElement;
+    private readonly _element: HTMLElement;
     private _percent: number = 0;
 
     constructor(id: string = "progress") {
