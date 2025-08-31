@@ -27,7 +27,10 @@ export class EventEmitter<TEvents extends EventsMap> {
         event: K,
         listener: Listener<TEvents[K]>
     ): this {
-        (this.listeners[event] ||= []).push(listener);
+        if (!this.listeners[event]) {
+            this.listeners[event] = [];
+        }
+        this.listeners[event].push(listener);
         return this;
     }
 
@@ -48,7 +51,7 @@ export class EventEmitter<TEvents extends EventsMap> {
         const wrapper = ((
             ...args: TEvents[K] extends void ? [] : [TEvents[K]]
         ) => {
-            this.off(event, wrapper as Listener<TEvents[K]>);
+            this.off(event, wrapper);
             listener(...(args as [TEvents[K]]));
         }) as Listener<TEvents[K]>;
 
