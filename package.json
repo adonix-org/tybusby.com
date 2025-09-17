@@ -28,7 +28,7 @@
         "@adonix.org/nws-report": "4.1.2",
         "@passwordless-id/webauthn": "^2.3.1",
         "bowser": "^2.12.0",
-        "luxon": "^3.7.1"
+        "luxon": "^3.7.2"
     },
     "devDependencies": {
         "wrangler": "^4.37.1",
