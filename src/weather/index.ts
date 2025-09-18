@@ -34,9 +34,6 @@ NationalWeatherService.origin = "https://nws.adonix.org";
 type Coordinate = [number, number];
 
 const coordinates: Coordinate[] = [
-    // Error
-    [0, 0],
-
     // Horseheads, NY
     [42.1762, -76.8358],
 
