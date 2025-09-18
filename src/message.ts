@@ -76,7 +76,7 @@ export class Message {
     }
 
     public show(): void {
-        this.element.style.display = "block";
+        this.element.classList.add("show");
     }
 
     public dismiss(): void {

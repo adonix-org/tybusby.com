@@ -57,7 +57,6 @@ footer {
     flex-direction: column;
     background-color: var(--light-footer-background-color);
     color: var(--light-footer-color);
-    display: flex;
     z-index: 1000;
 }
 
@@ -92,7 +91,10 @@ footer {
 }
 
 .message .message-text {
-    white-space: pre-line;
+    font-family: "Fira Code", "JetBrains Mono", "Source Code Pro", "Consolas",
+        "Inconsolata", monospace;
+    white-space: pre;
+    word-wrap: break-word;
 }
 
 .message button.message-close {

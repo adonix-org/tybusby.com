@@ -24,6 +24,7 @@ import { Progress } from "../progress";
 import { Spinner } from "../spinner";
 import { getElementById } from "../elements";
 import { Message } from "../message";
+import { formatNWSError } from "./errors";
 
 NationalWeatherService.origin = "https://nws.adonix.org";
 
@@ -33,6 +34,9 @@ NationalWeatherService.origin = "https://nws.adonix.org";
 type Coordinate = [number, number];
 
 const coordinates: Coordinate[] = [
+    // Error
+    [0, 0],
+
     // Horseheads, NY
     [42.1762, -76.8358],
 
@@ -65,13 +69,7 @@ const promises = coordinates.map(([lat, lon]) =>
 Promise.all(promises).then((results) => {
     const parent = getElementById(REPORT_PARENT_ID);
     results.forEach((result, index) => {
-        if (result instanceof Error) {
-            new Message(result.message).show();
-            console.group(`coordinates[${index}]: ${result.message}`);
-            console.error(result);
-            console.dir(result);
-            console.groupEnd();
-        } else {
+        if (result instanceof WeatherReport) {
             const reportRenderer = new ReportRender(parent, result);
             reportRenderer.render();
             const staggerDelay = (index + 1) * 1000 * 60;
@@ -81,6 +79,10 @@ Promise.all(promises).then((results) => {
                     `station-${index}`,
                 staggerDelay
             );
+        } else {
+            console.group(`coordinates[${index}]: ${result.message}`);
+            new Message(formatNWSError(result)).show();
+            console.groupEnd();
         }
     });
 });
@@ -112,21 +114,25 @@ function startStaggeredRefresh(
     stationId: string,
     delayMs: number
 ) {
-    setTimeout(function scheduleRefresh() {
-        (async () => {
-            try {
-                console.log(
-                    `refreshing ${stationId} at ${new Date().toLocaleTimeString()}`
-                );
-                await reportRenderer.refresh();
-            } catch (err) {
-                new Message(
-                    `Error refreshing ${stationId}: ${String(err)}`
-                ).show();
-                console.error(`Error refreshing ${stationId}:`, err);
-            } finally {
-                setTimeout(scheduleRefresh, REFRESH_RATE);
-            }
-        })();
-    }, delayMs);
+    async function doRefresh() {
+        try {
+            console.log(
+                `refreshing ${stationId} at ${new Date().toLocaleTimeString()}`
+            );
+            await reportRenderer.refresh();
+        } catch (err) {
+            const message = `Error refreshing ${stationId}: ${formatNWSError(
+                err
+            )}`;
+            new Message(message).show();
+        } finally {
+            setTimeout(scheduleRefresh, REFRESH_RATE);
+        }
+    }
+
+    function scheduleRefresh() {
+        void doRefresh();
+    }
+
+    setTimeout(scheduleRefresh, delayMs);
 }
