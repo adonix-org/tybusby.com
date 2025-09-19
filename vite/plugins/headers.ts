@@ -60,20 +60,15 @@ export function generateHeaders() {
                         .createHash("sha1")
                         .update(content)
                         .digest("hex");
-                    const etag = `"${hash.slice(0, 12)}"`;
-
-                    const lastModified = new Date().toUTCString(); // build time
+                    const etag = `"${hash}"`;
 
                     const paths = [filePath, noExtPath];
                     if (file === "index.html") {
                         paths.push(`/`);
                     }
-                    
+
                     return paths
-                        .map(
-                            (p) =>
-                                `${p}\n  Last-Modified: ${lastModified}\n  ETag: ${etag}`
-                        )
+                        .map((p) => `${p}\n  ETag: ${etag}`)
                         .join("\n\n");
                 })
                 .join("\n\n");
