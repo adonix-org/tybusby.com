@@ -49,8 +49,12 @@ export class Message {
     private createElement(): HTMLDivElement {
         const container = getElement(".messages", this.parent);
 
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("message-wrapper");
+
         const message = document.createElement("div");
         message.classList.add("message", this.type);
+        wrapper.append(message);
 
         const messageIcon = document.createElement("div");
         messageIcon.classList.add("message-icon");
@@ -62,7 +66,18 @@ export class Message {
 
         const messageText = document.createElement("div");
         messageText.classList.add("message-text");
-        messageText.innerHTML = this.text;
+        if (this.isHtml()) {
+            messageText.textContent = "Server returned HTML:";
+
+            const html = document.createElement("iframe");
+            html.classList.add("message-html");
+            html.sandbox.add("allow-same-origin"); // no scripts run, but styles render
+            html.srcdoc = this.text;
+
+            wrapper.append(html);
+        } else {
+            messageText.textContent = this.text;
+        }
 
         const closeButton = document.createElement("button");
         closeButton.classList.add("message-close");
@@ -70,9 +85,18 @@ export class Message {
         closeButton.addEventListener("click", () => this.dismiss());
 
         message.append(messageIcon, messageType, messageText, closeButton);
-        container.appendChild(message);
+        container.appendChild(wrapper);
 
-        return message;
+        return wrapper;
+    }
+
+    public isHtml(): boolean {
+        if (!this.text) return false;
+
+        const trimmed = this.text.trimStart().toLowerCase();
+        return (
+            trimmed.startsWith("<!doctype html>") || trimmed.includes("<html")
+        );
     }
 
     public show(): void {

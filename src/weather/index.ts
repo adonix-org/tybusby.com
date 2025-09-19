@@ -93,8 +93,47 @@ spinner.start();
 try {
     const alertProduct = await new AlertAdminMessage().get();
     console.log(alertProduct?.productText);
+    throw new Error(`
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>504 Gateway Timeout</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 2rem;
+    }
+    h1 {
+      color: #b00;
+    }
+    .box {
+      border: 1px solid #ddd;
+      padding: 1rem;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.875rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>504 Gateway Timeout</h1>
+    <p>The server did not respond in time. Please try again later.</p>
+  </div>
+  <div class="footer">
+    Cloudflare | Reference ID: 0x123abc
+  </div>
+</body>
+</html>`);
 } catch (err) {
-    new Message(String(err)).show();
+    new Message(formatNWSError(err)).show();
     console.error("Failed to get alert admin product:", err);
 }
 
