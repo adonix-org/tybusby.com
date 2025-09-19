@@ -110,7 +110,7 @@ function startStaggeredRefresh(
     stationId: string,
     delayMs: number
 ) {
-    async function doRefresh() {
+    async function doRefresh(): Promise<void> {
         try {
             console.log(
                 `refreshing ${stationId} at ${new Date().toLocaleTimeString()}`

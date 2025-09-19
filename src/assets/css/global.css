@@ -93,7 +93,7 @@ footer {
 .message .message-text {
     font-family: "Fira Code", "JetBrains Mono", "Source Code Pro", "Consolas",
         "Inconsolata", monospace;
-    white-space: pre;
+    white-space: pre-wrap;
     word-wrap: break-word;
 }
 
