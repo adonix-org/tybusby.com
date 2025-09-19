@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
-import path, { resolve } from "path";
+import { resolve } from "path";
+import { generateHeaders } from "./vite/plugins/headers";
 
 export default defineConfig({
     build: {
@@ -17,6 +18,7 @@ export default defineConfig({
         host: "127.0.0.1",
         port: 5173,
         strictPort: true,
-        allowedHosts: ["adirondack.local"], // <-- add your local domain
+        allowedHosts: ["adirondack.local"],
     },
+    plugins: [generateHeaders()],
 });
