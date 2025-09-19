@@ -9,7 +9,14 @@ export default defineConfig({
                 weather: resolve(__dirname, "weather.html"),
                 music: resolve(__dirname, "music.html"),
                 podcast: resolve(__dirname, "podcast.html"),
+                login: resolve(__dirname, "login.html"),
             },
         },
+    },
+    server: {
+        host: "127.0.0.1",
+        port: 5173,
+        strictPort: true,
+        allowedHosts: ["adirondack.local"], // <-- add your local domain
     },
 });
