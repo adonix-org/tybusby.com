@@ -52,18 +52,29 @@ export function generateHeaders() {
 
             const headers = files
                 .map((file) => {
-                    const filePath = path.join(distDir, file);
-                    const lastModified = new Date().toUTCString();
+                    const filePath = `/${file}`;
+                    const noExtPath = `/${file.replace(/\.html$/, "")}`;
 
+                    const content = fs.readFileSync(path.join(distDir, file));
                     const hash = crypto
-                        .createHash("md5")
-                        .update(fs.readFileSync(filePath))
-                        .digest("hex")
-                        .slice(0, 12);
-                    const etag = `\n  ETag: "${hash}"`;
+                        .createHash("sha1")
+                        .update(content)
+                        .digest("hex");
+                    const etag = `"${hash.slice(0, 12)}"`;
 
-                    return `/${file}
-  Last-Modified: ${lastModified}${etag}`;
+                    const lastModified = new Date().toUTCString(); // build time
+
+                    const paths = [filePath, noExtPath];
+                    if (file === "index.html") {
+                        paths.push(`/`);
+                    }
+                    
+                    return paths
+                        .map(
+                            (p) =>
+                                `${p}\n  Last-Modified: ${lastModified}\n  ETag: ${etag}`
+                        )
+                        .join("\n\n");
                 })
                 .join("\n\n");
 
