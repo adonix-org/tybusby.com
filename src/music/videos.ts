@@ -95,7 +95,8 @@ class Video {
         iframe.src = this.video.url;
         iframe.title = "YouTube Video Player";
         iframe.allow =
-            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; compute-pressure";
+
         iframe.allowFullscreen = true;
         iframe.referrerPolicy = "strict-origin-when-cross-origin";
 
