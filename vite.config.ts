@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import { resolve } from "path";
-import { generateHeaders } from "./vite/plugins/headers";
 
 export default defineConfig({
     build: {
@@ -20,5 +19,4 @@ export default defineConfig({
         strictPort: true,
         allowedHosts: ["adirondack.local"],
     },
-    plugins: [generateHeaders()],
 });
