@@ -106,7 +106,7 @@ export class Track {
             artist: this.data.artist,
             artwork: [
                 {
-                    src: "https://audio.adonix.org/artwork/cover.jpg",
+                    src: `${Podcast.BASE_URL}/artwork/cover.jpg`,
                     sizes: "512x512",
                     type: "image/jpeg",
                 },
