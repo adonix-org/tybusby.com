@@ -56,11 +56,12 @@ export class HTTPError extends Error implements ErrorJson {
 }
 
 export class Podcast {
-    private static readonly VERSION = "v1";
+    public static readonly BASE_URL = "https://podcast.adonix.org";
+    public static readonly API_VERSION = "v1";
     private readonly api: URL;
 
-    constructor(private readonly base: string = "https://podcast.adonix.org") {
-        this.api = new URL(`${this.base}/api/${Podcast.VERSION}/seasons`);
+    constructor(private readonly base: string = Podcast.BASE_URL) {
+        this.api = new URL(`${this.base}/api/${Podcast.API_VERSION}/seasons`);
     }
 
     public async getPodcast(): Promise<MetaPodcast> {

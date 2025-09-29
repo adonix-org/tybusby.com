@@ -15,7 +15,7 @@
  */
 
 import { DateTime } from "luxon";
-import { MetaTrack } from "./podcast";
+import { MetaTrack, Podcast } from "./podcast";
 import { getElement, getTemplateRoot } from "../elements";
 
 const elementToTrack = new WeakMap<Element, Track>();
@@ -60,7 +60,7 @@ export class Track {
     }
 
     public getUrl(): string {
-        return this.data.url;
+        return `${Podcast.BASE_URL}/audio/${this.data.filename}`;
     }
 
     public setTitle(title: string = this.data.title): this {
