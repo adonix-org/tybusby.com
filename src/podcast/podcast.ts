@@ -15,7 +15,6 @@
  */
 
 export interface MetaTrack {
-    url: string;
     filename: string;
     title: string;
     description: string;
@@ -31,7 +30,6 @@ export interface MetaTrack {
 
 export interface MetaPodcast {
     name: string;
-    artwork: string;
     copyright: string;
     seasons: string[];
 }
