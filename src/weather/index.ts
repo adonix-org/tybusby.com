@@ -42,9 +42,6 @@ const coordinates: Coordinate[] = [
 
     // Yorktown, VA
     [37.2367, -76.5065],
-
-    // Waverly, IA
-    [42.7382, -92.4781],
 ];
 
 const REPORT_PARENT_ID = "weather-grid";
