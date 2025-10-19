@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { AlertAdminMessage, WeatherReport } from "@adonix.org/nws-report";
+import {
+    AlertAdminMessage,
+    NationalWeatherService,
+    WeatherReport,
+} from "@adonix.org/nws-report";
 import { ReportRender } from "./render/report";
 import { Progress } from "../progress";
 import { Spinner } from "../spinner";
@@ -22,11 +26,7 @@ import { getElementById } from "../elements";
 import { Message } from "../message";
 import { formatNWSError } from "./errors";
 
-/**
- * Disable proxy for now.  See if we get fewer errors.
- *
- * NationalWeatherService.origin = "https://nws.adonix.org";
- */
+NationalWeatherService.origin = "https://nws.adonix.org";
 
 /**
  * latitude, longitude
