@@ -49,10 +49,10 @@
 .link-grid-item .cloudflare {
     display: flex;
     align-items: center;
+    gap: 5px;
 }
 
 .cloudflare-icon {
-    width: 70px;
+    width: 65px;
     height: 70px;
-    padding-right: 5px;
 }
