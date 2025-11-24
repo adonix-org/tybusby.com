@@ -1,8 +1,13 @@
-import { BasicWorker } from "@adonix.org/cloud-spark";
+import { BasicWorker, NotFound, StatusCodes } from "@adonix.org/cloud-spark";
 
 class Intercept extends BasicWorker {
     protected override async get(): Promise<Response> {
-        return await this.env.ASSETS.fetch(this.request);
+        const response = await this.env.ASSETS.fetch(this.request);
+        if (response.status === StatusCodes.NOT_FOUND) {
+            console.log(response);
+            return this.response(NotFound);
+        }
+        return response;
     }
 }
 
