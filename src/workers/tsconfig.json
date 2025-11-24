@@ -1,0 +1,3 @@
+{
+    "include": ["./**/*.ts", "../../types/cloudflare.d.ts"]
+}

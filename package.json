@@ -22,6 +22,7 @@
         "url": "git+https://github.com/adonix-org/tybusby.com.git"
     },
     "scripts": {
+        "types": "mkdir -p ./types && wrangler types --config wrangler.jsonc ./types/cloudflare.d.ts",
         "dev": "wrangler dev",
         "build": "tsc && vite build",
         "debug": "tsx ./src/weather/render/debug.ts"
