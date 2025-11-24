@@ -1,3 +1,3 @@
-# 🌐 [Ty Busby](https://www.tybusby.com)
+# :test_tube: [Ty Busby](https://www.tybusby.com)
 
-Demo website currently in progress.
+Frontend playground for web dev experiments
