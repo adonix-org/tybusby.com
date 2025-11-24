@@ -1,4 +1,4 @@
-import { BasicWorker, NotFound, StatusCodes } from "@adonix.org/cloud-spark";
+import { BasicWorker, StatusCodes } from "@adonix.org/cloud-spark";
 
 class Intercept extends BasicWorker {
     protected override async get(): Promise<Response> {
