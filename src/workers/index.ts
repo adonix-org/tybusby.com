@@ -11,7 +11,7 @@ class Intercept extends BasicWorker {
                 ok: response.ok,
                 headers: Object.fromEntries([...response.headers]),
             });
-            return this.response(NotFound);
+            //return this.response(NotFound);
         }
         return response;
     }
