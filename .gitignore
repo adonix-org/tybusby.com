@@ -1,6 +1,8 @@
 .DS_Store
 .vscode/
-node_modules/
+.wrangler/
 dist/
 src/parser
+types/
+node_modules/
 parse.html
