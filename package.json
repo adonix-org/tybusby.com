@@ -23,8 +23,9 @@
     },
     "scripts": {
         "types": "mkdir -p ./types && wrangler types --config wrangler.jsonc ./types/cloudflare.d.ts",
-        "dev": "wrangler dev",
+        "dev": "npm run build && wrangler dev",
         "build": "tsc && vite build",
+        "vite": "vite dev",
         "debug": "tsx ./src/weather/render/debug.ts"
     },
     "devDependencies": {

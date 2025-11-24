@@ -17,7 +17,7 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
     "name": "tybusby-com",
-    "main": "src/intercept.ts",
+    "main": "src/workers/index.ts",
     "compatibility_date": "2025-11-21",
     "assets": {
         "directory": "./dist",
