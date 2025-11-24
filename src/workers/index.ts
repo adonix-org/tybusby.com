@@ -5,7 +5,9 @@ class Intercept extends BasicWorker {
         const response = await this.env.ASSETS.fetch(this.request);
 
         if (response.status === StatusCodes.NOT_FOUND) {
-            return this.env.ASSETS.fetch(new URL("404.html", this.request.url));
+            return this.env.ASSETS.fetch(
+                new URL("/404.html", this.request.url)
+            );
         }
 
         return response;
