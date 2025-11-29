@@ -22,9 +22,7 @@ import { getElementById } from "../elements";
 import { Message } from "../message";
 import { formatNWSError } from "./errors";
 
-// NationalWeatherService.origin = "https://nws.adonix.org";
-
-NationalWeatherService.origin = "http://localhost:8787";
+NationalWeatherService.origin = "https://nws.adonix.org";
 
 /**
  * latitude, longitude
