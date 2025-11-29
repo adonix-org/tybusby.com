@@ -18,7 +18,7 @@
     "$schema": "node_modules/wrangler/config-schema.json",
     "name": "tybusby-com",
     "main": "src/workers/index.ts",
-    "compatibility_date": "2025-11-21",
+    "compatibility_date": "2025-11-18",
     "assets": {
         "directory": "./dist",
         "binding": "ASSETS",

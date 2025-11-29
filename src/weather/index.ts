@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    AlertAdminMessage,
-    NationalWeatherService,
-    WeatherReport,
-} from "@adonix.org/nws-report";
+import { NationalWeatherService, WeatherReport } from "@adonix.org/nws-report";
 import { ReportRender } from "./render/report";
 import { Progress } from "../progress";
 import { Spinner } from "../spinner";
@@ -26,7 +22,9 @@ import { getElementById } from "../elements";
 import { Message } from "../message";
 import { formatNWSError } from "./errors";
 
-NationalWeatherService.origin = "https://nws.adonix.org";
+// NationalWeatherService.origin = "https://nws.adonix.org";
+
+NationalWeatherService.origin = "http://localhost:8787";
 
 /**
  * latitude, longitude
@@ -87,12 +85,16 @@ const progress = new Progress();
 const spinner = new Spinner();
 spinner.start();
 
-try {
+/**
+ * Disabled due to persistent 500 response.
+ * 
+  try {
     const alertProduct = await new AlertAdminMessage().get();
     console.log(alertProduct?.productText);
 } catch (err) {
     new Message(formatNWSError(err)).show();
 }
+*/
 
 function updateStatus(current: number) {
     progress.percent = Progress.calculate(current, coordinates.length).percent;
