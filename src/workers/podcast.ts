@@ -34,10 +34,6 @@ export class PodcastProxy extends BasicWorker {
         super(new Request(target, { headers, method: request.method }), env, ctx);
     }
 
-    protected override init(): void {
-        this.use(cache());
-    }
-
     protected override get(): Promise<Response> {
         return fetch(this.request);
     }

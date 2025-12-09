@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-import { RouteWorker, StatusCodes } from "@adonix.org/cloud-spark";
+import { cache, RouteWorker, StatusCodes } from "@adonix.org/cloud-spark";
 import { PodcastProxy } from "./podcast";
 
 class Intercept extends RouteWorker {
     protected override init(): void {
         this.routes(PodcastProxy.ROUTES);
+
+        this.use(cache());
     }
 
     protected override async get(): Promise<Response> {
