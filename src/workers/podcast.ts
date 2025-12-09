@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-import { BasicWorker, GET, RouteTable } from "@adonix.org/cloud-spark";
+import { BasicWorker, cache, CopyResponse, GET, RouteTable } from "@adonix.org/cloud-spark";
 
 export class PodcastProxy extends BasicWorker {
     private static readonly PODCAST_API_BASE = "https://podcast.adonix.org";
     private static readonly PROXY_PATH = "/proxy/podcast";
+
     public static readonly ROUTES: RouteTable = [
         [GET, `${PodcastProxy.PROXY_PATH}/*splat`, PodcastProxy],
     ];
+
+    protected override init(): void {
+        this.use(cache());
+    }
 
     constructor(request: Request, env: Env, ctx: ExecutionContext) {
         const headers = new Headers(request.headers);
@@ -34,7 +39,10 @@ export class PodcastProxy extends BasicWorker {
         super(new Request(target, { headers, method: request.method }), env, ctx);
     }
 
-    protected override get(): Promise<Response> {
-        return fetch(this.request);
+    protected override async get(): Promise<Response> {
+        const response = await fetch(this.request);
+        const copy = new CopyResponse(response);
+        copy.headers.delete("set-cookie");
+        return copy.response();
     }
 }
