@@ -17,7 +17,7 @@
 {
     "compilerOptions": {
         /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
+        "noEmit": true,
         /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
         "target": "es2021",
         /* Specify a set of bundled library declaration files that describe the target runtime environment. */
@@ -48,10 +48,7 @@
         "strict": true,
 
         /* Skip type checking all .d.ts files. */
-        "skipLibCheck": true,
-
-        "composite": true,
-        "declaration": true
+        "skipLibCheck": true
     },
     "include": ["./**/*.ts", "../../types/cloudflare.d.ts"]
 }

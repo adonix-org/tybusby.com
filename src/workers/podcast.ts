@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BasicWorker, cache, GET, RouteTable } from "@adonix.org/cloud-spark";
+import { BasicWorker, GET, RouteTable } from "@adonix.org/cloud-spark";
 
 export class PodcastProxy extends BasicWorker {
     private static readonly PODCAST_API_BASE = "https://podcast.adonix.org";
