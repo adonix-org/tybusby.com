@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-import { BasicWorker, StatusCodes } from "@adonix.org/cloud-spark";
+import { RouteWorker, StatusCodes } from "@adonix.org/cloud-spark";
+import { PodcastProxy } from "./podcast";
 
-class Intercept extends BasicWorker {
+class Intercept extends RouteWorker {
+    protected override init(): void {
+        this.routes(PodcastProxy.ROUTES);
+    }
+
     protected override async get(): Promise<Response> {
         const response = await this.env.ASSETS.fetch(this.request);
 
         if (response.status === StatusCodes.NOT_FOUND) {
-            return this.env.ASSETS.fetch(
-                new URL("/404.html", this.request.url)
-            );
+            return this.env.ASSETS.fetch(new URL("/404.html", this.request.url));
         }
 
         return response;

@@ -35,5 +35,10 @@
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true
     },
-    "include": ["src"]
+    "files": [],
+    "references": [
+        {"path": "./src/workers"}
+    ],
+    "include": ["src"],
+    "exclude": ["src/workers"]
 }

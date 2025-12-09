@@ -54,7 +54,7 @@ export class HTTPError extends Error implements ErrorJson {
 }
 
 export class Podcast {
-    public static readonly BASE_URL = "https://podcast.adonix.org";
+    public static readonly BASE_URL = "https://www.tybusby.com/proxy/podcast";
     public static readonly API_VERSION = "v1";
     private readonly api: URL;
 
@@ -76,10 +76,9 @@ export class Podcast {
         try {
             response = await fetch(url, { method: "GET" });
         } catch (cause) {
-            throw new Error(
-                `Network error fetching ${url.toString()}: ${String(cause)}`,
-                { cause }
-            );
+            throw new Error(`Network error fetching ${url.toString()}: ${String(cause)}`, {
+                cause,
+            });
         }
 
         const text = await response.text();
@@ -93,19 +92,10 @@ export class Podcast {
         try {
             json = JSON.parse(text);
         } catch (error) {
-            throw new HTTPError(
-                response.status,
-                response.statusText,
-                text,
-                url.toString(),
-                { cause: error }
-            );
+            throw new HTTPError(response.status, response.statusText, text, url.toString(), {
+                cause: error,
+            });
         }
-        throw new HTTPError(
-            json.status,
-            json.error,
-            json.details,
-            url.toString()
-        );
+        throw new HTTPError(json.status, json.error, json.details, url.toString());
     }
 }

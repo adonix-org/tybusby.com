@@ -35,7 +35,7 @@
         "checkJs": false,
 
         /* Disable emitting files from a compilation. */
-        "noEmit": true,
+        // "noEmit": true,
 
         /* Ensure that each file can be safely transpiled without relying on other imports. */
         "isolatedModules": true,
@@ -48,7 +48,10 @@
         "strict": true,
 
         /* Skip type checking all .d.ts files. */
-        "skipLibCheck": true
+        "skipLibCheck": true,
+
+        "composite": true,
+        "declaration": true
     },
     "include": ["./**/*.ts", "../../types/cloudflare.d.ts"]
 }
