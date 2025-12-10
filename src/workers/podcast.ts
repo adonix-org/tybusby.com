@@ -32,6 +32,7 @@ export class PodcastProxy extends BasicWorker {
         const headers = new Headers(request.headers);
         headers.set("cf-access-client-id", env.PODCAST_CLIENT_ID);
         headers.set("cf-access-client-secret", env.PODCAST_CLIENT_SECRET);
+        headers.delete("cookie");
 
         const source = new URL(request.url);
         const path = source.pathname.replace(PodcastProxy.PROXY_PATH, "");
