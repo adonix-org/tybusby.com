@@ -75,7 +75,7 @@ export class Player {
 
         const share = new URL("share.html", SHARE_BASE);
         share.searchParams.set("title", track.data.title);
-        share.searchParams.set("link", url.toString());
+        share.searchParams.set("link", encodeURIComponent(url.toString()));
         return share;
     }
 
@@ -99,19 +99,11 @@ export class Player {
     private clickEvents(): void {
         this.trackList.addEventListener("click", (e) => {
             if (e.target && e.target instanceof Element) {
-                this.selectTrack(
-                    Track.fromElement(
-                        e.target.closest(".track-row") ?? undefined
-                    )
-                );
+                this.selectTrack(Track.fromElement(e.target.closest(".track-row") ?? undefined));
             }
         });
 
-        const shareButton = getElement(
-            ".share-track",
-            document,
-            HTMLButtonElement
-        );
+        const shareButton = getElement(".share-track", document, HTMLButtonElement);
         shareButton.addEventListener("click", async () => {
             const track = this.getCurrentTrack();
             if (track && navigator.share) {
@@ -134,8 +126,7 @@ export class Player {
 
     private getShareData(track: Track): ShareData {
         const addTitle =
-            browser.getBrowserName(true) === "safari" ||
-            browser.getOS().name === "iOS";
+            browser.getBrowserName(true) === "safari" || browser.getOS().name === "iOS";
         return {
             url: this.getShareUrl().toString(),
             ...(addTitle ? { title: track.data.title } : {}),
@@ -215,10 +206,7 @@ export class Player {
         };
         this.audioPlayer.ontimeupdate = () => {
             const currentTime = Math.floor(this.audioPlayer.currentTime);
-            if (
-                currentTime > this.currentTime + 1 ||
-                currentTime < this.currentTime
-            ) {
+            if (currentTime > this.currentTime + 1 || currentTime < this.currentTime) {
                 this.currentTime = currentTime;
                 this.saveState();
             }
@@ -232,10 +220,7 @@ export class Player {
         document.addEventListener("copy", (e) => {
             if (e.clipboardData) {
                 e.preventDefault();
-                e.clipboardData.setData(
-                    "text/plain",
-                    this.getShareUrl().toString()
-                );
+                e.clipboardData.setData("text/plain", this.getShareUrl().toString());
             }
         });
     }
@@ -260,8 +245,7 @@ export class Player {
     private setTrackFocus(offset: number, preventScroll = false): void {
         const active = document.activeElement;
         const element =
-            active instanceof HTMLElement &&
-            active.classList.contains("track-row")
+            active instanceof HTMLElement && active.classList.contains("track-row")
                 ? active
                 : this.getCurrentElement();
 
@@ -273,9 +257,7 @@ export class Player {
         const rows = this.getRows();
         if (rows.length === 0) return;
 
-        const newIndex =
-            (((track.index + offset) % rows.length) + rows.length) %
-            rows.length;
+        const newIndex = (((track.index + offset) % rows.length) + rows.length) % rows.length;
         rows[newIndex]?.focus({ preventScroll });
     }
 
@@ -362,8 +344,7 @@ export class Player {
 
         const current = this.getCurrentTrack();
         if (current) {
-            const newIndex =
-                (current.index + offset + rows.length) % rows.length;
+            const newIndex = (current.index + offset + rows.length) % rows.length;
             this.newTrack(this.getTrack(newIndex));
             this.audioPlayer.play();
         }
@@ -407,10 +388,7 @@ export class Player {
     }
 
     private saveState(): void {
-        localStorage.setItem(
-            Player.SAVED_STATE_KEY,
-            JSON.stringify(this.getState())
-        );
+        localStorage.setItem(Player.SAVED_STATE_KEY, JSON.stringify(this.getState()));
     }
 
     private loadState(): SaveState {
