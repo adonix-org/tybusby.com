@@ -75,7 +75,7 @@ export class Player {
 
         const share = new URL("share.html", SHARE_BASE);
         share.searchParams.set("title", track.data.title);
-        share.searchParams.set("link", encodeURIComponent(url.toString()));
+        share.searchParams.set("link", url.toString());
         return share;
     }
 
