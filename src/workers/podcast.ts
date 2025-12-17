@@ -25,10 +25,6 @@ export class PodcastProxy extends BasicWorker {
         [GET, `${PodcastProxy.PROXY_PATH}/*splat`, PodcastProxy],
     ];
 
-    protected override init(): void {
-        this.use(cache());
-    }
-
     constructor(request: Request, env: Env, ctx: ExecutionContext) {
         const headers = new Headers(request.headers);
         headers.set("cf-access-client-id", env.PODCAST_CLIENT_ID);
