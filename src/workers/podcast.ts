@@ -15,7 +15,7 @@
  */
 
 import { BasicWorker, CopyResponse, GET, RouteTable } from "@adonix.org/cloud-spark";
-import { cache } from "@adonix.org/cloud-spark/cache";
+import { cache, stripSearchParams } from "@adonix.org/cloud-spark/cache";
 
 export class PodcastProxy extends BasicWorker {
     private static readonly PODCAST_API_BASE = "https://podcast.adonix.org";
@@ -35,6 +35,10 @@ export class PodcastProxy extends BasicWorker {
         const path = source.pathname.replace(PodcastProxy.PROXY_PATH, "");
         const target = new URL(path, PodcastProxy.PODCAST_API_BASE);
         super(new Request(target, { headers, method: request.method }), env, ctx);
+    }
+
+    protected override init(): void {
+        this.use(cache({ getKey: stripSearchParams }));
     }
 
     protected override async get(): Promise<Response> {
