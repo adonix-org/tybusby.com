@@ -20,7 +20,7 @@
     "main": "src/workers/index.ts",
     "compatibility_date": "2025-12-18",
     "routes": [{ "pattern": "www.tybusby.com", "custom_domain": true }],
-    "placement": { "mode": "smart" },
+    "placement": { "mode": "off" },
     "workers_dev": false,
     "preview_urls": false,
     "minify": true,
