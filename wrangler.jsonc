@@ -19,12 +19,17 @@
     "name": "tybusby-com",
     "main": "src/workers/index.ts",
     "compatibility_date": "2025-12-18",
+    "routes": [{ "pattern": "www.tybusby.com", "custom_domain": true }],
+    "placement": { "mode": "smart" },
+    "workers_dev": false,
+    "preview_urls": false,
+    "minify": true,
+    "observability": {
+        "enabled": true
+    },
     "assets": {
         "directory": "./dist",
         "binding": "ASSETS",
         "run_worker_first": true
-    },
-    "observability": {
-        "enabled": true
     }
 }
