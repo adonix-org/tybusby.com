@@ -62,13 +62,15 @@ Promise.all(promises).then((results) => {
         if (result instanceof WeatherReport) {
             const reportRenderer = new ReportRender(parent, result);
             reportRenderer.render();
-            const staggerDelay = (index + 1) * 1000 * 60;
+            /** 
+             * Disable refresh
+             * const staggerDelay = (index + 1) * 1000 * 60;
             startStaggeredRefresh(
                 reportRenderer,
                 result.station?.properties.stationIdentifier ??
                     `station-${index}`,
                 staggerDelay
-            );
+            );*/
         } else {
             console.group(`coordinates[${index}]: ${result.message}`);
             new Message(formatNWSError(result)).show();
@@ -102,21 +104,13 @@ function updateStatus(current: number) {
     }
 }
 
-function startStaggeredRefresh(
-    reportRenderer: ReportRender,
-    stationId: string,
-    delayMs: number
-) {
+function startStaggeredRefresh(reportRenderer: ReportRender, stationId: string, delayMs: number) {
     async function doRefresh(): Promise<void> {
         try {
-            console.log(
-                `refreshing ${stationId} at ${new Date().toLocaleTimeString()}`
-            );
+            console.log(`refreshing ${stationId} at ${new Date().toLocaleTimeString()}`);
             await reportRenderer.refresh();
         } catch (err) {
-            const message = `Error refreshing ${stationId}: ${formatNWSError(
-                err
-            )}`;
+            const message = `Error refreshing ${stationId}: ${formatNWSError(err)}`;
             new Message(message).show();
         } finally {
             setTimeout(scheduleRefresh, REFRESH_RATE);
