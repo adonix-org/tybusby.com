@@ -41,7 +41,7 @@ const coordinates: Coordinate[] = [
 ];
 
 const REPORT_PARENT_ID = "weather-grid";
-const REFRESH_RATE = 1000 * 60 * 5;
+// const REFRESH_RATE = 1000 * 60 * 5;
 
 const promises = coordinates.map(([lat, lon]) =>
     WeatherReport.create(lat, lon)
@@ -104,6 +104,9 @@ function updateStatus(current: number) {
     }
 }
 
+/**
+ * Disable refresh. 
+ *
 function startStaggeredRefresh(reportRenderer: ReportRender, stationId: string, delayMs: number) {
     async function doRefresh(): Promise<void> {
         try {
@@ -123,3 +126,4 @@ function startStaggeredRefresh(reportRenderer: ReportRender, stationId: string, 
 
     setTimeout(scheduleRefresh, delayMs);
 }
+    */
