@@ -38,7 +38,7 @@ export class PodcastProxy extends BasicWorker {
     }
 
     protected override init(): void {
-        this.use(cache({ getKey: stripSearchParams }));
+        this.use(cache({ getKey: stripSearchParams, debug: true }));
     }
 
     protected override async get(): Promise<Response> {
