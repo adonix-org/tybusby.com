@@ -35,7 +35,7 @@
         "tsx": "^4.21.0",
         "typescript": "^5.9.3",
         "vite": "^7.3.1",
-        "wrangler": "^4.59.2"
+        "wrangler": "^4.60.0"
     },
     "dependencies": {
         "@adonix.org/cloud-spark": "^2.1.2",
