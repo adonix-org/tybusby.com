@@ -27,13 +27,13 @@
 }
 
 .link-grid-item a {
-    color: black;
+    color: inherit;
     text-decoration: none;
     white-space: nowrap;
 }
 
 .link-grid-item a:visited {
-    color: black;
+    color: inherit;
 }
 
 .link-grid-item .github {
