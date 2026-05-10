@@ -17,9 +17,9 @@
 {
     "compilerOptions": {
         "noEmit": true,
-        "target": "ES2022",
+        "target": "esnext",
         "module": "esnext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "moduleDetection": "auto",
         "lib": ["DOM", "ES2022"],
         "esModuleInterop": true,
