@@ -56,3 +56,14 @@
     width: 65px;
     height: 70px;
 }
+
+.link-grid-item .youtube {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.youtube-icon {
+    width: 50px;
+    height: 50px;
+}

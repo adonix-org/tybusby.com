@@ -31,11 +31,11 @@
     "devDependencies": {
         "@types/geojson": "^7946.0.16",
         "@types/luxon": "^3.7.1",
-        "@types/node": "^25.6.2",
-        "tsx": "^4.21.0",
+        "@types/node": "^25.9.2",
+        "tsx": "^4.22.4",
         "typescript": "^6.0.3",
-        "vite": "^8.0.11",
-        "wrangler": "^4.90.0"
+        "vite": "^8.0.16",
+        "wrangler": "^4.97.0"
     },
     "dependencies": {
         "@adonix.org/cloud-spark": "^2.3.0",
